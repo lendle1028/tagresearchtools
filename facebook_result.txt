@@ -1,0 +1,229 @@
+cd E:\LabUtils\TagResearchTools; JAVA_HOME=D:\\jdk M2_HOME=E:\\apache-maven-3.0.4 E:\\apache-maven-3.0.4\\bin\\mvn.bat "-Dexec.args=-Djava.util.Arrays.useLegacyMergeSort=true -classpath %classpath elaborate.tag_analysis.App" -Dexec.executable=D:\\jdk\\bin\\java.exe process-classes org.codehaus.mojo:exec-maven-plugin:1.2.1:exec
+Scanning for projects...
+
+Some problems were encountered while building the effective model for elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT
+'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 43, column 21
+
+It is highly recommended to fix these problems because they threaten the stability of your build.
+
+For this reason, future Maven versions might no longer support building such malformed projects.
+
+                                                                        
+------------------------------------------------------------------------
+Building TagResearchTools 0.5-SNAPSHOT
+------------------------------------------------------------------------
+
+[resources:resources]
+[debug] execute contextualize
+Using 'UTF-8' encoding to copy filtered resources.
+Copying 0 resource
+
+[compiler:compile]
+Compiling 1 source file to E:\LabUtils\TagResearchTools\target\classes
+
+[exec:exec]
+current profile=facebook
+172/90
+cluster stdev=0.2636285265292813, average distance=1.1499815917760374
+gaming:-0.18959098407920535
+weather:0.29905330051471757
+life:0.29905330051471757
+article:-0.3657275552084634
+apple:-0.3657275552084634
+beta:-0.3657275552084634
+knowledge:-0.5499937035374051
+law:-0.5499937035374051
+engineering:-0.5499937035374051
+electronics:-0.5499937035374051
+temp:-0.5499937035374051
+china:0.5981450238415311
+reference:0.8802002855586815
+forum:1.0156833163121468
+encyclopedia:1.2768924796855172
+travel:-1.3995322472979492
+internet:-1.3995322472979492
+typhoon:-1.3995322472979492
+search:1.6474558566074173
+chinese:2.2188553462507734
+==============================================
+cluster stdev=0.3669530472750504, average distance=1.6821610693030844
+world:0.40507930180341584
+english:0.43755011019697226
+tv:-0.5164984782155124
+asia:-0.539925485253103
+international:-0.7454736089867201
+india:-0.8659166786804968
+politics:1.0242079355839893
+one:-1.150513188835754
+indian:-1.2241255948049166
+update:-1.2405378079134417
+info:-1.2405378079134417
+reading:-1.3315164367243248
+independent:-1.3315164367243248
+tabloid:-1.4093228873291683
+mirror:-1.4093228873291683
+telegraph:-1.4172086678426532
+journalism:-1.4314527785310385
+conservative:-1.4874693283604616
+washington:-1.4874693283604616
+dc:-1.4874693283604616
+time:-1.4874693283604623
+bookmark:1.905899182234723
+us:-2.178370665317586
+newspaper:3.075414368638362
+uk:3.249715326347316
+daily:5.039801939377824
+medium:8.844448559660863
+==============================================
+cluster stdev=0.24127350567142306, average distance=0.9634538664860315
+card:-0.07712441509632541
+email:-0.07712441509632541
+security:0.1729284142147623
+privacy:0.1729284142147623
+smart:-0.34427274928635127
+ping:-0.34427274928635127
+savvy:-0.34427274928635127
+spam:0.408799999997839
+link:0.408799999997839
+lm:0.408799999997839
+football:-0.9480867738837069
+interest:-0.9480867738837069
+baseball:-0.9480867738837069
+score:-0.9480867738837069
+basketball:-0.9480867738837069
+sport:0.9494763291957938
+fun:3.4057677898514136
+==============================================
+cluster stdev=0.3499271061118826, average distance=0.8966550515699565
+al:-0.14717578587631197
+arab:-0.14717578587631197
+middle east:-0.14717578587631197
+service:0.4926452197293417
+play:-0.6915765501875809
+os:-0.6915765501875809
+android:1.3320352382747562
+==============================================
+cluster stdev=0.5034452226205274, average distance=2.714468337593358
+web:-0.0034850927758061792
+computer:0.009830259718124894
+twitter:-0.03795035323446741
+design:-0.11330980465184712
+taiwan:0.21710208307588966
+marketing:-0.283012025445479
+music:-0.3171979083071854
+humor:-0.3587470272916294
+mobile:-0.5109121035304691
+software:0.5360995844340284
+community:0.6988601790422697
+finance:-0.7675805027042961
+system:-0.7690744679465003
+magazine:-0.7852401656458394
+art:-1.1252696425159205
+social:1.1287054562211656
+information:-1.2215504025148378
+hardware:-1.2541418263952784
+inspiration:-1.3018269008649341
+gadget:-1.325539400325699
+business:1.4285885328795542
+research:-1.5119098211094115
+review:-1.6019693161689823
+trend:-1.6019693161689827
+advertising:-1.6533501717842483
+architecture:-1.922443654568086
+furniture:-1.922443654568086
+tech:2.562225259383714
+tool:-2.78648612377166
+technology:2.8071644393771757
+game:-3.0833450046092357
+web2.0:3.3395033952504294
+blog:5.953198810061312
+news:7.577476687455309
+==============================================
+cluster stdev=0.06666666666666667, average distance=0.11925695879998874
+stock:-0.670820393249937
+investing:-0.670820393249937
+trading:-0.670820393249937
+money:-0.670820393249937
+economics:2.6832815729997486
+==============================================
+cluster stdev=0.2629163365026981, average distance=1.1444534961982762
+interior:-0.24321180570270343
+celebrity:0.4090461162937722
+hollywood:0.4090461162937722
+comic strip:0.4090461162937722
+gossip:0.409046116293773
+hip-hop:-0.4231558285407009
+buzz:-0.4231558285407009
+aggregator:-0.4231558285407009
+account:-0.4231558285407009
+people:-0.4231558285407009
+activism:-0.810359289660313
+movie:-0.810359289660313
+streaming:-0.810359289660313
+feminism:-1.2454409210000017
+fandom:-1.2454409210000017
+woman:-1.2454409210000017
+culture:1.2467452368898564
+video:1.4993924089634878
+geek:1.6217109849994018
+entertainment:2.5223584843593008
+==============================================
+cluster stdev=0.22078119213526676, average distance=1.066097350949709
+statistic:-0.1585811351244593
+network:-0.3391689310565727
+friend:-0.3391689310565727
+science:-0.3420482880495881
+read:-0.3420482880495881
+io:-0.3449294940670134
+mac:-0.3449294940670134
+phone:-0.5273317298937835
+development:-0.5273317298937835
+environment:-0.5288341667305096
+korea:-0.5288341667305096
+pc:-0.5288341667305096
+learning:-0.5288341667305096
+resource:-0.7193912920388497
+share:-0.7193912920388497
+sharing:-0.7225372597113447
+photo:-0.7225372597113447
+image:-0.7225372597113447
+yahoo:1.2785118074673776
+programming:1.279569715505556
+freeware:2.097038901229609
+free:2.329186945487682
+photography:2.5531635578651595
+tutorial:2.666952490139057
+girl:-3.2171543663023066
+==============================================
+cluster stdev=0.2848543461093237, average distance=0.9358443801165371
+startup:-0.07800240352476229
+venture:-0.07800240352476229
+window:-0.07800240352476229
+brand:-0.07800240352476229
+branding:-0.07800240352476229
+ad:0.25411657699421925
+weekly:0.25411657699421925
+economy:-0.44874409522283243
+spirituality:-0.44874409522283243
+journal:-0.44874409522283243
+testing:1.2280111493038692
+==============================================
+cluster stdev=0.2160604053625562, average distance=0.409195123869168
+italian:-0.6947189654277142
+german:-0.6947189654277142
+cia:-0.6947189654277142
+spanish:-0.6947189654277142
+europe:-0.6947189654277142
+radio:3.4735948271385704
+==============================================
+average distance across clusters=1.4317003063507894
+stdev of average distance across clusters=0.2350147174596155
+bad cluster: 1:0.250460762952295:1.0657237370478032
+bad cluster: 4:1.2827680312425684:5.458245530784671
+------------------------------------------------------------------------
+BUILD SUCCESS
+------------------------------------------------------------------------
+Total time: 2.773s
+Finished at: Tue Aug 13 13:47:39 CST 2013
+Final Memory: 12M/114M
+------------------------------------------------------------------------
