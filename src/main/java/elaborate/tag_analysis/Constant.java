@@ -10,6 +10,6 @@ package elaborate.tag_analysis;
  */
 public class Constant {
     //public static final String PROFILE="apple";
-    public static final String PROFILE="java";
-    //public static final String PROFILE="facebook";
+    //public static final String PROFILE="java";
+    public static final String PROFILE="facebook";
 }

@@ -1,0 +1,122 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk>
+    <groupbox title="查詢">
+        <grid id="grid"
+              form="@id('fx') @load(vm.carSearchEntity) @save(vm.carSearchEntity,before={'carSearch'})">
+            <columns>
+                <column hflex="1" />
+                <column hflex="2" />
+                <column hflex="1" />
+                <column hflex="2" />
+                <column hflex="1" />
+                <column hflex="2" />
+            </columns>
+            <rows>
+                <row>
+                    <cell sclass="queryDesc">
+                        <label value="車號／車別" required="true" />
+                    </cell>
+                    <cell colspan="2">
+                        <grid style="border-color:gray">
+                            <columns>
+                                <column hflex="1"></column>
+                            </columns>
+                            <rows>
+                                <row>
+                                    <cell sclass="queryInput" colspan="5">
+                                        <textbox nextInput="s_c_box"
+                                                                                 value="@bind(fx.plateNo)" maxlength="15"
+                                                                                 onChange="self.setValue(self.getValue().toUpperCase())" />
+                                        <label value="／" />
+                                        <combobox id="s_c_box"
+                                                                                  nextInput="s_u_box" maxlength="1"
+                                                                                  value="@load((vm.vilVehicleKindCodeEntity!=null)?vm.vilVehicleKindCodeEntity.vehicleKindNo : '') "
+                                                                                  selectedItem="@bind(vm.vilVehicleKindCodeEntity)"
+                                                                                  model="@load(vm.vehicleKindCodeList)" separateSymbol="-"
+                                                                                  autodrop="true" width='60px'>
+                                            <template name="model"
+                                                                                          var="p">
+                                                <comboitem
+                                                    label="@load(c:cat3(p.vehicleKindNo,'-',p.kindName))" />
+                                            </template>
+                                        </combobox>
+                                        <label value="=" />
+                                        <textbox
+                                            value="@load(vm.vilVehicleKindCodeEntity.kindName)"
+                                            readonly='true' width='100px' />
+                                    </cell>
+                                </row>
+                            </rows>
+                        </grid>
+                    </cell>
+                    <cell></cell>
+                    <cell></cell>
+                    <cell></cell>
+                </row>
+                <row>
+                    <cell sclass="queryButton" colspan="6">
+                        <button type='search' label="查詢" autodisable="true"
+                                                tooltiptext="查詢" onClick="@command('carSearch')" />
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </groupbox>
+    <!-- 	<div> -->
+    <!-- 		<button label="查詢" onClick='openCarGrid()' /> -->
+    <!-- 	</div> -->
+    <groupbox title="查詢結果" visible="@load(vm.carVisable)">
+        <grid id="cargrid" model="@load(vm.carSearchList)"
+              visible="@load(vm.carVisable)" mold="paging" pageSize="10"
+              pagingPosition="bottom" emptyMessage="查無資料">
+            <auxhead>
+                <auxheader label="車號查詢結果" colspan="10" />
+            </auxhead>
+            <columns>
+                <column label="序號" hflex="min" />
+                <column label="車號" hflex="1" />
+                <!-- 				<column label="駕號" hflex="1" /> -->
+                <column label="姓名" hflex="1" />
+                <column label="地址" hflex="1" />
+                <column label="牌照狀態" hflex="1" />
+                <column label="禁動狀態" hflex="1" />
+                <!-- 				<column label="長租人" hflex="1" /> -->
+                <!-- 				<column label="租車期間" hflex="1" /> -->
+            </columns>
+            <rows>
+                <template name="model">
+                    <row nowrap="true">
+                        <!-- 序號 -->
+                        <cell sclass="resultSeq">
+                            <label value="@load(forEachStatus.index + 1)" />
+                        </cell>
+                        <!-- 車號 -->
+                        <label sclass="resultString"
+                                               value="@load('each.plateNo')" />
+                        <!-- 駕號 -->
+                        <!-- 						<label sclass="resultString" -->
+                        <!-- 							value="" /> -->
+                        <!-- 姓名 -->
+                        <label sclass="resultString"
+                                               value="@load('each.ownerName')" />
+                        <!-- 地址 -->
+                        <label sclass="resultString"
+                                               value="@load('each.permAddr')" />
+                        <!-- 牌照狀態 -->
+                        <label sclass="resultString"
+                                               value="@load('each.txnNo')" />
+                        <!-- 禁動狀態 -->
+                        <label sclass="resultString"
+                                               value="@load('each.remarkReasonNo')" />
+                        <!-- 長租人 -->
+                        <!-- 						<label sclass="resultString" -->
+                        <!-- 							value="@load('each.renter')" /> -->
+                        <!-- 租車期間 -->
+                        <!-- 						<label sclass="resultString" -->
+                        <!-- 							value="@load('each.rentPeriod')" /> -->
+                    </row>
+                </template>
+            </rows>
+        </grid>
+    </groupbox>
+</zk>

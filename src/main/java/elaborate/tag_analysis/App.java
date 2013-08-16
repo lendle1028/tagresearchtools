@@ -75,27 +75,7 @@ public class App {
             }
         }
         //post processing, calculate average distances
-        double totalDistance=0;//accumulate distances between nodes and their centroids across clusters, this gives overall information
-        double totalNumOfNodes=0;
-        double totalAvergae=0;
-        for (Cluster cluster : clusters) {
-            System.out.println("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
-            List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
-            //calculate distance between every node and its centroid
-            for (Node node : cluster.getTags()) {
-                totalNumOfNodes++;
-                double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
-                totalDistance+=distance;
-                double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
-                pairs.add(new TagStdevRatioPair(node, stdevRatio));
-            }
-            Collections.sort(pairs);
-            for(TagStdevRatioPair pair : pairs){
-                System.out.println(pair.getTag().getValue()+":"+pair.getStdevRatio());
-            }
-            System.out.println("==============================================");
-        }
-        totalAvergae=totalDistance/totalNumOfNodes;
+        double totalAvergae=getAverageDistanceAcrossClusters(clusters);
         System.out.println("average distance across clusters="+(totalAvergae));
         //calculate stdev of average distance among clusters
         double clusterVariations=0;
@@ -148,16 +128,14 @@ public class App {
                 }
             }
         }
-        System.out.println(goodClusters.size());
+        System.out.println("final numbers of clusters="+goodClusters.size());
         //show result
         for (Cluster cluster : goodClusters) {
             System.out.println("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
             List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
-                totalNumOfNodes++;
                 double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
-                totalDistance+=distance;
                 double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));
             }
@@ -167,6 +145,8 @@ public class App {
             }
             System.out.println("==============================================");
         }
+        totalAvergae=getAverageDistanceAcrossClusters(goodClusters);
+        System.out.println("average distance across clusters="+(totalAvergae));
         /*for (Cluster cluster : clusters) {
             if((cluster.getAverageDistance()-totalAvergae)>clusterStdev){
                 //this is a bad cluster
@@ -188,5 +168,30 @@ public class App {
             }
             clusterIndex++;
         }*/
+    }
+    
+    public static double getAverageDistanceAcrossClusters(List<Cluster> clusters){
+        double totalDistance=0;//accumulate distances between nodes and their centroids across clusters, this gives overall information
+        double totalNumOfNodes=0;
+        double totalAvergae=0;
+        for (Cluster cluster : clusters) {
+            System.out.println("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
+            List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
+            //calculate distance between every node and its centroid
+            for (Node node : cluster.getTags()) {
+                totalNumOfNodes++;
+                double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
+                totalDistance+=distance;
+                double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
+                pairs.add(new TagStdevRatioPair(node, stdevRatio));
+            }
+            Collections.sort(pairs);
+            for(TagStdevRatioPair pair : pairs){
+                System.out.println(pair.getTag().getValue()+":"+pair.getStdevRatio());
+            }
+            System.out.println("==============================================");
+        }
+        totalAvergae=totalDistance/totalNumOfNodes;
+        return totalAvergae;
     }
 }
