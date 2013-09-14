@@ -147,27 +147,22 @@ public class App {
         }
         totalAvergae=getAverageDistanceAcrossClusters(goodClusters);
         System.out.println("average distance across clusters="+(totalAvergae));
-        /*for (Cluster cluster : clusters) {
-            if((cluster.getAverageDistance()-totalAvergae)>clusterStdev){
-                //this is a bad cluster
-                System.out.println("bad cluster: "+clusterIndex+":"+(cluster.getAverageDistance()-totalAvergae)+":"+(+(cluster.getAverageDistance()-totalAvergae)/clusterStdev));
-                //recalculate this cluster
-                List<Cluster> newClusters = kmeansCalculator.calculate(3, cluster);
-                System.out.println("\t"+newClusters.get(0).getAverageDistance());
-                for(Node node : newClusters.get(0).getTags()){
-                    System.out.println("\t\t"+node.getValue());
+        //report for distance between tags and all centroids
+        System.out.println("==============================================");
+        for(Node node : nodes){
+            System.out.print(node.getValue()+",");
+            boolean firstPrint=true;
+            for(Cluster cluster : goodClusters){
+                Centroid centroid=cluster.getCentroid();
+                double distance=DistanceCalculator.getDistance(node.getFeature(), centroid.getLocation());
+                if(!firstPrint){
+                    System.out.print(",");
                 }
-                System.out.println("\t"+newClusters.get(1).getAverageDistance());
-                for(Node node : newClusters.get(1).getTags()){
-                    System.out.println("\t\t"+node.getValue());
-                }
-                System.out.println("\t"+newClusters.get(2).getAverageDistance());
-                for(Node node : newClusters.get(2).getTags()){
-                    System.out.println("\t\t"+node.getValue());
-                }
+                System.out.print(distance);
+                firstPrint=false;
             }
-            clusterIndex++;
-        }*/
+            System.out.println("");
+        }
     }
     
     public static double getAverageDistanceAcrossClusters(List<Cluster> clusters){
