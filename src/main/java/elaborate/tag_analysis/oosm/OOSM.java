@@ -7,7 +7,7 @@ package elaborate.tag_analysis.oosm;
 import java.util.List;
 
 /**
- *
+ * an Object-Oriented Schema Model instance
  * @author LENDLE
  */
 public interface OOSM extends OOSMConstruct{

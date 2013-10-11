@@ -5,7 +5,7 @@
 package elaborate.tag_analysis.oosm;
 
 /**
- *
+ * an element behaves as a 'tag' in an html document
  * @author LENDLE
  */
 public interface OOSMElement extends OOSMConstruct{
