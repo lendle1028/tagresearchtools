@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hello world!
+ * read tag data, perform k-means calculation
  *
  */
 public class App {
