@@ -7,14 +7,18 @@
 package elaborate.tag_analysis.oosm;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * constructs an OOSM instance from various sources
  * @author LENDLE
  */
-public interface OOSMFactory {
+public interface OOSMSerializer {
     public OOSM createOOSM(InputStream input) throws Exception;
     public OOSM createOOSM(Reader input) throws Exception;
     public OOSM createNew();
+    public void save(OOSM model, OutputStream output) throws Exception;
+    public void save(OOSM model, Writer output) throws Exception;
 }

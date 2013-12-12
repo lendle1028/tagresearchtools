@@ -7,9 +7,9 @@ package elaborate.tag_analysis.oosm;
 import java.util.List;
 
 /**
- *
+ * an element behaves as a 'tag' in an html document
  * @author LENDLE
  */
-public interface OOSMConstructList extends OOSMConstruct{
-    public List<OOSMConstruct> getConstructs();
+public interface OOSMElementList extends OOSMConstruct{
+    public List<OOSMElement> getElements();
 }

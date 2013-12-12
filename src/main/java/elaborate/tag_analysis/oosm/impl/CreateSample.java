@@ -7,6 +7,8 @@
 package elaborate.tag_analysis.oosm.impl;
 
 import com.google.gson.Gson;
+import elaborate.tag_analysis.oosm.OOSMElement;
+import elaborate.tag_analysis.oosm.OOSMRule;
 import javax.xml.namespace.QName;
 
 /**
@@ -15,42 +17,35 @@ import javax.xml.namespace.QName;
  */
 public class CreateSample {
     public static void main(String [] args) throws Exception{
+        DefaultOOSMSerializer serializer=new DefaultOOSMSerializer();
         /*
         test.test1 ::= root
         root ::= a
         a ::= (b,c)
         */
-        DefaultOOSMImpl impl=new DefaultOOSMImpl();
+        DefaultOOSMImpl impl=(DefaultOOSMImpl) serializer.createNew();
         impl.setName(new QName("test", "test1"));
         impl.setDescription("description");
         
-        DefaultOOSMElementImpl root=new DefaultOOSMElementImpl();
-        root.setName(new QName("test", "root"));
+        OOSMElement root=impl.createElement(new QName("test", "root"), null);
         impl.setRootElement(root);
         
-        DefaultOOSMElementImpl a=new DefaultOOSMElementImpl();
-        a.setName(new QName("test", "a"));
+        OOSMElement a=impl.createElement(new QName("test", "a"), null);
         
-        DefaultOOSMElementImpl b=new DefaultOOSMElementImpl();
-        b.setName(new QName("test", "b"));
+        OOSMElement b=impl.createElement(new QName("test", "b"), null);
         
-        DefaultOOSMElementImpl c=new DefaultOOSMElementImpl();
-        c.setName(new QName("test", "c"));
+        OOSMElement c=impl.createElement(new QName("test", "c"), null);
         
         //root :: =a
-        DefaultOOSMRuleImpl rule1=new DefaultOOSMRuleImpl();
-        rule1.setHeadingElement(root);
+        OOSMRule rule1=new DefaultOOSMRuleImpl(root);
         rule1.getConstructs().add(a);
         impl.getRules().add(rule1);
         //a ::= (b,c)
-        DefaultOOSMRuleImpl rule2=new DefaultOOSMRuleImpl();
-        rule2.setHeadingElement(a);
+        OOSMRule rule2=new DefaultOOSMRuleImpl(a);
         rule2.getConstructs().add(b);
         rule2.getConstructs().add(c);
         impl.getRules().add(rule2);
         
-        Gson gson=new Gson();
-        String json=gson.toJson(impl);
-        System.out.println(json);
+        serializer.save(impl, System.out);
     }
 }

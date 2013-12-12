@@ -8,9 +8,11 @@ package elaborate.tag_analysis.oosm.impl;
 
 import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMElement;
+import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.OOSMRule;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
 
 /**
  *
@@ -30,5 +32,20 @@ public class DefaultOOSMImpl extends DefaultOOSMConstructImpl implements OOSM{
 
     public List<OOSMRule> getRules() {
         return rules;
+    }
+
+    @Override
+    public OOSMElement createElement(QName name, String description) {
+        return new DefaultOOSMElementImpl(name, description);
+    }
+
+    @Override
+    public OOSMElementList createElementList(QName name, String description) {
+        return new DefaultOOSMElementListImpl(name, description);
+    }
+
+    @Override
+    public OOSMRule createRule(OOSMElement headingElement) {
+        return new DefaultOOSMRuleImpl(headingElement);
     }
 }
