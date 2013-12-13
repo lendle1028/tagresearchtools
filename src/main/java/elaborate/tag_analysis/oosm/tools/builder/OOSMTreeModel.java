@@ -7,6 +7,7 @@
 package elaborate.tag_analysis.oosm.tools.builder;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.OOSMRule;
 import java.util.List;
 import javax.swing.event.TreeModelListener;
@@ -48,7 +49,11 @@ public class OOSMTreeModel implements TreeModel{
         }else if(o instanceof OOSMRule){
             OOSMRule rule=(OOSMRule) o;
             return rule.getConstructs().get(i);
-        }else{
+        }else if(o instanceof OOSMElementList){
+            OOSMElementList rule=(OOSMElementList) o;
+            return rule.getElements().get(i);
+        }
+        else{
             return null;
         }
     }
@@ -61,6 +66,9 @@ public class OOSMTreeModel implements TreeModel{
         }else if(o instanceof OOSMRule){
             OOSMRule rule=(OOSMRule) o;
             return rule.getConstructs().size();
+        }else if(o instanceof OOSMElementList){
+            OOSMElementList rule=(OOSMElementList) o;
+            return rule.getElements().size();
         }else{
             return 0;
         }
@@ -70,10 +78,13 @@ public class OOSMTreeModel implements TreeModel{
     public boolean isLeaf(Object o) {
         if(o instanceof OOSM){
             List<OOSMRule> rules=this.oosm.getRules();
-            return rules.size()>0;
+            return rules.size()<=0;
         }else if(o instanceof OOSMRule){
             OOSMRule rule=(OOSMRule) o;
-            return rule.getConstructs().size()>0;
+            return rule.getConstructs().size()<=0;
+        }else if(o instanceof OOSMElementList){
+            OOSMElementList rule=(OOSMElementList) o;
+            return rule.getElements().size()<=0;
         }else{
             return true;
         }
@@ -92,6 +103,9 @@ public class OOSMTreeModel implements TreeModel{
         }else if(o instanceof OOSMRule){
             OOSMRule rule=(OOSMRule) o;
             return rule.getConstructs().indexOf(o1);
+        }else if(o instanceof OOSMElementList){
+            OOSMElementList rule=(OOSMElementList) o;
+            return rule.getElements().indexOf(o1);
         }else{
             return -1;
         }
