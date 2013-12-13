@@ -63,6 +63,7 @@ public class OOSMBuilder extends javax.swing.JFrame {
         
         OOSMTreeModel model=new OOSMTreeModel(impl);
         this.treeOOSM.setModel(model);
+        this.treeOOSM.setCellRenderer(new OOSMTreeCellRenderer());
     }
 
     /**
