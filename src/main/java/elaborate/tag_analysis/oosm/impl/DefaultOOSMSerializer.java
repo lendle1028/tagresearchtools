@@ -9,6 +9,7 @@ package elaborate.tag_analysis.oosm.impl;
 import com.google.gson.Gson;
 import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
+import elaborate.tag_analysis.oosm.impl.gson.GsonFactory;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -25,13 +26,13 @@ public class DefaultOOSMSerializer implements OOSMSerializer{
 
     @Override
     public OOSM createOOSM(InputStream input) throws Exception {
-        Gson gson=new Gson();
+        Gson gson=GsonFactory.createGson();
         return gson.fromJson(new InputStreamReader(input), DefaultOOSMImpl.class);
     }
 
     @Override
     public OOSM createOOSM(Reader input) throws Exception {
-        Gson gson=new Gson();
+        Gson gson=GsonFactory.createGson();
         return gson.fromJson(input, DefaultOOSMImpl.class);
     }
 
@@ -42,7 +43,7 @@ public class DefaultOOSMSerializer implements OOSMSerializer{
 
     @Override
     public void save(OOSM model, OutputStream output) throws Exception {
-        Gson gson=new Gson();
+        Gson gson=GsonFactory.createGson();
         String json=gson.toJson(model);
         PrintStream print=new PrintStream(output);
         print.print(json);
@@ -51,7 +52,7 @@ public class DefaultOOSMSerializer implements OOSMSerializer{
 
     @Override
     public void save(OOSM model, Writer output) throws Exception {
-        Gson gson=new Gson();
+        Gson gson=GsonFactory.createGson();
         String json=gson.toJson(model);
         PrintWriter print=new PrintWriter(output);
         print.print(json);

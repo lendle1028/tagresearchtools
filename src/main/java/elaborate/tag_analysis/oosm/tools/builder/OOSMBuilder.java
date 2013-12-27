@@ -6,12 +6,22 @@
 
 package elaborate.tag_analysis.oosm.tools.builder;
 
+import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.OOSMRule;
+import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMImpl;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMRuleImpl;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.xml.namespace.QName;
 
 /**
@@ -19,50 +29,52 @@ import javax.xml.namespace.QName;
  * @author LENDLE
  */
 public class OOSMBuilder extends javax.swing.JFrame {
-
+    private JFileChooser fileChooser=new JFileChooser(".");
+    private OOSM currentOOSM=null;
     /**
      * Creates new form OOSMBuilder
      */
     public OOSMBuilder() {
         initComponents();
-        
-        DefaultOOSMSerializer serializer=new DefaultOOSMSerializer();
-        /*
-        test.test1 ::= root
-        root ::= a
-        a ::= (b,c)
-        */
-        DefaultOOSMImpl impl=(DefaultOOSMImpl) serializer.createNew();
-        impl.setName(new QName("test", "test1"));
-        impl.setDescription("description");
-        
-        OOSMElement root=impl.createElement(new QName("test", "root"), null);
-        impl.setRootElement(root);
-        
-        OOSMElement a=impl.createElement(new QName("test", "a"), null);
-        
-        OOSMElement b=impl.createElement(new QName("test", "b"), null);
-        
-        OOSMElement c=impl.createElement(new QName("test", "c"), null);
-        
-        //root :: =a
-        OOSMRule rule1=new DefaultOOSMRuleImpl(root);
-        rule1.getConstructs().add(a);
-        impl.getRules().add(rule1);
-        //a ::= (b,c)
-        OOSMRule rule2=new DefaultOOSMRuleImpl(a);
-        rule2.getConstructs().add(b);
-        rule2.getConstructs().add(c);
-        OOSMElementList list1=impl.createElementList(new QName("test", "list1"), null);
-        OOSMElement d=impl.createElement(new QName("test", "d"), null);
-        OOSMElement e=impl.createElement(new QName("test", "e"), null);
-        list1.getElements().add(d);
-        list1.getElements().add(e);
-        rule2.getConstructs().add(list1);
-        impl.getRules().add(rule2);
-        
-        OOSMTreeModel model=new OOSMTreeModel(impl);
-        this.treeOOSM.setModel(model);
+//        
+//        DefaultOOSMSerializer serializer=new DefaultOOSMSerializer();
+//        /*
+//        test.test1 ::= root
+//        root ::= a
+//        a ::= (b,c)
+//        */
+//        DefaultOOSMImpl impl=(DefaultOOSMImpl) serializer.createNew();
+//        impl.setName(new QName("test", "test1"));
+//        impl.setDescription("description");
+//        
+//        OOSMElement root=impl.createElement(new QName("test", "root"), null);
+//        impl.setRootElement(root);
+//        
+//        OOSMElement a=impl.createElement(new QName("test", "a"), null);
+//        
+//        OOSMElement b=impl.createElement(new QName("test", "b"), null);
+//        
+//        OOSMElement c=impl.createElement(new QName("test", "c"), null);
+//        
+//        //root :: =a
+//        OOSMRule rule1=new DefaultOOSMRuleImpl(root);
+//        rule1.getConstructs().add(a);
+//        impl.getRules().add(rule1);
+//        //a ::= (b,c)
+//        OOSMRule rule2=new DefaultOOSMRuleImpl(a);
+//        rule2.getConstructs().add(b);
+//        rule2.getConstructs().add(c);
+//        OOSMElementList list1=impl.createElementList(new QName("test", "list1"), null);
+//        OOSMElement d=impl.createElement(new QName("test", "d"), null);
+//        OOSMElement e=impl.createElement(new QName("test", "e"), null);
+//        list1.getElements().add(d);
+//        list1.getElements().add(e);
+//        rule2.getConstructs().add(list1);
+//        impl.getRules().add(rule2);
+//        
+//        OOSMTreeModel model=new OOSMTreeModel(impl);
+//        currentOOSM=impl;
+//        this.treeOOSM.setModel(model);
         this.treeOOSM.setCellRenderer(new OOSMTreeCellRenderer());
     }
 
@@ -80,6 +92,10 @@ public class OOSMBuilder extends javax.swing.JFrame {
         treeOOSM = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        menuOpen = new javax.swing.JMenuItem();
+        menuSave = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -97,9 +113,41 @@ public class OOSMBuilder extends javax.swing.JFrame {
             .addGap(0, 25, Short.MAX_VALUE)
         );
 
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        treeOOSM.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane1.setViewportView(treeOOSM);
 
+        jMenu1.setMnemonic('F');
         jMenu1.setText("File");
+
+        menuOpen.setMnemonic('O');
+        menuOpen.setText("Open");
+        menuOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOpenActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuOpen);
+
+        menuSave.setMnemonic('S');
+        menuSave.setText("Save");
+        menuSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSaveActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuSave);
+        jMenu1.add(jSeparator1);
+
+        menuExit.setMnemonic('x');
+        menuExit.setText("Exit");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuExit);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -124,6 +172,37 @@ public class OOSMBuilder extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenActionPerformed
+        // TODO add your handling code here:
+        if(this.fileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+            OOSMSerializer serializer=new DefaultOOSMSerializer();
+            try(InputStreamReader input=new InputStreamReader(new FileInputStream(this.fileChooser.getSelectedFile()), "utf-8")){
+                this.currentOOSM=serializer.createOOSM(input);
+                OOSMTreeModel model=new OOSMTreeModel(currentOOSM);
+                this.treeOOSM.setModel(model);
+            }catch (Exception ex) {
+                Logger.getLogger(OOSMBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_menuOpenActionPerformed
+
+    private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
+        // TODO add your handling code here:
+        if(this.fileChooser.showSaveDialog(this)==JFileChooser.APPROVE_OPTION){
+            OOSMSerializer serializer=new DefaultOOSMSerializer();
+            try(OutputStreamWriter output=new OutputStreamWriter(new FileOutputStream(this.fileChooser.getSelectedFile()), "utf-8" )){
+                serializer.save(currentOOSM, output);
+            } catch (Exception ex) {
+                Logger.getLogger(OOSMBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_menuSaveActionPerformed
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_menuExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,6 +245,10 @@ public class OOSMBuilder extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem menuExit;
+    private javax.swing.JMenuItem menuOpen;
+    private javax.swing.JMenuItem menuSave;
     private javax.swing.JTree treeOOSM;
     // End of variables declaration//GEN-END:variables
 }

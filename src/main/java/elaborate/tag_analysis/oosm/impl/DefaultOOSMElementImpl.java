@@ -13,6 +13,9 @@ import javax.xml.namespace.QName;
  */
 public class DefaultOOSMElementImpl extends DefaultOOSMConstructImpl implements OOSMElement{
 
+    public DefaultOOSMElementImpl() {
+    }
+    
     public DefaultOOSMElementImpl(QName name, String description) {
         super.setName(name);
         super.setDescription(description);

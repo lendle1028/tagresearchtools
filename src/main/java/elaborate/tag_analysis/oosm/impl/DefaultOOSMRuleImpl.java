@@ -18,6 +18,9 @@ public class DefaultOOSMRuleImpl implements OOSMRule {
     private OOSMElement headingElement=null;
     private List<OOSMConstruct> constructs=new ArrayList<OOSMConstruct>();
 
+    public DefaultOOSMRuleImpl() {
+    }
+    
     public DefaultOOSMRuleImpl(OOSMElement headingElement) {
         this.headingElement=headingElement;
     }

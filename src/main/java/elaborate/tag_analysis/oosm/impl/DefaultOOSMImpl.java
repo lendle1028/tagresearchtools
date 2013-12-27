@@ -22,6 +22,10 @@ public class DefaultOOSMImpl extends DefaultOOSMConstructImpl implements OOSM{
     protected OOSMElement rootElement=null;
     protected List<OOSMRule> rules=new ArrayList<OOSMRule>();
 
+    public DefaultOOSMImpl() {
+    }
+    
+    
     public OOSMElement getRootElement() {
         return rootElement;
     }
