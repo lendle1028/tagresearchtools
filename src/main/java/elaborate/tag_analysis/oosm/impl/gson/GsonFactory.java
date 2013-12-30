@@ -19,10 +19,15 @@ import elaborate.tag_analysis.oosm.OOSMRule;
 public class GsonFactory {
     public static Gson createGson(){
         GsonBuilder builder=new GsonBuilder();
-        builder.registerTypeAdapter(OOSMElement.class, new OOSMElementInstanceCreator());
+        //builder.registerTypeAdapter(OOSMElement.class, new OOSMElementInstanceCreator());
         //builder.registerTypeAdapter(OOSMRule.class, new OOSMRuleInstanceCreator());
-        builder.registerTypeAdapter(OOSMRule.class, new InterfaceDeserializer<OOSMRule>(new OOSMRuleInstanceCreator()));
-        builder.registerTypeAdapter(OOSMElementList.class, new OOSMElementListInstanceCreator());
+        /*builder.registerTypeAdapter(OOSMRule.class, new InterfaceDeserializer<OOSMRule>(new OOSMRuleInstanceCreator()));
+        builder.registerTypeAdapter(OOSMElement.class, new InterfaceDeserializer<OOSMElement>(new OOSMElementInstanceCreator()));
+        builder.registerTypeAdapter(OOSMElementList.class, new InterfaceDeserializer<OOSMElementList>(new OOSMElementListInstanceCreator()));*/
+        
+        builder.registerTypeAdapter(OOSMRule.class, new OOSMRuleInterfaceDeserializer());
+        builder.registerTypeAdapter(OOSMElement.class, new OOSMElementInterfaceDeserializer());
+        builder.registerTypeAdapter(OOSMElementList.class, new OOSMElementListInterfaceDeserializer());
         return builder.create();
     }
 }

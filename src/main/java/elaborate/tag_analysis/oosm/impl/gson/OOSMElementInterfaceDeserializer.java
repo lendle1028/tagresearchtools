@@ -3,23 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package elaborate.tag_analysis.oosm.impl.gson;
 
-import com.google.gson.InstanceCreator;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMElementImpl;
-import java.lang.reflect.Type;
 
 /**
  *
- * @author LENDLE
+ * @author lendle
  */
-public class OOSMElementInstanceCreator implements InstanceCreator<OOSMElement>{
+public class OOSMElementInterfaceDeserializer extends BaseInterfaceDeserializer<OOSMElement> {
 
-    @Override
-    public OOSMElement createInstance(Type type) {
-        return new DefaultOOSMElementImpl();
+    public OOSMElementInterfaceDeserializer() {
+        super(DefaultOOSMElementImpl.class);
     }
-    
+
 }

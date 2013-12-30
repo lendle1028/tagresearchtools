@@ -32,5 +32,11 @@ public class DefaultOOSMElementListImpl extends DefaultOOSMConstructImpl impleme
     public List<OOSMElement> getElements() {
         return elements;
     }
+
+    public void setElements(List<OOSMElement> elements) {
+        this.elements = elements;
+    }
+    
+    
     
 }
