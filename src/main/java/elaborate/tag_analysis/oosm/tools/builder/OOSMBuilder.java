@@ -37,44 +37,44 @@ public class OOSMBuilder extends javax.swing.JFrame {
     public OOSMBuilder() {
         initComponents();
         
-        DefaultOOSMSerializer serializer=new DefaultOOSMSerializer();
-        /*
-        test.test1 ::= root
-        root ::= a
-        a ::= (b,c)
-        */
-        DefaultOOSMImpl impl=(DefaultOOSMImpl) serializer.createNew();
-        impl.setName(new QName("test", "test1"));
-        impl.setDescription("description");
-        
-        OOSMElement root=impl.createElement(new QName("test", "root"), null);
-        impl.setRootElement(root);
-        
-        OOSMElement a=impl.createElement(new QName("test", "a"), null);
-        
-        OOSMElement b=impl.createElement(new QName("test", "b"), null);
-        
-        OOSMElement c=impl.createElement(new QName("test", "c"), null);
-        
-        //root :: =a
-        OOSMRule rule1=new DefaultOOSMRuleImpl(root);
-        rule1.getConstructs().add(a);
-        impl.getRules().add(rule1);
-        //a ::= (b,c)
-        OOSMRule rule2=new DefaultOOSMRuleImpl(a);
-        rule2.getConstructs().add(b);
-        rule2.getConstructs().add(c);
-        OOSMElementList list1=impl.createElementList(new QName("test", "list1"), null);
-        OOSMElement d=impl.createElement(new QName("test", "d"), null);
-        OOSMElement e=impl.createElement(new QName("test", "e"), null);
-        list1.getElements().add(d);
-        list1.getElements().add(e);
-        rule2.getConstructs().add(list1);
-        impl.getRules().add(rule2);
-        
-        OOSMTreeModel model=new OOSMTreeModel(impl);
-        currentOOSM=impl;
-        this.treeOOSM.setModel(model);
+//        DefaultOOSMSerializer serializer=new DefaultOOSMSerializer();
+//        /*
+//        test.test1 ::= root
+//        root ::= a
+//        a ::= (b,c)
+//        */
+//        DefaultOOSMImpl impl=(DefaultOOSMImpl) serializer.createNew();
+//        impl.setName(new QName("test", "test1"));
+//        impl.setDescription("description");
+//        
+//        OOSMElement root=impl.createElement(new QName("test", "root"), null);
+//        impl.setRootElement(root);
+//        
+//        OOSMElement a=impl.createElement(new QName("test", "a"), null);
+//        
+//        OOSMElement b=impl.createElement(new QName("test", "b"), null);
+//        
+//        OOSMElement c=impl.createElement(new QName("test", "c"), null);
+//        
+//        //root :: =a
+//        OOSMRule rule1=new DefaultOOSMRuleImpl(root);
+//        rule1.getConstructs().add(a);
+//        impl.getRules().add(rule1);
+//        //a ::= (b,c)
+//        OOSMRule rule2=new DefaultOOSMRuleImpl(a);
+//        rule2.getConstructs().add(b);
+//        rule2.getConstructs().add(c);
+//        OOSMElementList list1=impl.createElementList(new QName("test", "list1"), null);
+//        OOSMElement d=impl.createElement(new QName("test", "d"), null);
+//        OOSMElement e=impl.createElement(new QName("test", "e"), null);
+//        list1.getElements().add(d);
+//        list1.getElements().add(e);
+//        rule2.getConstructs().add(list1);
+//        impl.getRules().add(rule2);
+//        
+//        OOSMTreeModel model=new OOSMTreeModel(impl);
+//        currentOOSM=impl;
+//        this.treeOOSM.setModel(model);
         this.treeOOSM.setCellRenderer(new OOSMTreeCellRenderer());
     }
 

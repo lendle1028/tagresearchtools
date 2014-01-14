@@ -1,0 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package elaborate.tag_analysis.oosm.instance;
+
+import elaborate.tag_analysis.oosm.OOSMConstruct;
+import java.util.List;
+
+/**
+ *
+ * @author lendle
+ */
+public interface OOSMNodeInstance {
+    /**
+     * 
+     * @return link to its definition
+     */
+    public OOSMConstruct getDefinition();
+    /**
+     * 
+     * @return the data mapped by this node
+     */
+    public Object getData();
+    public OOSMNodeInstance getParent();
+    public List<OOSMNodeInstance> getChildNodes();
+    public int getChildCount();
+}

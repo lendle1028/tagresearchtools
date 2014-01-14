@@ -21,4 +21,19 @@ public class DefaultOOSMElementImpl extends DefaultOOSMConstructImpl implements 
         super.setDescription(description);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof OOSMElement){
+            return this.getName().equals(( (OOSMElement)obj).getName());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
+    }
+
+    
+    
 }
