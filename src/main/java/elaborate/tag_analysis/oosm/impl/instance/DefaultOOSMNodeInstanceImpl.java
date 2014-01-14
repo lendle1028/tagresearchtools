@@ -16,18 +16,31 @@ import java.util.List;
  * @author lendle
  */
 public class DefaultOOSMNodeInstanceImpl implements OOSMNodeInstance{
+    private int id=-1;
+    private static int lastId=0;
     private OOSMConstruct definition=null;
     private Object data=null;
     private OOSMNodeInstance parent=null;
     private List<OOSMNodeInstance> childNodes=new ArrayList<OOSMNodeInstance>();
 
     public DefaultOOSMNodeInstanceImpl() {
+        this.id=lastId++;
     }
     
     public OOSMConstruct getDefinition() {
         return definition;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
+    
     public void setDefinition(OOSMConstruct definition) {
         this.definition = definition;
     }
