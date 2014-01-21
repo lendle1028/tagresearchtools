@@ -19,7 +19,6 @@ public class DefaultOOSMNodeInstanceImpl implements OOSMNodeInstance{
     private int id=-1;
     private static int lastId=0;
     private OOSMConstruct definition=null;
-    private Object data=null;
     private OOSMNodeInstance parent=null;
     private List<OOSMNodeInstance> childNodes=new ArrayList<OOSMNodeInstance>();
 
@@ -43,14 +42,6 @@ public class DefaultOOSMNodeInstanceImpl implements OOSMNodeInstance{
     
     public void setDefinition(OOSMConstruct definition) {
         this.definition = definition;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
     }
 
     public OOSMNodeInstance getParent() {

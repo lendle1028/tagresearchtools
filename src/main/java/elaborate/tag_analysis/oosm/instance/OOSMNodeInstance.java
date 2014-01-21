@@ -23,7 +23,6 @@ public interface OOSMNodeInstance {
      * 
      * @return the data mapped by this node
      */
-    public Object getData();
     public OOSMNodeInstance getParent();
     public List<OOSMNodeInstance> getChildNodes();
     public int getChildCount();

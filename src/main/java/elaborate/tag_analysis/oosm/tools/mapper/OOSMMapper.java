@@ -15,9 +15,19 @@ import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMNodeInstanceImpl;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.tidy.Tidy;
 
 /**
  *
@@ -43,6 +53,19 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             model.setRoot(root);
             input.close();
             this.treeOOSM.updateUI();
+            
+            Tidy tidy=new Tidy();
+            tidy.setXHTML(true);
+            try(Reader reader=new InputStreamReader(new FileInputStream("test.htm"), "utf-8")){
+                Document doc=tidy.parseDOM(reader, null);
+                DOMTreeModel domTreeModel=new DOMTreeModel();
+                domTreeModel.setRootNode(doc.getDocumentElement());
+                this.treeDOM.setModel(domTreeModel);
+                this.treeDOM.setCellRenderer(new DOMNodeTreeCellRenderer());
+                this.treeDOM.updateUI();
+            }catch(Exception e){throw e;}
+            
+            this.pack();
         } catch (Exception ex) {
             Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,8 +83,18 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         treeOOSM = new javax.swing.JTree();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        treeDOM = new javax.swing.JTree();
+        jPanel1 = new javax.swing.JPanel();
+        txStatus = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        menuCreateBinding = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(0, 0, 500, 500));
+        setMinimumSize(new java.awt.Dimension(466, 200));
 
         jSplitPane1.setDividerLocation(200);
         jSplitPane1.setResizeWeight(0.5);
@@ -77,16 +110,37 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-        );
+        treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        treeDOM.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        treeDOM.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                treeDOMValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(treeDOM);
+
+        jSplitPane1.setRightComponent(jScrollPane2);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        txStatus.setEditable(false);
+        jPanel1.add(txStatus, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+
+        menuCreateBinding.setText("Create Binding");
+        jMenu2.add(menuCreateBinding);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -106,6 +160,24 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             this.oosmMapperPopupMenu.show(this, evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_treeOOSMMouseClicked
+
+    private void treeDOMValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeDOMValueChanged
+        // TODO add your handling code here:
+        DOMTreeModel model=(DOMTreeModel) this.treeDOM.getModel();
+        if(this.treeDOM.getSelectionPath()==null){
+            this.txStatus.setText("");
+        }else{
+            String xpath=model.treePath2Xpath(this.treeDOM.getSelectionPath());
+            this.txStatus.setText(xpath);
+            XPath xpathObject=XPathFactory.newInstance().newXPath();
+            try {
+                Node xpathNode=(Node) xpathObject.evaluate(xpath, model.getRootNode(), XPathConstants.NODE);
+                System.out.println(xpathNode+":"+xpathNode.getNodeValue());
+            } catch (XPathExpressionException ex) {
+                Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_treeDOMValueChanged
 
     /**
      * @param args the command line arguments
@@ -146,7 +218,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         DefaultOOSMNodeInstanceImpl root = new DefaultOOSMNodeInstanceImpl();
         root.setParent(parent);
         root.setDefinition(currentConstruct);
-        root.setData(currentConstruct.getName());
+        //root.setData(currentConstruct.getName());
         if (currentConstruct instanceof OOSMElement) {
             OOSMRule rule = null;
 
@@ -175,9 +247,17 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JMenuItem menuCreateBinding;
+    private javax.swing.JTree treeDOM;
     private javax.swing.JTree treeOOSM;
+    private javax.swing.JTextField txStatus;
     // End of variables declaration//GEN-END:variables
 
     @Override

@@ -25,7 +25,7 @@ public class OOSMMapperTreeCellRenderer extends DefaultTreeCellRenderer {
         if (o instanceof OOSMNodeInstance) {
             OOSMNodeInstance node = (OOSMNodeInstance) o;
             if (node.getDefinition() instanceof OOSMElement) {
-                label.setText(""+node.getData());
+                label.setText(""+node.getDefinition().getName());
             } else if (node.getDefinition() instanceof OOSMElementList) {
                 label.setText("OOSMElementList");
             }
