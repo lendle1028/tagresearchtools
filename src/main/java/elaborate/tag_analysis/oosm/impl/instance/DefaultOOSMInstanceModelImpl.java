@@ -5,6 +5,7 @@
  */
 package elaborate.tag_analysis.oosm.impl.instance;
 
+import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
@@ -26,7 +27,16 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
 
     private OOSMNodeInstance instanceTree = null;
     private Map<OOSMNodeInstance, List<Binding>> bindings = new HashMap<OOSMNodeInstance, List<Binding>>();
+    private OOSM schema=null;
 
+    public OOSM getSchema() {
+        return schema;
+    }
+
+    public void setSchema(OOSM schema) {
+        this.schema = schema;
+    }
+    
     public OOSMNodeInstance getInstanceTree() {
         return instanceTree;
     }
@@ -58,6 +68,29 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     @Override
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap() {
         return new HashMap<OOSMNodeInstance, List<Binding>>(this.bindings);
+    }
+    
+    public void setBindingsMap(Map<OOSMNodeInstance, List<Binding>> bindingsMap){
+        this.bindings.clear();
+        this.bindings.putAll(bindingsMap);
+    }
+
+    @Override
+    public void addBinding(Binding binding) {
+        List<Binding> bindings=this.getBindings(binding.getInstanceNode());
+        if(bindings==null){
+            bindings=new ArrayList<Binding>();
+            this.bindings.put(binding.getInstanceNode(), bindings);
+        }
+        bindings.add(binding);
+    }
+
+    @Override
+    public void removeBinding(Binding binding) {
+        List<Binding> bindings=this.getBindings(binding.getInstanceNode());
+        if(bindings!=null){
+            bindings.remove(binding);
+        }
     }
 
 }

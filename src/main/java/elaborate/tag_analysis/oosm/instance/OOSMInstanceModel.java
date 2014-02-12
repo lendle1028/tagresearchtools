@@ -6,6 +6,7 @@
 
 package elaborate.tag_analysis.oosm.instance;
 
+import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import java.util.List;
 import java.util.Map;
@@ -20,4 +21,7 @@ public interface OOSMInstanceModel<T> {
     public List<Binding> getBindings(OOSMNodeInstance node);
     public List<Binding> getBindings();
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap();
+    public void addBinding(Binding binding);
+    public void removeBinding(Binding binding);
+    public OOSM getSchema();
 }

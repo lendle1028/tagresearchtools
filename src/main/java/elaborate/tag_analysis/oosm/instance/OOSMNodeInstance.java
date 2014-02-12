@@ -14,6 +14,7 @@ import java.util.List;
  * @author lendle
  */
 public interface OOSMNodeInstance {
+    public String getId();
     /**
      * 
      * @return link to its definition

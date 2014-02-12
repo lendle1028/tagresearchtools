@@ -7,6 +7,7 @@
 package elaborate.tag_analysis.oosm.instance.binding;
 
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
+import java.util.Objects;
 
 /**
  *
@@ -15,6 +16,7 @@ import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 public class Binding {
     private OOSMNodeInstance instanceNode=null;
     private String bindingDescription=null;
+    private String target=null;
 
     public OOSMNodeInstance getInstanceNode() {
         return instanceNode;
@@ -31,5 +33,41 @@ public class Binding {
     public void setBindingDescription(String bindingDescription) {
         this.bindingDescription = bindingDescription;
     }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.instanceNode);
+        hash = 79 * hash + Objects.hashCode(this.target);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Binding other = (Binding) obj;
+        if (!Objects.equals(this.instanceNode, other.instanceNode)) {
+            return false;
+        }
+        if (!Objects.equals(this.target, other.target)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }

@@ -12,7 +12,10 @@ import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.OOSMRule;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
+import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMNodeInstanceImpl;
+import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
+import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
@@ -36,22 +39,25 @@ import org.w3c.tidy.Tidy;
 public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMenuListener{
     private OOSMMapperPopupMenu oosmMapperPopupMenu=new OOSMMapperPopupMenu();
     private OOSM oosm=null;
+    private OOSMInstanceModel instanceModel=null;
     /**
      * Creates new form OOSMMapper
      */
     public OOSMMapper() {
         initComponents();
         this.oosmMapperPopupMenu.addOOSMMapperPopupMenuListener(this);
-        this.treeOOSM.setCellRenderer(new OOSMMapperTreeCellRenderer());
         OOSMNodeInstanceTreeModel model = new OOSMNodeInstanceTreeModel();
         this.treeOOSM.setModel(model);
         OOSMSerializer serializer = new DefaultOOSMSerializer();
         try {
             FileReader input = new FileReader("test.oosm");
             oosm = serializer.createOOSM(input);
-            OOSMNodeInstance root=this.generateTree(oosm, oosm.getRootElement(), null);
+            OOSMInstanceModelSerializer ooSMInstanceModelSerializer=new DefaultOOSMInstanceModelSerializer();
+            instanceModel=ooSMInstanceModelSerializer.createNew(oosm);
+            OOSMNodeInstance root=instanceModel.getInstanceTree();
             model.setRoot(root);
             input.close();
+            this.treeOOSM.setCellRenderer(new OOSMMapperTreeCellRenderer(instanceModel));
             this.treeOOSM.updateUI();
             
             Tidy tidy=new Tidy();
@@ -136,6 +142,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         jMenu2.setText("Edit");
 
         menuCreateBinding.setText("Create Binding");
+        menuCreateBinding.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCreateBindingActionPerformed(evt);
+            }
+        });
         jMenu2.add(menuCreateBinding);
 
         jMenuBar1.add(jMenu2);
@@ -179,6 +190,20 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         }
     }//GEN-LAST:event_treeDOMValueChanged
 
+    private void menuCreateBindingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCreateBindingActionPerformed
+        // TODO add your handling code here:
+        if(this.treeOOSM.getSelectionPath()!=null){
+            OOSMNodeInstance nodeInstance=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            BindingDialog dlg=new BindingDialog(this, true);
+            dlg.setLocationRelativeTo(this);
+            dlg.setOOSMNodeInstance(nodeInstance);
+            dlg.setVisible(true);
+            if(dlg.isOk()){
+                this.instanceModel.addBinding(dlg.getBinding());
+            }
+        }
+    }//GEN-LAST:event_menuCreateBindingActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,38 +239,6 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         });
     }
 
-    protected OOSMNodeInstance generateTree(OOSM model, OOSMConstruct currentConstruct, OOSMNodeInstance parent) {
-        DefaultOOSMNodeInstanceImpl root = new DefaultOOSMNodeInstanceImpl();
-        root.setParent(parent);
-        root.setDefinition(currentConstruct);
-        //root.setData(currentConstruct.getName());
-        if (currentConstruct instanceof OOSMElement) {
-            OOSMRule rule = null;
-
-            for (OOSMRule _rule : model.getRules()) {
-                if (_rule.getHeadingElement().equals(currentConstruct)) {
-                    rule = _rule;
-                    break;
-                }
-            }
-
-            if (rule != null) {
-                //generate tree based on the selected rule
-                for (OOSMConstruct construct : rule.getConstructs()) {
-                        root.getChildNodes().add(this.generateTree(model, construct, root));
-                }
-            }
-        }else if (currentConstruct instanceof OOSMElementList){
-            OOSMElementList elementList=(OOSMElementList) currentConstruct;
-            for(OOSMConstruct subConstructs : elementList.getElements()){
-                root.getChildNodes().add(this.generateTree(model, subConstructs, root));
-            }
-        }else{
-            return null;
-        }
-        return root;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -264,7 +257,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     public void insertBeforeClicked() {
         OOSMNodeInstance node=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
         OOSMNodeInstance parentNode=node.getParent();
-        OOSMNodeInstance newNode=this.generateTree(oosm, node.getDefinition(), parentNode);
+        OOSMNodeInstance newNode=DefaultOOSMInstanceModelSerializer.generateTree(oosm, node.getDefinition(), parentNode);
         int index=parentNode.getChildNodes().indexOf(node);
         parentNode.getChildNodes().add(index, newNode);
         this.treeOOSM.updateUI();
@@ -274,7 +267,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     public void insertAfterClicked() {
         OOSMNodeInstance node=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
         OOSMNodeInstance parentNode=node.getParent();
-        OOSMNodeInstance newNode=this.generateTree(oosm, node.getDefinition(), parentNode);
+        OOSMNodeInstance newNode=DefaultOOSMInstanceModelSerializer.generateTree(oosm, node.getDefinition(), parentNode);
         int index=parentNode.getChildNodes().indexOf(node);
         if(index==parentNode.getChildCount()-1){
             //the selected target is the last node
