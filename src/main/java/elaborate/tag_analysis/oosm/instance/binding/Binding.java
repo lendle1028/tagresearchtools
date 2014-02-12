@@ -10,7 +10,11 @@ import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import java.util.Objects;
 
 /**
- *
+ * A Binding describes the relationship between an OOSMNodeInstance node
+ * and its target.
+ * A target is a string representation of how to locate a specific
+ * node on the target document to be annotated by OOSM.
+ * The default implementation assumes a target to be an xpath expression.
  * @author lendle
  */
 public class Binding {

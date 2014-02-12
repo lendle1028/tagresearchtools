@@ -16,12 +16,28 @@ import java.util.Map;
  * @author lendle
  */
 public interface OOSMInstanceModel<T> {
+    /**
+     * @return the instance tree in this model
+     */
     public OOSMNodeInstance getInstanceTree();
+    /**
+     * Evaluate the given binding based on the given dataRoot
+     * the default implementation assume the dataRoot to be
+     * a w3c DOM node.
+     * @param binding
+     * @param dataRoot
+     * @return
+     * @throws Exception 
+     */
     public Object evaluateBinding(Binding binding, T dataRoot) throws Exception;
     public List<Binding> getBindings(OOSMNodeInstance node);
     public List<Binding> getBindings();
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap();
     public void addBinding(Binding binding);
     public void removeBinding(Binding binding);
+    /**
+     * 
+     * @return the corresponding OOSM schema
+     */
     public OOSM getSchema();
 }

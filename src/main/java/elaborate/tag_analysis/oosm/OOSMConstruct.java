@@ -7,7 +7,10 @@ package elaborate.tag_analysis.oosm;
 import javax.xml.namespace.QName;
 
 /**
- * An OOSMConstruct is a basic construct in OOSM.
+ * An OOSMConstruct is a basic construct in OOSM and
+ * can either be an OOSMElement or an OOSMElementList.
+ * Here, an OOSMElementList is in fact a repeatable
+ * group.
  * 
  * @author LENDLE
  */

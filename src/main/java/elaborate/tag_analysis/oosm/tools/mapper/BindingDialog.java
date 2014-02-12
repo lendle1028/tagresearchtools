@@ -31,13 +31,15 @@ public class BindingDialog extends javax.swing.JDialog {
     public void setOk(boolean ok) {
         this.ok = ok;
     }
-    
-    
 
     public void setOOSMNodeInstance(OOSMNodeInstance nodeInstance){
         this.nodeInstance=nodeInstance;
         this.txId.setText(this.nodeInstance.getId());
         this.txDefinition.setText(this.nodeInstance.getDefinition().getName().toString());
+    }
+    
+    public void setTarget(String target){
+        this.txTarget.setText(target);
     }
     /**
      * This method is called from within the constructor to initialize the form.

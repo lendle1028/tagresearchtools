@@ -10,7 +10,10 @@ import elaborate.tag_analysis.oosm.OOSMConstruct;
 import java.util.List;
 
 /**
- *
+ * An OOSMNodeInstance is a node in an OOSM instance tree.
+ * An OOSM instance tree is a tree generated from OOSM schema
+ * by traversing rules from the root element.
+ * Note OOSMElements are repeatable.
  * @author lendle
  */
 public interface OOSMNodeInstance {

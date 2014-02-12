@@ -6,40 +6,35 @@
 package elaborate.tag_analysis.oosm.tools.mapper;
 
 import elaborate.tag_analysis.oosm.OOSM;
-import elaborate.tag_analysis.oosm.OOSMConstruct;
-import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMElementList;
-import elaborate.tag_analysis.oosm.OOSMRule;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
-import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMNodeInstanceImpl;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
+import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.tidy.Tidy;
 
 /**
+ * OOSMMapper is an application for creating bindings between an OOSM schema and
+ * a target document.
  *
  * @author lendle
  */
-public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMenuListener{
-    private OOSMMapperPopupMenu oosmMapperPopupMenu=new OOSMMapperPopupMenu();
-    private OOSM oosm=null;
-    private OOSMInstanceModel instanceModel=null;
+public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMenuListener {
+    private OOSMMapperApplication application=new OOSMMapperApplication();
+    private OOSMMapperPopupMenu oosmMapperPopupMenu = new OOSMMapperPopupMenu();
+
     /**
      * Creates new form OOSMMapper
      */
@@ -48,31 +43,23 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         this.oosmMapperPopupMenu.addOOSMMapperPopupMenuListener(this);
         OOSMNodeInstanceTreeModel model = new OOSMNodeInstanceTreeModel();
         this.treeOOSM.setModel(model);
-        OOSMSerializer serializer = new DefaultOOSMSerializer();
-        try {
-            FileReader input = new FileReader("test.oosm");
-            oosm = serializer.createOOSM(input);
-            OOSMInstanceModelSerializer ooSMInstanceModelSerializer=new DefaultOOSMInstanceModelSerializer();
-            instanceModel=ooSMInstanceModelSerializer.createNew(oosm);
-            OOSMNodeInstance root=instanceModel.getInstanceTree();
+        
+        //load sample data
+        try{
+            //load schema and create a sample instance
+            this.application.createNewInstance(new File("test.oosm"));
+            OOSMNodeInstance root = this.application.getInstance().getInstanceTree();
             model.setRoot(root);
-            input.close();
-            this.treeOOSM.setCellRenderer(new OOSMMapperTreeCellRenderer(instanceModel));
+            this.treeOOSM.setCellRenderer(new OOSMMapperTreeCellRenderer(this.application.getInstance()));
             this.treeOOSM.updateUI();
-            
-            Tidy tidy=new Tidy();
-            tidy.setXHTML(true);
-            try(Reader reader=new InputStreamReader(new FileInputStream("test.htm"), "utf-8")){
-                Document doc=tidy.parseDOM(reader, null);
-                DOMTreeModel domTreeModel=new DOMTreeModel();
-                domTreeModel.setRootNode(doc.getDocumentElement());
-                this.treeDOM.setModel(domTreeModel);
-                this.treeDOM.setCellRenderer(new DOMNodeTreeCellRenderer());
-                this.treeDOM.updateUI();
-            }catch(Exception e){throw e;}
-            
-            this.pack();
-        } catch (Exception ex) {
+            //load document
+            this.application.loadDocument(new File("test.htm").toURI().toURL());
+            DOMTreeModel domTreeModel = new DOMTreeModel();
+            domTreeModel.setRootNode(this.application.getDoc().getDocumentElement());
+            this.treeDOM.setModel(domTreeModel);
+            this.treeDOM.setCellRenderer(new DOMNodeTreeCellRenderer());
+            this.treeDOM.updateUI();
+        }catch (Exception ex) {
             Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -95,6 +82,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         txStatus = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        menuFileNew = new javax.swing.JMenuItem();
+        menuFileOpen = new javax.swing.JMenuItem();
+        menuFileSave = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuFileExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuCreateBinding = new javax.swing.JMenuItem();
 
@@ -137,6 +129,25 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
         jMenu1.setText("File");
+
+        menuFileNew.setText("New");
+        jMenu1.add(menuFileNew);
+
+        menuFileOpen.setText("Open");
+        jMenu1.add(menuFileOpen);
+
+        menuFileSave.setText("Save");
+        jMenu1.add(menuFileSave);
+        jMenu1.add(jSeparator1);
+
+        menuFileExit.setText("Exit");
+        menuFileExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuFileExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuFileExit);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -158,13 +169,13 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     private void treeOOSMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeOOSMMouseClicked
         // TODO add your handling code here:
-        if(evt.getButton()==MouseEvent.BUTTON3){
+        if (evt.getButton() == MouseEvent.BUTTON3) {
             this.treeOOSM.setSelectionPath(this.treeOOSM.getPathForLocation(evt.getX(), evt.getY()));
-            OOSMNodeInstance node=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
-            if(!(node.getDefinition() instanceof OOSMElementList)){
+            OOSMNodeInstance node = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            if (!(node.getDefinition() instanceof OOSMElementList)) {
                 this.oosmMapperPopupMenu.getMenuInsertAfter().setEnabled(false);
                 this.oosmMapperPopupMenu.getMenuInsertBefore().setEnabled(false);
-            }else{
+            } else {
                 this.oosmMapperPopupMenu.getMenuInsertAfter().setEnabled(true);
                 this.oosmMapperPopupMenu.getMenuInsertBefore().setEnabled(true);
             }
@@ -174,35 +185,48 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     private void treeDOMValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeDOMValueChanged
         // TODO add your handling code here:
-        DOMTreeModel model=(DOMTreeModel) this.treeDOM.getModel();
-        if(this.treeDOM.getSelectionPath()==null){
+        DOMTreeModel model = (DOMTreeModel) this.treeDOM.getModel();
+        if (this.treeDOM.getSelectionPath() == null) {
             this.txStatus.setText("");
-        }else{
-            String xpath=model.treePath2Xpath(this.treeDOM.getSelectionPath());
+        } else {
+            String xpath = model.treePath2Xpath(this.treeDOM.getSelectionPath());
             this.txStatus.setText(xpath);
-            XPath xpathObject=XPathFactory.newInstance().newXPath();
-            try {
-                Node xpathNode=(Node) xpathObject.evaluate(xpath, model.getRootNode(), XPathConstants.NODE);
-                System.out.println(xpathNode+":"+xpathNode.getNodeValue());
-            } catch (XPathExpressionException ex) {
-                Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            XPath xpathObject=XPathFactory.newInstance().newXPath();
+//            try {
+//                Node xpathNode=(Node) xpathObject.evaluate(xpath, model.getRootNode(), XPathConstants.NODE);
+//            } catch (XPathExpressionException ex) {
+//                Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
     }//GEN-LAST:event_treeDOMValueChanged
 
     private void menuCreateBindingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCreateBindingActionPerformed
         // TODO add your handling code here:
-        if(this.treeOOSM.getSelectionPath()!=null){
-            OOSMNodeInstance nodeInstance=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
-            BindingDialog dlg=new BindingDialog(this, true);
-            dlg.setLocationRelativeTo(this);
+        BindingDialog dlg = new BindingDialog(this, true);
+        dlg.setLocationRelativeTo(this);
+        if (this.treeOOSM.getSelectionPath() != null) {
+            OOSMNodeInstance nodeInstance = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
             dlg.setOOSMNodeInstance(nodeInstance);
-            dlg.setVisible(true);
-            if(dlg.isOk()){
-                this.instanceModel.addBinding(dlg.getBinding());
-            }
+        }
+        if(this.treeDOM.getSelectionPath()!=null){
+            DOMTreeModel model = (DOMTreeModel) this.treeDOM.getModel();
+            String xpath = model.treePath2Xpath(this.treeDOM.getSelectionPath());
+            dlg.setTarget(xpath);
+        }
+        dlg.setVisible(true);
+        if (dlg.isOk()) {
+            //replace the binding in case it already exists
+            this.application.getInstance().removeBinding(dlg.getBinding());
+            this.application.getInstance().addBinding(dlg.getBinding());
+            SwingUtils.repaint(this.treeOOSM);
+            SwingUtils.repaint(this.treeDOM);
         }
     }//GEN-LAST:event_menuCreateBindingActionPerformed
+
+    private void menuFileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileExitActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_menuFileExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,8 +270,13 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JMenuItem menuCreateBinding;
+    private javax.swing.JMenuItem menuFileExit;
+    private javax.swing.JMenuItem menuFileNew;
+    private javax.swing.JMenuItem menuFileOpen;
+    private javax.swing.JMenuItem menuFileSave;
     private javax.swing.JTree treeDOM;
     private javax.swing.JTree treeOOSM;
     private javax.swing.JTextField txStatus;
@@ -255,26 +284,25 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     @Override
     public void insertBeforeClicked() {
-        OOSMNodeInstance node=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
-        OOSMNodeInstance parentNode=node.getParent();
-        OOSMNodeInstance newNode=DefaultOOSMInstanceModelSerializer.generateTree(oosm, node.getDefinition(), parentNode);
-        int index=parentNode.getChildNodes().indexOf(node);
+        OOSMNodeInstance node = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+        OOSMNodeInstance parentNode = node.getParent();
+        OOSMNodeInstance newNode = DefaultOOSMInstanceModelSerializer.generateTree(this.application.getSchema(), node.getDefinition(), parentNode);
+        int index = parentNode.getChildNodes().indexOf(node);
         parentNode.getChildNodes().add(index, newNode);
         this.treeOOSM.updateUI();
     }
 
     @Override
     public void insertAfterClicked() {
-        OOSMNodeInstance node=(OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
-        OOSMNodeInstance parentNode=node.getParent();
-        OOSMNodeInstance newNode=DefaultOOSMInstanceModelSerializer.generateTree(oosm, node.getDefinition(), parentNode);
-        int index=parentNode.getChildNodes().indexOf(node);
-        if(index==parentNode.getChildCount()-1){
+        OOSMNodeInstance node = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+        OOSMNodeInstance parentNode = node.getParent();
+        OOSMNodeInstance newNode = DefaultOOSMInstanceModelSerializer.generateTree(this.application.getSchema(), node.getDefinition(), parentNode);
+        int index = parentNode.getChildNodes().indexOf(node);
+        if (index == parentNode.getChildCount() - 1) {
             //the selected target is the last node
             parentNode.getChildNodes().add(newNode);
-        }
-        else{
-            parentNode.getChildNodes().add(index+1, newNode);
+        } else {
+            parentNode.getChildNodes().add(index + 1, newNode);
         }
         this.treeOOSM.updateUI();
     }

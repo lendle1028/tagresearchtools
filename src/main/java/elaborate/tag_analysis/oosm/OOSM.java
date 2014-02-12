@@ -9,6 +9,10 @@ import javax.xml.namespace.QName;
 
 /**
  * an Object-Oriented Schema Model instance
+ * an OOSM has a root and a list of rules
+ * OOSM ::=(ROOT_ELEMENT, (RULE)*)
+ * RULE ::= (ELEMENT, {CONSTRUCT1, CONSTRUCT 2, ……, CONSTRUCT n})
+ * CONSTRUCT ::= ARRAY(ELEMENT) | ELEMENT
  * @author LENDLE
  */
 public interface OOSM extends OOSMConstruct{

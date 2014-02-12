@@ -11,6 +11,11 @@ import java.util.List;
  * @author LENDLE
  */
 public interface OOSMRule {
+    /**
+     * the head element of the rule
+     * OOSMElements are unique within an OOSM.
+     * @return 
+     */
     public OOSMElement getHeadingElement();
     public List<OOSMConstruct> getConstructs();
 }

@@ -25,7 +25,7 @@ import javax.swing.JFileChooser;
 import javax.xml.namespace.QName;
 
 /**
- *
+ * An OOSMBuilder is a tool for building OOSM schemas.
  * @author LENDLE
  */
 public class OOSMBuilder extends javax.swing.JFrame {
