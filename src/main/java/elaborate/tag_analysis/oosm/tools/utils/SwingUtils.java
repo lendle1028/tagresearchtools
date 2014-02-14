@@ -7,6 +7,7 @@
 package elaborate.tag_analysis.oosm.tools.utils;
 
 import java.awt.Component;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 /**
@@ -22,5 +23,9 @@ public class SwingUtils {
                 component.repaint();
             }
         });
+    }
+    
+    public static boolean isTextFieldEmpty(JTextField tx){
+        return tx.getText()==null || tx.getText().length()==0;
     }
 }

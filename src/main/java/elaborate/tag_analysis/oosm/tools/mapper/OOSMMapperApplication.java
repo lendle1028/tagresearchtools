@@ -12,7 +12,6 @@ import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSeriali
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -55,13 +54,14 @@ public class OOSMMapperApplication {
     }
 
     
-    public void createNewInstance(File schemaFile) throws Exception {
+    public void createNewInstance(File schemaFile, URL htmlDocument) throws Exception {
         OOSMSerializer serializer = new DefaultOOSMSerializer();
         try (FileReader input = new FileReader(schemaFile)) {
             schema = serializer.createOOSM(input);
             OOSMInstanceModelSerializer ooSMInstanceModelSerializer = new DefaultOOSMInstanceModelSerializer();
             instance = ooSMInstanceModelSerializer.createNew(schema);
         }
+        this.loadDocument(htmlDocument);
     }
 
     public void loadDocument(URL url) throws Exception {
