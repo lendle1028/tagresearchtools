@@ -7,7 +7,13 @@
 package elaborate.tag_analysis.oosm.tools.mapper;
 
 import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
+import java.beans.Encoder;
+import java.beans.Expression;
+import java.beans.PersistenceDelegate;
+import java.beans.XMLEncoder;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +22,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.namespace.QName;
 
 /**
  *
@@ -242,18 +249,27 @@ public class NewProjectDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        // TODO add your handling code here:
-        if(SwingUtils.isTextFieldEmpty(this.txProjectName) ||
-                SwingUtils.isTextFieldEmpty(this.txProjectHome) ||
-                SwingUtils.isTextFieldEmpty(this.txOOSMFile) ||
-                ((SwingUtils.isTextFieldEmpty(this.txHtmlFile)) &&
-                 (SwingUtils.isTextFieldEmpty(this.txURL)))
-          ){
-            JOptionPane.showMessageDialog(this, "Invalid value!");
-            return;
+        try {
+            // TODO add your handling code here:
+            if(SwingUtils.isTextFieldEmpty(this.txProjectName) ||
+                    SwingUtils.isTextFieldEmpty(this.txProjectHome) ||
+                    SwingUtils.isTextFieldEmpty(this.txOOSMFile) ||
+                    ((SwingUtils.isTextFieldEmpty(this.txHtmlFile)) &&
+                    (SwingUtils.isTextFieldEmpty(this.txURL)))
+                    ){
+                JOptionPane.showMessageDialog(this, "Invalid value!");
+                return;
+            }
+            this.ok=true;
+            //process project folder structure
+            File projectFolder=new File(this.txProjectLocation.getText());
+            projectFolder.mkdirs();
+            //save project configuration
+            this.getProjectConfiguration().save(new File(projectFolder, ".project"));
+            this.dispose();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(NewProjectDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.ok=true;
-        this.dispose();
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void radioButtonHTMLFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioButtonHTMLFileActionPerformed
