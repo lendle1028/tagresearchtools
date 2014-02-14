@@ -11,6 +11,7 @@ import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,15 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     private OOSMMapperApplication application = new OOSMMapperApplication();
     private OOSMMapperPopupMenu oosmMapperPopupMenu = new OOSMMapperPopupMenu();
     private JFileChooser oosmFileChooser = new JFileChooser(".");
+    private JFileChooser projectFileChooser=new JFileChooser("."){
+
+        @Override
+        public boolean accept(File file) {
+            return file.isDirectory() && new File(file, ".project").exists();
+        }
+        //a customized file chooser that only displays project folders
+        
+    };
 
     /**
      * Creates new form OOSMMapper
@@ -37,6 +47,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "OOSM files", "oosm");
         oosmFileChooser.setFileFilter(filter);
+        projectFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         this.oosmMapperPopupMenu.addOOSMMapperPopupMenuListener(this);
         OOSMNodeInstanceTreeModel model = new OOSMNodeInstanceTreeModel();
         this.treeOOSM.setModel(model);
@@ -141,6 +152,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         jMenu1.add(menuFileOpen);
 
         menuFileSave.setText("Save");
+        menuFileSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuFileSaveActionPerformed(evt);
+            }
+        });
         jMenu1.add(menuFileSave);
         jMenu1.add(jSeparator1);
 
@@ -239,13 +255,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         if (dlg.isOk()) {
             try {
                 ProjectConfiguration conf = dlg.getProjectConfiguration();
-                try {
-                    this.application.createNewInstance(conf.getOosmFile(), conf.getDocumentURL());
-                    this.renderSchemaTree();
-                    this.renderDocumentTree();
-                } catch (Exception ex) {
-                    Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                openProject(conf);
             } catch (MalformedURLException ex) {
                 Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -261,9 +271,38 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 //        }
     }//GEN-LAST:event_menuFileNewActionPerformed
 
+    private void openProject(ProjectConfiguration conf) {
+        try {
+            this.application.open(conf);
+            this.renderSchemaTree();
+            this.renderDocumentTree();
+        } catch (Exception ex) {
+            Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void menuFileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileOpenActionPerformed
         // TODO add your handling code here:
+        if(projectFileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+            try {
+                File projectFolder=projectFileChooser.getSelectedFile();
+                File projectFile=new File(projectFolder, ".project");
+                ProjectConfiguration conf=ProjectConfiguration.load(projectFile);
+                openProject(conf);
+            } catch (IOException ex) {
+                Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_menuFileOpenActionPerformed
+
+    private void menuFileSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileSaveActionPerformed
+        try {
+            // TODO add your handling code here:
+            this.application.save();
+        } catch (Exception ex) {
+            Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuFileSaveActionPerformed
 
     private void renderSchemaTree() {
         OOSMNodeInstance root = this.application.getInstance().getInstanceTree();

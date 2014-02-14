@@ -57,6 +57,10 @@ public class DefaultOOSMNodeInstanceImpl implements OOSMNodeInstance{
         return childNodes;
     }
 
+    public void setChildNodes(List<OOSMNodeInstance> childNodes) {
+        this.childNodes = childNodes;
+    }
+
     @Override
     public int getChildCount() {
         return this.childNodes.size();
