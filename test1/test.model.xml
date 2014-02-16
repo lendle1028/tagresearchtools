@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_21" class="java.beans.XMLDecoder">
+ <object class="elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelImpl">
+  <void property="instanceTree">
+   <object class="elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMNodeInstanceImpl">
+    <void property="definition">
+     <object class="elaborate.tag_analysis.oosm.impl.DefaultOOSMElementImpl" id="DefaultOOSMElementImpl0">
+      <void property="name">
+       <object class="javax.xml.namespace.QName">
+        <string>test</string>
+        <string>root</string>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <string>0</string>
+    </void>
+   </object>
+  </void>
+  <void property="schema">
+   <object class="elaborate.tag_analysis.oosm.impl.DefaultOOSMImpl">
+    <void property="description">
+     <string>description</string>
+    </void>
+    <void property="name">
+     <object class="javax.xml.namespace.QName">
+      <string>test</string>
+      <string>test1</string>
+     </object>
+    </void>
+    <void property="rootElement">
+     <object idref="DefaultOOSMElementImpl0"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

@@ -8,15 +8,19 @@ package elaborate.tag_analysis.oosm.tools.mapper;
 import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
+import elaborate.tag_analysis.oosm.tools.utils.DOMTreeUtils;
 import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.TreePath;
+import org.w3c.dom.Node;
 
 /**
  * OOSMMapper is an application for creating bindings between an OOSM schema and
@@ -27,16 +31,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMenuListener {
 
     private OOSMMapperApplication application = new OOSMMapperApplication();
+    private DOMNodeTreeCellRenderer dOMNodeTreeCellRenderer = null;
     private OOSMMapperPopupMenu oosmMapperPopupMenu = new OOSMMapperPopupMenu();
     private JFileChooser oosmFileChooser = new JFileChooser(".");
-    private JFileChooser projectFileChooser=new JFileChooser("."){
+    private JFileChooser projectFileChooser = new JFileChooser(".") {
 
         @Override
         public boolean accept(File file) {
             return file.isDirectory() && new File(file, ".project").exists();
         }
         //a customized file chooser that only displays project folders
-        
+
     };
 
     /**
@@ -107,6 +112,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         treeOOSM.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 treeOOSMMouseClicked(evt);
+            }
+        });
+        treeOOSM.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                treeOOSMValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(treeOOSM);
@@ -283,11 +293,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     private void menuFileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileOpenActionPerformed
         // TODO add your handling code here:
-        if(projectFileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+        if (projectFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
-                File projectFolder=projectFileChooser.getSelectedFile();
-                File projectFile=new File(projectFolder, ".project");
-                ProjectConfiguration conf=ProjectConfiguration.load(projectFile);
+                File projectFolder = projectFileChooser.getSelectedFile();
+                File projectFile = new File(projectFolder, ".project");
+                ProjectConfiguration conf = ProjectConfiguration.load(projectFile);
                 openProject(conf);
             } catch (IOException ex) {
                 Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,6 +314,29 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         }
     }//GEN-LAST:event_menuFileSaveActionPerformed
 
+    private void treeOOSMValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_treeOOSMValueChanged
+        // TODO add your handling code here:
+        OOSMNodeInstance node = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+        this.dOMNodeTreeCellRenderer.setSelectedInstanceNode(node);
+        if (this.application.getInstance().getBindings(node) != null && this.application.getInstance().getBindings(node).isEmpty() == false) {
+            try {
+                //make corresponding dom node visible
+                List<Node> correspondingNodes=this.application.getCorrespondingNodes(node);
+                if(correspondingNodes.isEmpty()==false){
+                    //convert to TreePath and make the path visible
+                    for(Node domNode : correspondingNodes){
+                        TreePath path=DOMTreeUtils.node2Path(domNode);
+                        this.treeDOM.makeVisible(path);
+                        this.treeDOM.scrollPathToVisible(path);
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        SwingUtils.repaint(this.treeDOM);
+    }//GEN-LAST:event_treeOOSMValueChanged
+
     private void renderSchemaTree() {
         OOSMNodeInstance root = this.application.getInstance().getInstanceTree();
         OOSMNodeInstanceTreeModel model = (OOSMNodeInstanceTreeModel) this.treeOOSM.getModel();
@@ -316,7 +349,8 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         DOMTreeModel domTreeModel = new DOMTreeModel();
         domTreeModel.setRootNode(this.application.getDoc().getDocumentElement());
         this.treeDOM.setModel(domTreeModel);
-        this.treeDOM.setCellRenderer(new DOMNodeTreeCellRenderer());
+        dOMNodeTreeCellRenderer = new DOMNodeTreeCellRenderer(this.application.getInstance());
+        this.treeDOM.setCellRenderer(dOMNodeTreeCellRenderer);
         this.treeDOM.updateUI();
     }
 
@@ -350,7 +384,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                OOSMMapper mapper=new OOSMMapper();
+                OOSMMapper mapper = new OOSMMapper();
                 mapper.setLocationRelativeTo(null);
                 mapper.setVisible(true);
             }

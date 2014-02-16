@@ -48,7 +48,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     @Override
     public Object evaluateBinding(Binding binding, Node dataRoot) throws Exception {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        return xpath.evaluate(binding.getBindingDescription(), dataRoot, XPathConstants.NODE);
+        return xpath.evaluate(binding.getTarget(), dataRoot, XPathConstants.NODE);
     }
 
     @Override

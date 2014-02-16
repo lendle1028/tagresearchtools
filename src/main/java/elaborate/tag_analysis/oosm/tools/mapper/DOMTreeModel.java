@@ -6,6 +6,9 @@
 
 package elaborate.tag_analysis.oosm.tools.mapper;
 
+import elaborate.tag_analysis.oosm.tools.utils.DOMTreeUtils;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -79,32 +82,11 @@ public class DOMTreeModel implements TreeModel{
         
     }
     
+    public TreePath node2Path(Node node){
+        return DOMTreeUtils.node2Path(node);
+    }
+    
     public String treePath2Xpath(TreePath path){
-        StringBuffer buffer=new StringBuffer();
-        Object [] elements=path.getPath();
-        for(int i=0; i<elements.length; i++){
-            Node node=(Node) elements[i];
-            if(node.getNodeType()==Node.TEXT_NODE){
-                buffer.append("/text()");
-            }else if(node.getNodeType()==Node.COMMENT_NODE){
-                buffer.append("/comment()");
-            }else{
-                buffer.append("/").append(node.getNodeName());
-            }
-            //calculate the index part
-            Node parentNode=node.getParentNode();
-            if(parentNode!=null){
-                int index=1;
-                Node sibling=node.getPreviousSibling();
-                while(sibling!=null){
-                    if(sibling.getNodeName().equals(node.getNodeName())){
-                        index++;
-                    }
-                    sibling=sibling.getPreviousSibling();
-                }
-                buffer.append("[").append(index).append("]");
-            }
-        }
-        return buffer.toString();
+        return DOMTreeUtils.treePath2Xpath(path);
     }
 }

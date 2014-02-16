@@ -11,15 +11,19 @@ import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
+import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
+import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.tidy.Tidy;
 
 /**
@@ -31,7 +35,7 @@ public class OOSMMapperApplication {
     private OOSMInstanceModel instance = null;
     private OOSM schema = null;
     private Document doc = null;
-    private ProjectConfiguration projectConfiguration=null;
+    private ProjectConfiguration projectConfiguration = null;
 
     public OOSMInstanceModel getInstance() {
         return instance;
@@ -57,20 +61,19 @@ public class OOSMMapperApplication {
         this.doc = doc;
     }
 
-    
     public void open(ProjectConfiguration conf) throws Exception {
-        this.projectConfiguration=conf;
+        this.projectConfiguration = conf;
         OOSMSerializer serializer = new DefaultOOSMSerializer();
         try (FileReader input = new FileReader(conf.getOosmFile())) {
             schema = serializer.createOOSM(input);
             OOSMInstanceModelSerializer ooSMInstanceModelSerializer = new DefaultOOSMInstanceModelSerializer();
-            File modelFile=new File(conf.getProjectLocation(), ".model");
-            if(modelFile.exists()){
+            File modelFile = new File(conf.getProjectLocation(), ".model");
+            if (modelFile.exists()) {
                 //load existing model
-                try(FileInputStream modelInput=new FileInputStream(modelFile)){
-                    instance=ooSMInstanceModelSerializer.createInstanceModel(modelInput);
+                try (FileInputStream modelInput = new FileInputStream(modelFile)) {
+                    instance = ooSMInstanceModelSerializer.createInstanceModel(modelInput);
                 }
-            }else{
+            } else {
                 //create new model
                 instance = ooSMInstanceModelSerializer.createNew(schema);
             }
@@ -81,11 +84,11 @@ public class OOSMMapperApplication {
     public ProjectConfiguration getProjectConfiguration() {
         return projectConfiguration;
     }
-    
-    public void save() throws Exception{
+
+    public void save() throws Exception {
         OOSMInstanceModelSerializer ooSMInstanceModelSerializer = new DefaultOOSMInstanceModelSerializer();
-        File modelFile=new File(this.projectConfiguration.getProjectLocation(), ".model");
-        try(FileOutputStream output=new FileOutputStream(modelFile)){
+        File modelFile = new File(this.projectConfiguration.getProjectLocation(), ".model");
+        try (FileOutputStream output = new FileOutputStream(modelFile)) {
             ooSMInstanceModelSerializer.save(instance, output);
         }
     }
@@ -96,5 +99,28 @@ public class OOSMMapperApplication {
         try (Reader reader = new InputStreamReader(url.openStream(), "utf-8")) {
             doc = tidy.parseDOM(reader, null);
         }
+    }
+
+    /**
+     * return dom nodes bound to the given instance node
+     *
+     * @param node
+     * @return
+     */
+    public List<Node> getCorrespondingNodes(OOSMNodeInstance node) throws Exception {
+        List<Node> ret = new ArrayList<Node>();
+        List<Binding> bindings = this.instance.getBindings(node);
+        if (bindings != null) {
+            for (Binding binding : bindings) {
+                //System.out.println(binding.getTarget());
+                if (binding.getTarget() != null) {
+                    Node _node = (Node) this.instance.evaluateBinding(binding, this.doc);
+                    if (_node != null) {
+                        ret.add(_node);
+                    }
+                }
+            }
+        }
+        return ret;
     }
 }
