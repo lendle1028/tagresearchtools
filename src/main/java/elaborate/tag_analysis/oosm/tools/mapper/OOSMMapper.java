@@ -99,6 +99,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         menuFileExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuCreateBinding = new javax.swing.JMenuItem();
+        menuBindingResult = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 500, 500));
@@ -189,6 +190,14 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             }
         });
         jMenu2.add(menuCreateBinding);
+
+        menuBindingResult.setText("Show Result");
+        menuBindingResult.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBindingResultActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuBindingResult);
 
         jMenuBar1.add(jMenu2);
 
@@ -337,6 +346,10 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         SwingUtils.repaint(this.treeDOM);
     }//GEN-LAST:event_treeOOSMValueChanged
 
+    private void menuBindingResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBindingResultActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuBindingResultActionPerformed
+
     private void renderSchemaTree() {
         OOSMNodeInstance root = this.application.getInstance().getInstanceTree();
         OOSMNodeInstanceTreeModel model = (OOSMNodeInstanceTreeModel) this.treeOOSM.getModel();
@@ -400,6 +413,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JMenuItem menuBindingResult;
     private javax.swing.JMenuItem menuCreateBinding;
     private javax.swing.JMenuItem menuFileExit;
     private javax.swing.JMenuItem menuFileNew;
