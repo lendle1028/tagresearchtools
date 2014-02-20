@@ -348,6 +348,10 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     private void menuBindingResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBindingResultActionPerformed
         // TODO add your handling code here:
+        ShowResultDialog dlg=new ShowResultDialog(this, false);
+        dlg.setLocationRelativeTo(this);
+        dlg.setSize(800, 600);
+        dlg.setVisible(true);
     }//GEN-LAST:event_menuBindingResultActionPerformed
 
     private void renderSchemaTree() {

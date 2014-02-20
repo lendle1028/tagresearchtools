@@ -123,4 +123,12 @@ public class OOSMMapperApplication {
         }
         return ret;
     }
+    /**
+     * evaluate bindings, return results
+     * @return 
+     */
+    public String evaluateBindings(){
+        StringBuffer buffer=new StringBuffer();
+        
+    }
 }
