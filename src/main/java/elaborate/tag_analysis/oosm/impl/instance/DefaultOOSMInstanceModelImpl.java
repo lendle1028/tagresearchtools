@@ -6,6 +6,7 @@
 package elaborate.tag_analysis.oosm.impl.instance;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
@@ -91,6 +92,16 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         if(bindings!=null){
             bindings.remove(binding);
         }
+    }
+
+    @Override
+    public Map<OOSMNodeInstance, Object> evaluateAllBindings2(Node dataRoot) throws Exception {
+        if(this.instanceTree==null){
+            return null;
+        }
+        DefaultEvaluatedObjectImpl root=new DefaultEvaluatedObjectImpl();
+        root.setRoot((OOSMElement) this.instanceTree.getDefinition());
+        
     }
 
 }

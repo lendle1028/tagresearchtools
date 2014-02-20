@@ -7,6 +7,7 @@
 package elaborate.tag_analysis.oosm.instance;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,13 @@ public interface OOSMInstanceModel<T> {
      * @throws Exception 
      */
     public Object evaluateBinding(Binding binding, T dataRoot) throws Exception;
+    /**
+     * evaluate all bindings 
+     * @param dataRoot
+     * @return
+     * @throws Exception 
+     */
+    public Map<OOSMNodeInstance, Object> evaluateAllBindings2(T dataRoot) throws Exception;
     public List<Binding> getBindings(OOSMNodeInstance node);
     public List<Binding> getBindings();
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap();
