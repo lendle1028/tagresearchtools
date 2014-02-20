@@ -127,8 +127,8 @@ public class OOSMMapperApplication {
      * evaluate bindings, return results
      * @return 
      */
-    public String evaluateBindings(){
+    /*public String evaluateBindings(){
         StringBuffer buffer=new StringBuffer();
         
-    }
+    }*/
 }
