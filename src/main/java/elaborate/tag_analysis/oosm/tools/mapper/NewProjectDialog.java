@@ -106,6 +106,9 @@ public class NewProjectDialog extends javax.swing.JDialog {
         });
 
         txProjectName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txProjectNameKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txProjectNameKeyTyped(evt);
             }
@@ -296,9 +299,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     private void txProjectNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txProjectNameKeyTyped
         // TODO add your handling code here:
-        if(!SwingUtils.isTextFieldEmpty(this.txProjectHome)){
-            this.txProjectLocation.setText(new File(this.txProjectHome.getText(), this.txProjectName.getText()).getAbsolutePath());
-        }
+        
     }//GEN-LAST:event_txProjectNameKeyTyped
 
     private void buttonOOSMFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOOSMFileActionPerformed
@@ -314,6 +315,14 @@ public class NewProjectDialog extends javax.swing.JDialog {
             this.txHtmlFile.setText(this.htmlFileChooser.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_buttonHTMLFileActionPerformed
+
+    private void txProjectNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txProjectNameKeyPressed
+        // TODO add your handling code here:
+        if(!SwingUtils.isTextFieldEmpty(this.txProjectHome)){
+            System.out.println(this.txProjectName.getText());
+            this.txProjectLocation.setText(new File(this.txProjectHome.getText(), this.txProjectName.getText()).getAbsolutePath());
+        }
+    }//GEN-LAST:event_txProjectNameKeyPressed
 
     public boolean isOk() {
         return ok;

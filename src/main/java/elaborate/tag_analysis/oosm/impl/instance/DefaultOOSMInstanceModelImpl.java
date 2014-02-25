@@ -10,6 +10,7 @@ import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
+import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
 
     private OOSMNodeInstance instanceTree = null;
     private Map<OOSMNodeInstance, List<Binding>> bindings = new HashMap<OOSMNodeInstance, List<Binding>>();
-    private OOSM schema=null;
+    private OOSM schema = null;
 
     public OOSM getSchema() {
         return schema;
@@ -37,7 +38,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     public void setSchema(OOSM schema) {
         this.schema = schema;
     }
-    
+
     public OOSMNodeInstance getInstanceTree() {
         return instanceTree;
     }
@@ -70,17 +71,17 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap() {
         return new HashMap<OOSMNodeInstance, List<Binding>>(this.bindings);
     }
-    
-    public void setBindingsMap(Map<OOSMNodeInstance, List<Binding>> bindingsMap){
+
+    public void setBindingsMap(Map<OOSMNodeInstance, List<Binding>> bindingsMap) {
         this.bindings.clear();
         this.bindings.putAll(bindingsMap);
     }
 
     @Override
     public void addBinding(Binding binding) {
-        List<Binding> bindings=this.getBindings(binding.getInstanceNode());
-        if(bindings==null){
-            bindings=new ArrayList<Binding>();
+        List<Binding> bindings = this.getBindings(binding.getInstanceNode());
+        if (bindings == null) {
+            bindings = new ArrayList<Binding>();
             this.bindings.put(binding.getInstanceNode(), bindings);
         }
         bindings.add(binding);
@@ -88,20 +89,42 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
 
     @Override
     public void removeBinding(Binding binding) {
-        List<Binding> bindings=this.getBindings(binding.getInstanceNode());
-        if(bindings!=null){
+        List<Binding> bindings = this.getBindings(binding.getInstanceNode());
+        if (bindings != null) {
             bindings.remove(binding);
         }
     }
 
     @Override
-    public Map<OOSMNodeInstance, Object> evaluateAllBindings2(Node dataRoot) throws Exception {
-        if(this.instanceTree==null){
+    public EvaluatedObject evaluateAllBindings2(Node dataRoot) throws Exception {
+        if (this.instanceTree == null) {
             return null;
         }
-        DefaultEvaluatedObjectImpl root=new DefaultEvaluatedObjectImpl();
+        DefaultEvaluatedObjectImpl root = new DefaultEvaluatedObjectImpl();
         root.setRoot((OOSMElement) this.instanceTree.getDefinition());
-        return null;
+        if (this.instanceTree.getChildNodes() != null) {
+            for (OOSMNodeInstance node : this.instanceTree.getChildNodes()) {
+                //for now, assume no hierarchical binding
+                if (this.getBindings(node) != null && !this.getBindings().isEmpty()) {
+                    if (node.getDefinition() instanceof OOSMElement) {
+                        //evaluate for OOSMElement
+                        List<Binding> bindings = this.getBindings(node);
+                        if (bindings.size() > 1) {
+                            //multiple bindings
+                            List result = new ArrayList();
+                            for (Binding binding : bindings) {
+                                Object object = this.evaluateBinding(binding, dataRoot);
+                                result.add(object);
+                            }
+                            root.getProperties().put((OOSMElement) node.getDefinition(), result);
+                        } else {
+                            Object object = this.evaluateBinding(bindings.get(0), dataRoot);
+                            root.getProperties().put((OOSMElement) node.getDefinition(), object);
+                        }
+                    }//simply skip OOSMElementLists since they are expanded
+                }
+            }
+        }
+        return root;
     }
-
 }
