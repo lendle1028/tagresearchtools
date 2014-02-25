@@ -101,7 +101,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         }
         DefaultEvaluatedObjectImpl root=new DefaultEvaluatedObjectImpl();
         root.setRoot((OOSMElement) this.instanceTree.getDefinition());
-        
+        return null;
     }
 
 }
