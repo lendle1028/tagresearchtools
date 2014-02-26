@@ -46,6 +46,11 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
     public List<OOSMElement> getPropertyNames() {
         return new ArrayList<OOSMElement>(this.properties.keySet());
     }
+
+    @Override
+    public Object getRootValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }
