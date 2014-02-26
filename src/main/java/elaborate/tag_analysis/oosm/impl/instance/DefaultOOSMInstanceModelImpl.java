@@ -96,7 +96,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     }
 
     @Override
-    public EvaluatedObject evaluateAllBindings2(Node dataRoot) throws Exception {
+    public EvaluatedObject evaluateAllBindings(Node dataRoot) throws Exception {
         if (this.instanceTree == null) {
             return null;
         }

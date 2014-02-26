@@ -37,7 +37,7 @@ public interface OOSMInstanceModel<T> {
      * @return
      * @throws Exception 
      */
-    public EvaluatedObject evaluateAllBindings2(T dataRoot) throws Exception;
+    public EvaluatedObject evaluateAllBindings(T dataRoot) throws Exception;
     public List<Binding> getBindings(OOSMNodeInstance node);
     public List<Binding> getBindings();
     public Map<OOSMNodeInstance, List<Binding>> getBindingsMap();

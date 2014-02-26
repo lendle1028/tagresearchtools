@@ -6,6 +6,7 @@
 package elaborate.tag_analysis.oosm.tools.mapper;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
@@ -13,6 +14,7 @@ import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
+import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -131,4 +133,21 @@ public class OOSMMapperApplication {
         StringBuffer buffer=new StringBuffer();
         
     }*/
+    public String exportEvaluatedBindingResult2HTML() throws Exception{
+        EvaluatedObject obj=this.instance.evaluateAllBindings(doc);
+        StringBuffer html=new StringBuffer();
+        html.append("<html><body>");
+        html.append(this.getInstance().getInstanceTree().getDefinition().getName());
+        html.append("<ul>");
+        for(OOSMElement name : obj.getPropertyNames()){
+            html.append("<li>");
+            html.append(name.getName());
+            html.append(":");
+            html.append(obj.getProperty(name));
+            html.append("</li>");
+        }
+        html.append("</ul>");
+        html.append("</body></html>");
+        return html.toString();
+    }
 }

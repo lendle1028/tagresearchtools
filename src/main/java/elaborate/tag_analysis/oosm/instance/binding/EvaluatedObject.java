@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface EvaluatedObject {
     public OOSMElement getRoot();
+    public Object getRootValue();
     public Object getProperty(OOSMElement name);
     public List<OOSMElement> getPropertyNames();
 }
