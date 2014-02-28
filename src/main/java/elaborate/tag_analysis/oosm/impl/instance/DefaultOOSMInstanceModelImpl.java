@@ -6,6 +6,7 @@
 package elaborate.tag_analysis.oosm.impl.instance;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMConstruct;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
@@ -100,30 +101,32 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         if (this.instanceTree == null) {
             return null;
         }
+        return this.evaluateAllBindings(instanceTree, dataRoot);
+    }
+    
+    private EvaluatedObject evaluateAllBindings(OOSMNodeInstance node, Node dataRoot) throws Exception{
         DefaultEvaluatedObjectImpl root = new DefaultEvaluatedObjectImpl();
-        root.setRoot((OOSMElement) this.instanceTree.getDefinition());
-        if (this.instanceTree.getChildNodes() != null) {
-            for (OOSMNodeInstance node : this.instanceTree.getChildNodes()) {
-                //for now, assume no hierarchical binding
-                if (this.getBindings(node) != null && !this.getBindings().isEmpty()) {
-                    if (node.getDefinition() instanceof OOSMElement) {
-                        //evaluate for OOSMElement
-                        List<Binding> bindings = this.getBindings(node);
-                        if (bindings.size() > 1) {
-                            //multiple bindings
-                            List result = new ArrayList();
-                            for (Binding binding : bindings) {
-                                Object object = this.evaluateBinding(binding, dataRoot);
-                                result.add(object);
-                            }
-                            root.getProperties().put((OOSMElement) node.getDefinition(), result);
-                        } else {
-                            Object object = this.evaluateBinding(bindings.get(0), dataRoot);
-                            root.getProperties().put((OOSMElement) node.getDefinition(), object);
-                        }
-                    }//simply skip OOSMElementLists since they are expanded
-                }
+        OOSMConstruct definition=node.getDefinition();
+        root.setRoot(definition);
+        List<Binding> bindings=this.getBindings(node);
+        if(bindings!=null && bindings.isEmpty()==false){
+            //System.out.println(bindings.size());
+            //get root values: the values obtained by
+            //evaluating bindings found on this node
+            List values=new ArrayList();
+            for(Binding binding : bindings){
+                values.add(this.evaluateBinding(binding, dataRoot));
+                //System.out.println(this.evaluateBinding(binding, dataRoot));
             }
+            root.setRootValue(values);
+        }
+        List<OOSMNodeInstance> childNodes=node.getChildNodes();
+        if(childNodes!=null && childNodes.isEmpty()==false){
+            Map<OOSMConstruct, EvaluatedObject> properties=new HashMap<OOSMConstruct, EvaluatedObject>();
+            for(OOSMNodeInstance childNode : childNodes){
+                properties.put(childNode.getDefinition(), this.evaluateAllBindings(childNode, dataRoot));
+            }
+            root.setProperties(properties);
         }
         return root;
     }

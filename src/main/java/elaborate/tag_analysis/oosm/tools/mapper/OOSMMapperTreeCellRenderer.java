@@ -39,7 +39,7 @@ public class OOSMMapperTreeCellRenderer extends DefaultTreeCellRenderer {
             if (node.getDefinition() instanceof OOSMElement) {
                 label.setText(""+node.getDefinition().getName());
             } else if (node.getDefinition() instanceof OOSMElementList) {
-                label.setText("OOSMElementList");
+                label.setText(""+node.getDefinition().getName());
             }
             if(instanceModel!=null && instanceModel.getBindings(node)!=null && instanceModel.getBindings(node).size()>0){
                 label.setForeground(new Color(0x00, 0x99, 0x00));

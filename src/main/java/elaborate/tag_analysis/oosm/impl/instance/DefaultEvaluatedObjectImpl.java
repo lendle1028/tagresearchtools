@@ -6,6 +6,7 @@
 
 package elaborate.tag_analysis.oosm.impl.instance;
 
+import elaborate.tag_analysis.oosm.OOSMConstruct;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
 import java.util.ArrayList;
@@ -18,39 +19,42 @@ import java.util.Map;
  * @author DELL
  */
 public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
-    private OOSMElement root=null;
-    private Map<OOSMElement, Object> properties=new HashMap<>();
+    private OOSMConstruct root=null;
+    private Map<OOSMConstruct, EvaluatedObject> properties=new HashMap<>();
+    private List rootValue=null;
 
-    public OOSMElement getRoot() {
+    public OOSMConstruct getRoot() {
         return root;
     }
 
-    public void setRoot(OOSMElement root) {
+    public void setRoot(OOSMConstruct root) {
         this.root = root;
     }
 
-    public Map<OOSMElement, Object> getProperties() {
+    public Map<OOSMConstruct, EvaluatedObject> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<OOSMElement, Object> properties) {
+    public void setProperties(Map<OOSMConstruct, EvaluatedObject> properties) {
         this.properties = properties;
     }
 
     @Override
-    public Object getProperty(OOSMElement name) {
+    public EvaluatedObject getProperty(OOSMConstruct name) {
         return this.properties.get(name);
     }
 
     @Override
-    public List<OOSMElement> getPropertyNames() {
-        return new ArrayList<OOSMElement>(this.properties.keySet());
+    public List<OOSMConstruct> getPropertyNames() {
+        return new ArrayList<OOSMConstruct>(this.properties.keySet());
     }
 
     @Override
-    public Object getRootValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List getRootValue() {
+        return this.rootValue;
     }
     
-    
+    public void setRootValue(List list){
+        this.rootValue=list;
+    }
 }

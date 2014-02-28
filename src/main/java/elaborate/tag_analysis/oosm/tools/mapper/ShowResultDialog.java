@@ -19,7 +19,10 @@ public class ShowResultDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-
+    
+    public void setResultValue(String text){
+        this.jEditorPane1.setText(text);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

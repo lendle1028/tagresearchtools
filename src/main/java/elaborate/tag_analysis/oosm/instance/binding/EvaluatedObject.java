@@ -6,6 +6,7 @@
 
 package elaborate.tag_analysis.oosm.instance.binding;
 
+import elaborate.tag_analysis.oosm.OOSMConstruct;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import java.util.List;
  * @author DELL
  */
 public interface EvaluatedObject {
-    public OOSMElement getRoot();
-    public Object getRootValue();
-    public Object getProperty(OOSMElement name);
-    public List<OOSMElement> getPropertyNames();
+    public OOSMConstruct getRoot();
+    public List getRootValue();
+    public EvaluatedObject getProperty(OOSMConstruct name);
+    public List<OOSMConstruct> getPropertyNames();
 }

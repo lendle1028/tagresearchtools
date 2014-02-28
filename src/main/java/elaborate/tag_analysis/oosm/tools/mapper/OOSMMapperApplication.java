@@ -6,6 +6,7 @@
 package elaborate.tag_analysis.oosm.tools.mapper;
 
 import elaborate.tag_analysis.oosm.OOSM;
+import elaborate.tag_analysis.oosm.OOSMConstruct;
 import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
@@ -15,6 +16,7 @@ import elaborate.tag_analysis.oosm.instance.OOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
+import elaborate.tag_analysis.oosm.tools.utils.DOMTreeUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -137,17 +139,41 @@ public class OOSMMapperApplication {
         EvaluatedObject obj=this.instance.evaluateAllBindings(doc);
         StringBuffer html=new StringBuffer();
         html.append("<html><body>");
-        html.append(this.getInstance().getInstanceTree().getDefinition().getName());
+        html.append(obj.getRoot().getName());
+        html.append(this.exportEvaluatedBindingResult2HTML(obj));
+        html.append("</body></html>");
+        return html.toString();
+    }
+    
+    private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception{
+        EvaluatedObject obj=root;
+        StringBuffer html=new StringBuffer();
         html.append("<ul>");
-        for(OOSMElement name : obj.getPropertyNames()){
+        html.append("<li>root values:[");
+        List values=obj.getRootValue();
+        for(int i=0; values!=null && i<values.size(); i++){
+            if(i!=0){
+                html.append(",");
+            }
+            Node value=(Node) values.get(i);
+            if(value!=null){
+                html.append(DOMTreeUtils.node2Text(value));
+            }
+        }
+        html.append("]</li>");
+        for(OOSMConstruct name : obj.getPropertyNames()){
+            EvaluatedObject child=obj.getProperty(name);
+            if((child.getRootValue()==null || child.getRootValue().isEmpty()) && (child.getPropertyNames()==null || child.getPropertyNames().isEmpty())){
+                //skip empty entry
+                continue;
+            }
             html.append("<li>");
             html.append(name.getName());
             html.append(":");
-            html.append(obj.getProperty(name));
+            html.append(this.exportEvaluatedBindingResult2HTML(child));
             html.append("</li>");
         }
         html.append("</ul>");
-        html.append("</body></html>");
         return html.toString();
     }
 }

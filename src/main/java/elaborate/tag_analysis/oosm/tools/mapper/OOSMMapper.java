@@ -5,6 +5,7 @@
  */
 package elaborate.tag_analysis.oosm.tools.mapper;
 
+import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
@@ -245,6 +246,10 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         dlg.setLocationRelativeTo(this);
         if (this.treeOOSM.getSelectionPath() != null) {
             OOSMNodeInstance nodeInstance = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            if(!(nodeInstance.getDefinition() instanceof OOSMElement)){
+                //only create bindings to elements
+                return;
+            }
             dlg.setOOSMNodeInstance(nodeInstance);
         }
         if (this.treeDOM.getSelectionPath() != null) {
@@ -352,7 +357,8 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             ShowResultDialog dlg=new ShowResultDialog(this, false);
             dlg.setLocationRelativeTo(this);
             dlg.setSize(800, 600);
-            System.out.println(this.application.exportEvaluatedBindingResult2HTML());
+            //System.out.println(this.application.exportEvaluatedBindingResult2HTML());
+            dlg.setResultValue(this.application.exportEvaluatedBindingResult2HTML());
             dlg.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(OOSMMapper.class.getName()).log(Level.SEVERE, null, ex);

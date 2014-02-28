@@ -6,9 +6,15 @@
 
 package elaborate.tag_analysis.oosm.tools.utils;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.tree.TreePath;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Node;
 
 /**
@@ -54,5 +60,24 @@ public class DOMTreeUtils {
             }
         }
         return buffer.toString();
+    }
+    
+    public static String node2Text(Node node){
+        if(node.getNodeType()==Node.TEXT_NODE){
+            return node.getNodeValue();
+        }else if(node.getNodeType()==Node.ATTRIBUTE_NODE){
+            return node.getNodeValue();
+        }else{
+            try {
+                TransformerFactory tf=TransformerFactory.newInstance();
+                Transformer t=tf.newTransformer();
+                StringWriter output=new StringWriter();
+                t.transform(new DOMSource(node), new StreamResult(output));
+                return output.toString();
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+        
     }
 }
