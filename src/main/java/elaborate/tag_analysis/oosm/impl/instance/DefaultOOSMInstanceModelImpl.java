@@ -124,6 +124,10 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         if(childNodes!=null && childNodes.isEmpty()==false){
             Map<OOSMConstruct, EvaluatedObject> properties=new HashMap<OOSMConstruct, EvaluatedObject>();
             for(OOSMNodeInstance childNode : childNodes){
+                EvaluatedObject childResult=this.evaluateAllBindings(childNode, dataRoot);
+                if(childResult.getRootValue()==null && (childResult.getPropertyNames()==null || childResult.getPropertyNames().isEmpty())){
+                    continue;//skip empty entry
+                }
                 properties.put(childNode.getDefinition(), this.evaluateAllBindings(childNode, dataRoot));
             }
             root.setProperties(properties);

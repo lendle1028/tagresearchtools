@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.tidy.Tidy;
@@ -157,7 +158,7 @@ public class OOSMMapperApplication {
             }
             Node value=(Node) values.get(i);
             if(value!=null){
-                html.append(DOMTreeUtils.node2Text(value));
+                html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text(value)));
             }
         }
         html.append("]</li>");
