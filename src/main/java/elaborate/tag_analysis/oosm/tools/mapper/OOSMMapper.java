@@ -9,6 +9,7 @@ import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMElementList;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
+import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import elaborate.tag_analysis.oosm.tools.utils.DOMTreeUtils;
 import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
 import java.awt.event.MouseEvent;
@@ -101,6 +102,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         jMenu2 = new javax.swing.JMenu();
         menuCreateBinding = new javax.swing.JMenuItem();
         menuBindingResult = new javax.swing.JMenuItem();
+        menuRemoveBindings = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 500, 500));
@@ -199,6 +201,14 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             }
         });
         jMenu2.add(menuBindingResult);
+
+        menuRemoveBindings.setText("Remove Bindings");
+        menuRemoveBindings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRemoveBindingsActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuRemoveBindings);
 
         jMenuBar1.add(jMenu2);
 
@@ -365,6 +375,20 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         }
     }//GEN-LAST:event_menuBindingResultActionPerformed
 
+    private void menuRemoveBindingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRemoveBindingsActionPerformed
+        // TODO add your handling code here:
+        if (this.treeOOSM.getSelectionPath() != null) {
+            OOSMNodeInstance nodeInstance = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            Binding [] bindings=(Binding[]) this.application.getInstance().getBindings(nodeInstance).toArray(new Binding[0]);
+            if(bindings!=null){
+                for(Binding binding : bindings){
+                    this.application.getInstance().removeBinding(binding);
+                }
+            }
+            SwingUtils.repaint(this);
+        }
+    }//GEN-LAST:event_menuRemoveBindingsActionPerformed
+
     private void renderSchemaTree() {
         OOSMNodeInstance root = this.application.getInstance().getInstanceTree();
         OOSMNodeInstanceTreeModel model = (OOSMNodeInstanceTreeModel) this.treeOOSM.getModel();
@@ -434,6 +458,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     private javax.swing.JMenuItem menuFileNew;
     private javax.swing.JMenuItem menuFileOpen;
     private javax.swing.JMenuItem menuFileSave;
+    private javax.swing.JMenuItem menuRemoveBindings;
     private javax.swing.JTree treeDOM;
     private javax.swing.JTree treeOOSM;
     private javax.swing.JTextField txStatus;
