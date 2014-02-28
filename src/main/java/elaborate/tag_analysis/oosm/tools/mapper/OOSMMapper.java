@@ -222,6 +222,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         if (evt.getButton() == MouseEvent.BUTTON3) {
             this.treeOOSM.setSelectionPath(this.treeOOSM.getPathForLocation(evt.getX(), evt.getY()));
             OOSMNodeInstance node = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            System.out.println(node.getDefinition());
             if (!(node.getDefinition() instanceof OOSMElementList)) {
                 this.oosmMapperPopupMenu.getMenuInsertAfter().setEnabled(false);
                 this.oosmMapperPopupMenu.getMenuInsertBefore().setEnabled(false);

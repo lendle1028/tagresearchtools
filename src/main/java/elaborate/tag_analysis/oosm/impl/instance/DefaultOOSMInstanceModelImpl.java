@@ -7,15 +7,21 @@ package elaborate.tag_analysis.oosm.impl.instance;
 
 import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMConstruct;
-import elaborate.tag_analysis.oosm.OOSMElement;
+import elaborate.tag_analysis.oosm.impl.gson.GsonFactory;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
+import java.beans.Encoder;
+import java.beans.Expression;
+import java.beans.PersistenceDelegate;
+import java.beans.XMLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -101,7 +107,8 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         if (this.instanceTree == null) {
             return null;
         }
-        return this.evaluateAllBindings(instanceTree, dataRoot);
+        EvaluatedObject obj=this.evaluateAllBindings(instanceTree, dataRoot);
+        return obj;
     }
     
     private EvaluatedObject evaluateAllBindings(OOSMNodeInstance node, Node dataRoot) throws Exception{
@@ -128,7 +135,17 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
                 if(childResult.getRootValue()==null && (childResult.getPropertyNames()==null || childResult.getPropertyNames().isEmpty())){
                     continue;//skip empty entry
                 }
-                properties.put(childNode.getDefinition(), this.evaluateAllBindings(childNode, dataRoot));
+                //check for multiple instances of the same construct (OOSMElementList)
+                if(properties.containsKey(childNode.getDefinition())){
+                    if(!(properties.get(childNode.getDefinition()) instanceof List)){
+                        List newList=new ArrayList(Arrays.asList(new Object[]{properties.get(childNode.getDefinition())}));
+                        properties.put(childNode.getDefinition(), newList);
+                    }else{
+                        
+                    }
+                }else{
+                    properties.put(childNode.getDefinition(), this.evaluateAllBindings(childNode, dataRoot));
+                }
             }
             root.setProperties(properties);
         }
