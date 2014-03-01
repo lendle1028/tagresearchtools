@@ -18,6 +18,6 @@ import java.util.List;
 public interface EvaluatedObject {
     public OOSMConstruct getRoot();
     public List getRootValue();
-    public EvaluatedObject getProperty(OOSMConstruct name);
+    public List<EvaluatedObject> getProperty(OOSMConstruct name);
     public List<OOSMConstruct> getPropertyNames();
 }

@@ -129,26 +129,17 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
         }
         List<OOSMNodeInstance> childNodes=node.getChildNodes();
         if(childNodes!=null && childNodes.isEmpty()==false){
-            Map<OOSMConstruct, EvaluatedObject> properties=new HashMap<OOSMConstruct, EvaluatedObject>();
             for(OOSMNodeInstance childNode : childNodes){
                 EvaluatedObject childResult=this.evaluateAllBindings(childNode, dataRoot);
                 if(childResult.getRootValue()==null && (childResult.getPropertyNames()==null || childResult.getPropertyNames().isEmpty())){
                     continue;//skip empty entry
                 }
                 //check for multiple instances of the same construct (OOSMElementList)
-                if(properties.containsKey(childNode.getDefinition())){
-                    if(!(properties.get(childNode.getDefinition()) instanceof List)){
-                        List newList=new ArrayList(Arrays.asList(new Object[]{properties.get(childNode.getDefinition())}));
-                        properties.put(childNode.getDefinition(), newList);
-                    }else{
-                        
-                    }
-                }else{
-                    properties.put(childNode.getDefinition(), this.evaluateAllBindings(childNode, dataRoot));
-                }
+                root.addValue(childNode.getDefinition(), childResult);
             }
-            root.setProperties(properties);
         }
         return root;
     }
+    
+    
 }

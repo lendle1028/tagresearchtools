@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
     private OOSMConstruct root=null;
-    private Map<OOSMConstruct, EvaluatedObject> properties=new HashMap<>();
+    private Map<OOSMConstruct, List<EvaluatedObject>> properties=new HashMap<>();
     private List rootValue=null;
 
     public OOSMConstruct getRoot() {
@@ -31,16 +31,16 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
         this.root = root;
     }
 
-    public Map<OOSMConstruct, EvaluatedObject> getProperties() {
+    public Map<OOSMConstruct, List<EvaluatedObject>> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<OOSMConstruct, EvaluatedObject> properties) {
+    public void setProperties(Map<OOSMConstruct, List<EvaluatedObject>> properties) {
         this.properties = properties;
     }
 
     @Override
-    public EvaluatedObject getProperty(OOSMConstruct name) {
+    public List<EvaluatedObject> getProperty(OOSMConstruct name) {
         return this.properties.get(name);
     }
 
@@ -56,5 +56,14 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
     
     public void setRootValue(List list){
         this.rootValue=list;
+    }
+    
+    public void addValue(OOSMConstruct name, EvaluatedObject value){
+        List<EvaluatedObject> values=this.properties.get(name);
+        if(values==null){
+            values=new ArrayList<EvaluatedObject>();
+            this.properties.put(name, values);
+        }
+        values.add(value);
     }
 }

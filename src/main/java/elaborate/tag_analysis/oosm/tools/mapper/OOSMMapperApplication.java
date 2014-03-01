@@ -128,51 +128,56 @@ public class OOSMMapperApplication {
         }
         return ret;
     }
+
     /**
      * evaluate bindings, return results
-     * @return 
+     *
+     * @return
      */
     /*public String evaluateBindings(){
-        StringBuffer buffer=new StringBuffer();
+     StringBuffer buffer=new StringBuffer();
         
-    }*/
-    public String exportEvaluatedBindingResult2HTML() throws Exception{
-        EvaluatedObject obj=this.instance.evaluateAllBindings(doc);
-        StringBuffer html=new StringBuffer();
+     }*/
+    public String exportEvaluatedBindingResult2HTML() throws Exception {
+        EvaluatedObject obj = this.instance.evaluateAllBindings(doc);
+        StringBuffer html = new StringBuffer();
         html.append("<html><body>");
         html.append(obj.getRoot().getName());
         html.append(this.exportEvaluatedBindingResult2HTML(obj));
         html.append("</body></html>");
         return html.toString();
     }
-    
-    private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception{
-        EvaluatedObject obj=root;
-        StringBuffer html=new StringBuffer();
+
+    private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception {
+        EvaluatedObject obj = root;
+        StringBuffer html = new StringBuffer();
         html.append("<ul>");
         html.append("<li>root values:[");
-        List values=obj.getRootValue();
-        for(int i=0; values!=null && i<values.size(); i++){
-            if(i!=0){
+        List values = obj.getRootValue();
+        for (int i = 0; values != null && i < values.size(); i++) {
+            if (i != 0) {
                 html.append(",");
             }
-            Node value=(Node) values.get(i);
-            if(value!=null){
+            Node value = (Node) values.get(i);
+            if (value != null) {
                 html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text(value)));
             }
         }
         html.append("]</li>");
-        for(OOSMConstruct name : obj.getPropertyNames()){
-            EvaluatedObject child=obj.getProperty(name);
-            if((child.getRootValue()==null || child.getRootValue().isEmpty()) && (child.getPropertyNames()==null || child.getPropertyNames().isEmpty())){
-                //skip empty entry
-                continue;
+        for (OOSMConstruct name : obj.getPropertyNames()) {
+            List<EvaluatedObject> children = obj.getProperty(name);
+            for (int i = 0; children != null && i < children.size(); i++) {
+                EvaluatedObject child = children.get(i);
+                if ((child.getRootValue() == null || child.getRootValue().isEmpty()) && (child.getPropertyNames() == null || child.getPropertyNames().isEmpty())) {
+                    //skip empty entry
+                    continue;
+                }
+                html.append("<li>");
+                html.append(name.getName());
+                html.append(":");
+                html.append(this.exportEvaluatedBindingResult2HTML(child));
+                html.append("</li>");
             }
-            html.append("<li>");
-            html.append(name.getName());
-            html.append(":");
-            html.append(this.exportEvaluatedBindingResult2HTML(child));
-            html.append("</li>");
         }
         html.append("</ul>");
         return html.toString();
