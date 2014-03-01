@@ -142,7 +142,7 @@ public class OOSMMapperApplication {
         EvaluatedObject obj = this.instance.evaluateAllBindings(doc);
         StringBuffer html = new StringBuffer();
         html.append("<html><body>");
-        html.append(obj.getRoot().getName());
+        html.append(obj.getRoot().getName()).append(":");
         html.append(this.exportEvaluatedBindingResult2HTML(obj));
         html.append("</body></html>");
         return html.toString();
@@ -151,8 +151,7 @@ public class OOSMMapperApplication {
     private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception {
         EvaluatedObject obj = root;
         StringBuffer html = new StringBuffer();
-        html.append("<ul>");
-        html.append("<li>root values:[");
+        html.append("[");
         List values = obj.getRootValue();
         for (int i = 0; values != null && i < values.size(); i++) {
             if (i != 0) {
@@ -163,7 +162,9 @@ public class OOSMMapperApplication {
                 html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text(value)));
             }
         }
-        html.append("]</li>");
+        html.append("]");
+        html.append("<ul>");
+        
         for (OOSMConstruct name : obj.getPropertyNames()) {
             List<EvaluatedObject> children = obj.getProperty(name);
             for (int i = 0; children != null && i < children.size(); i++) {
