@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author lendle
  */
-public class ProjectConfiguration {
+public class ProjectConfiguration implements Cloneable{
 
     private File projectLocation = null;
     private File oosmFile = null;
@@ -89,4 +89,11 @@ public class ProjectConfiguration {
             Logger.getLogger(NewProjectDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

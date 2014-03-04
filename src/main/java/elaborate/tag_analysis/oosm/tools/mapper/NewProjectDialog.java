@@ -3,17 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package elaborate.tag_analysis.oosm.tools.mapper;
 
 import elaborate.tag_analysis.oosm.tools.utils.SwingUtils;
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.beans.XMLEncoder;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,18 +14,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.namespace.QName;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
  * @author lendle
  */
 public class NewProjectDialog extends javax.swing.JDialog {
-    private boolean ok=false;
+
+    private boolean ok = false;
     private JFileChooser projectHomeFileChooser = new JFileChooser(".");
     private JFileChooser oosmFileChooser = new JFileChooser(".");
     private JFileChooser htmlFileChooser = new JFileChooser(".");
+
     /**
      * Creates new form NewProjectDialog
      */
@@ -108,9 +104,6 @@ public class NewProjectDialog extends javax.swing.JDialog {
         txProjectName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txProjectNameKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txProjectNameKeyTyped(evt);
             }
         });
 
@@ -247,30 +240,40 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         // TODO add your handling code here:
-        this.ok=false;
+        this.ok = false;
         this.dispose();
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         try {
             // TODO add your handling code here:
-            if(SwingUtils.isTextFieldEmpty(this.txProjectName) ||
-                    SwingUtils.isTextFieldEmpty(this.txProjectHome) ||
-                    SwingUtils.isTextFieldEmpty(this.txOOSMFile) ||
-                    ((SwingUtils.isTextFieldEmpty(this.txHtmlFile)) &&
-                    (SwingUtils.isTextFieldEmpty(this.txURL)))
-                    ){
+            if (SwingUtils.isTextFieldEmpty(this.txProjectName)
+                    || SwingUtils.isTextFieldEmpty(this.txProjectHome)
+                    || SwingUtils.isTextFieldEmpty(this.txOOSMFile)
+                    || ((SwingUtils.isTextFieldEmpty(this.txHtmlFile))
+                    && (SwingUtils.isTextFieldEmpty(this.txURL)))) {
                 JOptionPane.showMessageDialog(this, "Invalid value!");
                 return;
             }
-            this.ok=true;
+            this.ok = true;
             //process project folder structure
-            File projectFolder=new File(this.txProjectLocation.getText());
+            File projectFolder = new File(this.txProjectLocation.getText());
             projectFolder.mkdirs();
+            //copy files to achieve local dependencies
+            ProjectConfiguration conf = this.getProjectConfiguration();
+            File newOOSMFile = new File(projectFolder, conf.getOosmFile().getName());
+            FileUtils.copyFile(conf.getOosmFile(), newOOSMFile);
+            conf.setOosmFile(newOOSMFile);
+            if (this.radioButtonHTMLFile.isSelected()) {
+                File newHTMLFile = new File(projectFolder, conf.getDocumentURL().getFile().substring(conf.getDocumentURL().getFile().lastIndexOf("/")+1));
+                FileUtils.copyURLToFile(conf.getDocumentURL(), newHTMLFile);
+                conf.setDocumentURL(newHTMLFile.toURI().toURL());
+            }
+
             //save project configuration
-            this.getProjectConfiguration().save(new File(projectFolder, ".project"));
+            conf.save(new File(projectFolder, ".project"));
             this.dispose();
-        } catch (MalformedURLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(NewProjectDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buttonOKActionPerformed
@@ -289,58 +292,60 @@ public class NewProjectDialog extends javax.swing.JDialog {
 
     private void buttonProjectFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProjectFolderActionPerformed
         // TODO add your handling code here:
-        if(this.projectHomeFileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+        if (this.projectHomeFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             this.txProjectHome.setText(this.projectHomeFileChooser.getSelectedFile().getAbsolutePath());
-            if(!SwingUtils.isTextFieldEmpty(this.txProjectName)){
+            if (!SwingUtils.isTextFieldEmpty(this.txProjectName)) {
                 this.txProjectLocation.setText(new File(this.projectHomeFileChooser.getSelectedFile(), this.txProjectName.getText()).getAbsolutePath());
             }
         }
     }//GEN-LAST:event_buttonProjectFolderActionPerformed
 
-    private void txProjectNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txProjectNameKeyTyped
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_txProjectNameKeyTyped
-
     private void buttonOOSMFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOOSMFileActionPerformed
         // TODO add your handling code here:
-        if(this.oosmFileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+        if (this.oosmFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             this.txOOSMFile.setText(this.oosmFileChooser.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_buttonOOSMFileActionPerformed
 
     private void buttonHTMLFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHTMLFileActionPerformed
         // TODO add your handling code here:
-        if(this.htmlFileChooser.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+        if (this.htmlFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             this.txHtmlFile.setText(this.htmlFileChooser.getSelectedFile().getAbsolutePath());
         }
     }//GEN-LAST:event_buttonHTMLFileActionPerformed
 
     private void txProjectNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txProjectNameKeyPressed
         // TODO add your handling code here:
-        if(!SwingUtils.isTextFieldEmpty(this.txProjectHome)){
-            System.out.println(this.txProjectName.getText());
-            this.txProjectLocation.setText(new File(this.txProjectHome.getText(), this.txProjectName.getText()).getAbsolutePath());
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                if (!SwingUtils.isTextFieldEmpty(txProjectHome)) {
+                    //System.out.println(this.txProjectName.getText());
+                    txProjectLocation.setText(new File(txProjectHome.getText(), txProjectName.getText()).getAbsolutePath());
+                }
+            }
+        });
+
     }//GEN-LAST:event_txProjectNameKeyPressed
 
     public boolean isOk() {
         return ok;
     }
 
-    public ProjectConfiguration getProjectConfiguration() throws MalformedURLException{
-        ProjectConfiguration conf=new ProjectConfiguration();
+    public ProjectConfiguration getProjectConfiguration() throws MalformedURLException {
+        ProjectConfiguration conf = new ProjectConfiguration();
         conf.setProjectName(this.txProjectName.getText());
         conf.setProjectLocation(new File(this.txProjectLocation.getText()));
         conf.setOosmFile(new File(this.txOOSMFile.getText()));
-        if(this.radioButtonHTMLFile.isSelected()){
+        if (this.radioButtonHTMLFile.isSelected()) {
             conf.setDocumentURL(new File(this.txHtmlFile.getText()).toURI().toURL());
-        }else{
+        } else {
             conf.setDocumentURL(new URL(this.txURL.getText()));
         }
         return conf;
     }
-    
+
     /**
      * @param args the command line arguments
      */
