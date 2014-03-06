@@ -157,9 +157,13 @@ public class OOSMMapperApplication {
             if (i != 0) {
                 html.append(",");
             }
-            Node value = (Node) values.get(i);
+            Object value = values.get(i);
             if (value != null) {
-                html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text(value)));
+                if(value instanceof Node){
+                    html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text((Node)value)));
+                }else{
+                    html.append(StringEscapeUtils.escapeHtml4(""+value));
+                }
             }
         }
         html.append("]");

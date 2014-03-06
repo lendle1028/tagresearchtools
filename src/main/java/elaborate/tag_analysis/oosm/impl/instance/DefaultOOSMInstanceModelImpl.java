@@ -7,23 +7,17 @@ package elaborate.tag_analysis.oosm.impl.instance;
 
 import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMConstruct;
-import elaborate.tag_analysis.oosm.impl.gson.GsonFactory;
 import elaborate.tag_analysis.oosm.instance.OOSMInstanceModel;
 import elaborate.tag_analysis.oosm.instance.OOSMNodeInstance;
 import elaborate.tag_analysis.oosm.instance.binding.Binding;
 import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.beans.XMLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.namespace.QName;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Node;
 
@@ -57,7 +51,15 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     @Override
     public Object evaluateBinding(Binding binding, Node dataRoot) throws Exception {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        return xpath.evaluate(binding.getTarget(), dataRoot, XPathConstants.NODE);
+        XPathExpression expression=xpath.compile(binding.getTarget());
+        Object ret=null;
+        try{
+            ret=expression.evaluate(dataRoot, XPathConstants.NODE);
+        }catch(Exception e){
+            //if cannot be evaluated as a Node
+            ret=expression.evaluate(dataRoot, XPathConstants.STRING);
+        }
+        return ret;
     }
 
     @Override
