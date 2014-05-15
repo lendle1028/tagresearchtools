@@ -119,9 +119,12 @@ public class OOSMMapperApplication {
             for (Binding binding : bindings) {
                 //System.out.println(binding.getTarget());
                 if (binding.getTarget() != null) {
-                    Node _node = (Node) this.instance.evaluateBinding(binding, this.doc);
-                    if (_node != null) {
-                        ret.add(_node);
+                    Object _possibleNode = this.instance.evaluateBinding(binding, this.doc);
+                    if (_possibleNode instanceof Node) {
+                        Node _node = (Node) _possibleNode;
+                        if (_node != null) {
+                            ret.add(_node);
+                        }
                     }
                 }
             }
@@ -159,16 +162,16 @@ public class OOSMMapperApplication {
             }
             Object value = values.get(i);
             if (value != null) {
-                if(value instanceof Node){
-                    html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text((Node)value)));
-                }else{
-                    html.append(StringEscapeUtils.escapeHtml4(""+value));
+                if (value instanceof Node) {
+                    html.append(StringEscapeUtils.escapeHtml4(DOMTreeUtils.node2Text((Node) value)));
+                } else {
+                    html.append(StringEscapeUtils.escapeHtml4("" + value));
                 }
             }
         }
         html.append("]");
         html.append("<ul>");
-        
+
         for (OOSMConstruct name : obj.getPropertyNames()) {
             List<EvaluatedObject> children = obj.getProperty(name);
             for (int i = 0; children != null && i < children.size(); i++) {
