@@ -41,12 +41,12 @@ public class BindingSerializerTest1 {
         System.out.println(root.getChildNodes().get(0).getChildNodes().get(0).getDefinition().getName());
         Binding binding1=new Binding();
         binding1.setInstanceNode(root.getChildNodes().get(0).getChildNodes().get(0));
-        binding1.setTarget("//b");
+        binding1.setExpression("//b");
         model.addBinding(binding1);
         
         Binding binding2=new Binding();
         binding2.setInstanceNode(root.getChildNodes().get(0).getChildNodes().get(1));
-        binding2.setTarget("//c");
+        binding2.setExpression("//c");
         model.addBinding(binding2);
         
         ByteArrayOutputStream buffer=new ByteArrayOutputStream();

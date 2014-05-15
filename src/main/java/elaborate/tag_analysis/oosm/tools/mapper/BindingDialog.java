@@ -38,8 +38,12 @@ public class BindingDialog extends javax.swing.JDialog {
         this.txDefinition.setText(this.nodeInstance.getDefinition().getName().toString());
     }
     
-    public void setTarget(String target){
-        this.txTarget.setText(target);
+    public void setExpression(String target){
+        this.txExpression.setText(target);
+    }
+    
+    public void setTargetNode(String target){
+        this.txTargetNode.setText(target);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,9 +59,11 @@ public class BindingDialog extends javax.swing.JDialog {
         labelTarget = new javax.swing.JLabel();
         txId = new javax.swing.JTextField();
         txDefinition = new javax.swing.JTextField();
-        txTarget = new javax.swing.JTextField();
+        txExpression = new javax.swing.JTextField();
         btCancel = new javax.swing.JButton();
         btOK = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txTargetNode = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -65,7 +71,7 @@ public class BindingDialog extends javax.swing.JDialog {
 
         labelDefinition.setText("Definition:");
 
-        labelTarget.setText("Target:");
+        labelTarget.setText("Expression:");
 
         txId.setEditable(false);
 
@@ -86,6 +92,8 @@ public class BindingDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabel1.setText("Target:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,12 +105,14 @@ public class BindingDialog extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelDefinition)
                             .addComponent(labelId, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelTarget, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(labelTarget, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txId)
                             .addComponent(txDefinition)
-                            .addComponent(txTarget)))
+                            .addComponent(txExpression)
+                            .addComponent(txTargetNode)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 282, Short.MAX_VALUE)
                         .addComponent(btOK)
@@ -114,18 +124,23 @@ public class BindingDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelId)
-                    .addComponent(txId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelDefinition)
-                    .addComponent(txDefinition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelTarget)
-                    .addComponent(txTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelId)
+                            .addComponent(txId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelDefinition)
+                            .addComponent(txDefinition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelTarget)
+                            .addComponent(txExpression, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1))
+                    .addComponent(txTargetNode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCancel)
                     .addComponent(btOK))
@@ -192,18 +207,21 @@ public class BindingDialog extends javax.swing.JDialog {
     public Binding getBinding(){
         Binding binding=new Binding();
         binding.setInstanceNode(nodeInstance);
-        binding.setTarget(this.txTarget.getText());
+        binding.setExpression(this.txExpression.getText());
+        binding.setTargetNode(this.txTargetNode.getText());
         return binding;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btOK;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelDefinition;
     private javax.swing.JLabel labelId;
     private javax.swing.JLabel labelTarget;
     private javax.swing.JTextField txDefinition;
+    private javax.swing.JTextField txExpression;
     private javax.swing.JTextField txId;
-    private javax.swing.JTextField txTarget;
+    private javax.swing.JTextField txTargetNode;
     // End of variables declaration//GEN-END:variables
 }

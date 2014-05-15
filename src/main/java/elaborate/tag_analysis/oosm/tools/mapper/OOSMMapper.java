@@ -266,7 +266,8 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         if (this.treeDOM.getSelectionPath() != null) {
             DOMTreeModel model = (DOMTreeModel) this.treeDOM.getModel();
             String xpath = model.treePath2Xpath(this.treeDOM.getSelectionPath());
-            dlg.setTarget(xpath);
+            dlg.setExpression(xpath);
+            dlg.setTargetNode(xpath);
         }
         dlg.setVisible(true);
         if (dlg.isOk()) {

@@ -51,7 +51,7 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
     @Override
     public Object evaluateBinding(Binding binding, Node dataRoot) throws Exception {
         XPath xpath = XPathFactory.newInstance().newXPath();
-        XPathExpression expression=xpath.compile(binding.getTarget());
+        XPathExpression expression=xpath.compile(binding.getExpression());
         Object ret=null;
         try{
             ret=expression.evaluate(dataRoot, XPathConstants.NODE);
@@ -141,6 +141,20 @@ public class DefaultOOSMInstanceModelImpl implements OOSMInstanceModel<Node> {
             }
         }
         return root;
+    }
+
+    @Override
+    public Object evaluateTargetNode(Binding binding, Node dataRoot) throws Exception {
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        XPathExpression expression=xpath.compile(binding.getTargetNode());
+        Object ret=null;
+        try{
+            ret=expression.evaluate(dataRoot, XPathConstants.NODE);
+        }catch(Exception e){
+            //if cannot be evaluated as a Node
+            ret=expression.evaluate(dataRoot, XPathConstants.STRING);
+        }
+        return ret;
     }
     
     

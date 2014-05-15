@@ -118,8 +118,8 @@ public class OOSMMapperApplication {
         if (bindings != null) {
             for (Binding binding : bindings) {
                 //System.out.println(binding.getTarget());
-                if (binding.getTarget() != null) {
-                    Object _possibleNode = this.instance.evaluateBinding(binding, this.doc);
+                if (binding.getTargetNode() != null) {
+                    Object _possibleNode = this.instance.evaluateTargetNode(binding, this.doc);
                     if (_possibleNode instanceof Node) {
                         Node _node = (Node) _possibleNode;
                         if (_node != null) {

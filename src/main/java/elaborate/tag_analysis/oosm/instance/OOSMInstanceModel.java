@@ -31,6 +31,7 @@ public interface OOSMInstanceModel<T> {
      * @throws Exception 
      */
     public Object evaluateBinding(Binding binding, T dataRoot) throws Exception;
+    public Object evaluateTargetNode(Binding binding, T dataRoot) throws Exception;
     /**
      * evaluate all bindings 
      * @param dataRoot

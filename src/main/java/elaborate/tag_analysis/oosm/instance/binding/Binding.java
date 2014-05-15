@@ -12,15 +12,16 @@ import java.util.Objects;
 /**
  * A Binding describes the relationship between an OOSMNodeInstance node
  * and its target.
- * A target is a string representation of how to locate a specific
+ * A targetNode is a string representation of how to locate a specific
  * node on the target document to be annotated by OOSM.
- * The default implementation assumes a target to be an xpath expression.
+ * The default implementation assumes a targetNode to be an xpath expression.
  * @author lendle
  */
 public class Binding {
     private OOSMNodeInstance instanceNode=null;
     private String bindingDescription=null;
-    private String target=null;
+    private String expression=null;
+    private String targetNode=null;
 
     public OOSMNodeInstance getInstanceNode() {
         return instanceNode;
@@ -38,19 +39,27 @@ public class Binding {
         this.bindingDescription = bindingDescription;
     }
 
-    public String getTarget() {
-        return target;
+    public String getTargetNode() {
+        return targetNode;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setTargetNode(String targetNode) {
+        this.targetNode = targetNode;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.instanceNode);
-        hash = 79 * hash + Objects.hashCode(this.target);
+        hash = 79 * hash + Objects.hashCode(this.expression);
         return hash;
     }
 
@@ -66,7 +75,7 @@ public class Binding {
         if (!Objects.equals(this.instanceNode, other.instanceNode)) {
             return false;
         }
-        if (!Objects.equals(this.target, other.target)) {
+        if (!Objects.equals(this.expression, other.expression)) {
             return false;
         }
         return true;

@@ -31,12 +31,14 @@
                           <Component id="labelDefinition" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="labelId" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="labelTarget" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txId" max="32767" attributes="0"/>
                           <Component id="txDefinition" max="32767" attributes="0"/>
-                          <Component id="txTarget" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txExpression" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txTargetNode" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -54,21 +56,28 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelId" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txId" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelId" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txId" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelTarget" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txExpression" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="txTargetNode" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txDefinition" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelTarget" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txTarget" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="46" max="32767" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btOK" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -91,7 +100,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelTarget">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Target:"/>
+        <Property name="text" type="java.lang.String" value="Expression:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txId">
@@ -104,7 +113,7 @@
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txTarget">
+    <Component class="javax.swing.JTextField" name="txExpression">
     </Component>
     <Component class="javax.swing.JButton" name="btCancel">
       <Properties>
@@ -122,6 +131,13 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btOKActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Target:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txTargetNode">
     </Component>
   </SubComponents>
 </Form>
