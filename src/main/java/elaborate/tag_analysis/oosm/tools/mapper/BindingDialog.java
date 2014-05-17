@@ -23,7 +23,17 @@ public class BindingDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-
+    /**
+     * edit binding
+     * @param binding
+     * @param parent
+     * @param modal 
+     */
+    public BindingDialog(Binding binding, java.awt.Frame parent, boolean modal) {
+        this(parent, modal);
+        this.txExpression.setText(binding.getExpression());
+    }
+    
     public boolean isOk() {
         return ok;
     }
@@ -93,6 +103,8 @@ public class BindingDialog extends javax.swing.JDialog {
         });
 
         jLabel1.setText("Target:");
+
+        txTargetNode.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

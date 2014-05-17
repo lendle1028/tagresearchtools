@@ -56,7 +56,11 @@ public class DOMNodeTreeCellRenderer extends DefaultTreeCellRenderer {
             label.setOpaque(false);
             for (Binding binding : bindings) {
                 //System.out.println(binding.getTarget()+" / "+xpath);
-                if (this.selectedInstanceNode != null && binding.getInstanceNode()==this.selectedInstanceNode && xpath.equals(binding.getExpression())) {
+                if (this.selectedInstanceNode != null && binding.getInstanceNode()==this.selectedInstanceNode && xpath.equals(binding.getTargetNode())) {
+                    if(jtree.getSelectionPath()==null){
+                        //automatically select the fist matched node
+                        jtree.setSelectionPath(path);
+                    }
                     //highlight the corresponding nodes
                     label.setOpaque(true);
                     label.setBackground(Color.YELLOW);

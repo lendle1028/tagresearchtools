@@ -101,6 +101,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         menuFileExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuCreateBinding = new javax.swing.JMenuItem();
+        menuEditBinding = new javax.swing.JMenuItem();
         menuBindingResult = new javax.swing.JMenuItem();
         menuRemoveBindings = new javax.swing.JMenuItem();
 
@@ -194,6 +195,14 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         });
         jMenu2.add(menuCreateBinding);
 
+        menuEditBinding.setText("Edit Binding");
+        menuEditBinding.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEditBindingActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuEditBinding);
+
         menuBindingResult.setText("Show Result");
         menuBindingResult.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,7 +262,11 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
 
     private void menuCreateBindingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCreateBindingActionPerformed
         // TODO add your handling code here:
-        BindingDialog dlg = new BindingDialog(this, true);
+        this.showBindingDialog(null);
+    }//GEN-LAST:event_menuCreateBindingActionPerformed
+    
+    private void showBindingDialog(Binding binding){
+        BindingDialog dlg = (binding==null)?new BindingDialog(this, true):new BindingDialog(binding, this, true);
         dlg.setLocationRelativeTo(this);
         if (this.treeOOSM.getSelectionPath() != null) {
             OOSMNodeInstance nodeInstance = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
@@ -266,7 +279,12 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         if (this.treeDOM.getSelectionPath() != null) {
             DOMTreeModel model = (DOMTreeModel) this.treeDOM.getModel();
             String xpath = model.treePath2Xpath(this.treeDOM.getSelectionPath());
-            dlg.setExpression(xpath);
+            if(binding==null){
+                //set a default expression
+                dlg.setExpression(xpath);
+            }else{
+                System.out.println(binding.getExpression());
+            }
             dlg.setTargetNode(xpath);
         }
         dlg.setVisible(true);
@@ -277,8 +295,8 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
             SwingUtils.repaint(this.treeOOSM);
             SwingUtils.repaint(this.treeDOM);
         }
-    }//GEN-LAST:event_menuCreateBindingActionPerformed
-
+    }
+    
     private void menuFileExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileExitActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -391,6 +409,23 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         }
     }//GEN-LAST:event_menuRemoveBindingsActionPerformed
 
+    private void menuEditBindingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditBindingActionPerformed
+        // TODO add your handling code here:
+        if (this.treeOOSM.getSelectionPath() != null) {
+            OOSMNodeInstance nodeInstance = (OOSMNodeInstance) this.treeOOSM.getSelectionPath().getLastPathComponent();
+            List<Binding> bindings=this.application.getInstance().getBindings(nodeInstance);
+            DOMTreeModel model = (DOMTreeModel) this.treeDOM.getModel();
+            String xpath = model.treePath2Xpath(this.treeDOM.getSelectionPath());
+            for(Binding binding : bindings){
+                if(binding.getTargetNode().equals(xpath)){
+                    //this is the target dom node
+                    this.showBindingDialog(binding);
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_menuEditBindingActionPerformed
+
     private void renderSchemaTree() {
         OOSMNodeInstance root = this.application.getInstance().getInstanceTree();
         OOSMNodeInstanceTreeModel model = (OOSMNodeInstanceTreeModel) this.treeOOSM.getModel();
@@ -456,6 +491,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JMenuItem menuBindingResult;
     private javax.swing.JMenuItem menuCreateBinding;
+    private javax.swing.JMenuItem menuEditBinding;
     private javax.swing.JMenuItem menuFileExit;
     private javax.swing.JMenuItem menuFileNew;
     private javax.swing.JMenuItem menuFileOpen;

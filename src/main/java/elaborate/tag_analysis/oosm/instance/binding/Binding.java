@@ -59,7 +59,7 @@ public class Binding {
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.instanceNode);
-        hash = 79 * hash + Objects.hashCode(this.expression);
+        hash = 79 * hash + Objects.hashCode(this.targetNode);
         return hash;
     }
 
@@ -75,7 +75,7 @@ public class Binding {
         if (!Objects.equals(this.instanceNode, other.instanceNode)) {
             return false;
         }
-        if (!Objects.equals(this.expression, other.expression)) {
+        if (!Objects.equals(this.targetNode, other.targetNode)) {
             return false;
         }
         return true;
