@@ -14,6 +14,74 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>atomation-repository</id>
+            <name>atomation maven repository</name>
+            <url>http://atomation-repository.googlecode.com/svn/trunk</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    
+    <profiles>
+        <profile>
+            <id>generic</id>
+            <activation>
+                <activeByDefault></activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ru.atomation.native</groupId>
+                    <artifactId>xulrunner-linux</artifactId>
+                    <version>1.9</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>solaris</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ru.atomation.native</groupId>
+                    <artifactId>xulrunner-solaris</artifactId>
+                    <version>1.9</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>macosx</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ru.atomation.native</groupId>
+                    <artifactId>xulrunner-macosx</artifactId>
+                    <version>1.9</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>windows</id>
+            <dependencies>
+                <dependency>
+                    <groupId>ru.atomation.native</groupId>
+                    <artifactId>xulrunner-windows</artifactId>
+                    <version>1.9</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -85,6 +153,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.atomation.jbrowser</groupId>
+            <artifactId>jbrowser</artifactId>
+            <version>1.9</version>
         </dependency>
     </dependencies>
 
