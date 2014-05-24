@@ -16,71 +16,21 @@
 
     <repositories>
         <repository>
-            <id>atomation-repository</id>
-            <name>atomation maven repository</name>
-            <url>http://atomation-repository.googlecode.com/svn/trunk</url>
+            <id>DJ-Maven-Project</id>
+            <name>DJ-Maven-Project</name>
+            <url>file://${basedir}/dj_repository</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
             <layout>default</layout>
         </repository>
+        <repository>
+            <id>swt-repo</id>
+            <url>https://swt-repo.googlecode.com/svn/repo/</url>
+        </repository>
     </repositories>
-    
-    <profiles>
-        <profile>
-            <id>generic</id>
-            <activation>
-                <activeByDefault></activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>linux</id>
-            <dependencies>
-                <dependency>
-                    <groupId>ru.atomation.native</groupId>
-                    <artifactId>xulrunner-linux</artifactId>
-                    <version>1.9</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>solaris</id>
-            <dependencies>
-                <dependency>
-                    <groupId>ru.atomation.native</groupId>
-                    <artifactId>xulrunner-solaris</artifactId>
-                    <version>1.9</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>macosx</id>
-            <dependencies>
-                <dependency>
-                    <groupId>ru.atomation.native</groupId>
-                    <artifactId>xulrunner-macosx</artifactId>
-                    <version>1.9</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>windows</id>
-            <dependencies>
-                <dependency>
-                    <groupId>ru.atomation.native</groupId>
-                    <artifactId>xulrunner-windows</artifactId>
-                    <version>1.9</version>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
     <dependencies>
         <dependency>
@@ -114,50 +64,31 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.8.3</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.13</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>DJ</groupId>
-            <artifactId>NativeSwing</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>DJ</groupId>
-            <artifactId>NativeSwingSWT</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.swt</groupId>
-            <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
-            <version>4.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.swt</groupId>
-            <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-            <version>4.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.swt</groupId>
-            <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
-            <version>4.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.0.9</version>
-        </dependency-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.2.1</version>
         </dependency>
         <dependency>
-            <groupId>ru.atomation.jbrowser</groupId>
-            <artifactId>jbrowser</artifactId>
-            <version>1.9</version>
+            <groupId>dj</groupId>
+            <artifactId>DJNativeSwing-SWT</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>dj</groupId>
+            <artifactId>DJNAtiveSwing-SWTCore</artifactId>
+            <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>swt</artifactId>
+                    <groupId>dj</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.swt</groupId>
+            <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+            <version>3.7.2</version>
         </dependency>
     </dependencies>
 

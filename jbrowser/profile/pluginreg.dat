@@ -6,14 +6,14 @@ Version|0.09|$
 [PLUGINS]
 C:\Program Files\Windows Media Player\npwmsdrm.dll|$
 |$
-1208181584000|1|1|$
+1208181584000|1|5|$
 DRM Store Netscape Plugin|$
 MicrosoftR DRM|$
 1
 0|application/x-drm|Network Interface Plugin|nip|$
 C:\Program Files\Windows Media Player\npdsplay.dll|$
 |$
-1208181584000|1|1|$
+1208181584000|1|5|$
 Npdsplay dll|$
 Windows Media Player Plug-in Dynamic Link Library|$
 9
@@ -28,14 +28,14 @@ Windows Media Player Plug-in Dynamic Link Library|$
 8|video/x-ms-wvx|Media Files|wvx,*|$
 C:\Program Files\Windows Media Player\npdrmv2.dll|$
 |$
-1208181684000|1|1|$
+1208181684000|1|5|$
 DRM Netscape Network Object|$
 MicrosoftR DRM|$
 1
 0|application/x-drm-v2|Network Interface Plugin|nip|$
 C:\Program Files\QuickTime\Plugins\npqtplugin.dll|$
 |$
-1332664994640|1|1|$
+1332664994640|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 8
@@ -49,7 +49,7 @@ QuickTime Plug-in 7.7.1|$
 7|audio/aiff|AIFF 音訊|aiff,aif,aifc,cdda|$
 C:\Program Files\QuickTime\Plugins\npqtplugin2.dll|$
 |$
-1332664994671|1|1|$
+1332664994671|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 9
@@ -64,7 +64,7 @@ QuickTime Plug-in 7.7.1|$
 8|audio/aac|AAC 音訊|aac,adts|$
 C:\Program Files\QuickTime\Plugins\npqtplugin3.dll|$
 |$
-1332664994687|1|1|$
+1332664994687|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 6
@@ -76,7 +76,7 @@ QuickTime Plug-in 7.7.1|$
 5|video/mpeg|MPEG 媒體|mpeg,mpg,m1s,m1v,m1a,m75,m15,mp2,mpm,mpv,mpa|$
 C:\Program Files\QuickTime\Plugins\npqtplugin4.dll|$
 |$
-1332664994718|1|1|$
+1332664994718|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 8
@@ -90,7 +90,7 @@ QuickTime Plug-in 7.7.1|$
 7|application/x-mpeg|AMC 媒體|amc|$
 C:\Program Files\QuickTime\Plugins\npqtplugin6.dll|$
 |$
-1332664994750|1|1|$
+1332664994750|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 5
@@ -101,7 +101,7 @@ QuickTime Plug-in 7.7.1|$
 4|image/x-jpeg2000-image|JPEG2000 影像|jp2|$
 C:\Program Files\QuickTime\Plugins\npqtplugin5.dll|$
 |$
-1332664994750|1|1|$
+1332664994750|1|5|$
 The QuickTime Plugin allows you to view a wide variety of multimedia content in Web pages. For more information, visit the <A HREF=http://www.apple.com/quicktime/>QuickTime</A> Web site.|$
 QuickTime Plug-in 7.7.1|$
 11
@@ -118,7 +118,7 @@ QuickTime Plug-in 7.7.1|$
 10|image/x-sgi|SGI 影像|sgi,rgb|$
 C:\Program Files\Java\jre7\bin\npjpi170_21.dll|$
 |$
-1370962800703|1|0|$
+1370962800703|1|4|$
 Classic Java Plug-in 10.21.2 for Netscape and Mozilla|$
 Java(TM) Platform SE 7 U21|$
 34
@@ -158,14 +158,14 @@ Java(TM) Platform SE 7 U21|$
 33|application/x-java-bean|||$
 C:\Program Files\Java\jre7\bin\npoji610.dll|$
 |$
-1370962800734|1|0|$
+1370962800734|1|4|$
 Classic Java Plug-in 10.21.2 for Netscape and Mozilla|$
 Java(TM) Platform SE 7 U21|$
 1
 0|application/x-java-vm|Java Virtual Machine for Netscape and Mozilla| |$
 C:\Program Files\Adobe\Reader 11.0\Reader\AIR\nppdf32.dll|$
 |$
-1348404216000|1|1|$
+1348404216000|1|5|$
 Adobe PDF Plug-In For Firefox and Netscape 11.0.0|$
 Adobe Acrobat|$
 7
@@ -178,7 +178,7 @@ Adobe Acrobat|$
 6|application/vnd.adobe.xfd+xml|Adobe FormFlow99 Data File|xfd|$
 C:\WINDOWS\Microsoft.NET\Framework\v3.5\Windows Presentation Foundation\NPWPF.dll|$
 |$
-1217346048000|1|1|$
+1217346048000|1|5|$
 Windows Presentation Foundation (WPF) plug-in for Mozilla browsers|$
 Windows Presentation Foundation|$
 2
@@ -186,21 +186,21 @@ Windows Presentation Foundation|$
 1|application/xaml+xml|XAML Document|xaml|$
 C:\PROGRA~1\MICROS~2\Office14\NPAUTHZ.DLL|$
 |$
-1263044538000|1|1|$
+1263044538000|1|5|$
 Office Authorization plug-in for NPAPI browsers|$
 Microsoft Office 2010|$
 1
 0|application/x-msoffice14|14.0.4730.1010|*|$
 C:\PROGRA~1\MICROS~2\Office14\NPSPWRAP.DLL|$
 |$
-1269433358000|1|1|$
+1269433358000|1|5|$
 The plug-in allows you to open and edit files using Microsoft Office applications|$
 Microsoft Office 2010|$
 1
 0|application/x-sharepoint|SharePoint Plug-in for Firefox||$
 C:\Program Files\Microsoft Silverlight\5.1.10411.0\npctrl.dll|$
 |$
-1334078128000|1|1|$
+1334078128000|1|5|$
 5.1.10411.0|$
 Silverlight Plug-In|$
 2
@@ -208,14 +208,14 @@ Silverlight Plug-In|$
 1|application/x-silverlight-2|||$
 C:\Program Files\Yahoo!\Shared\npYState.dll|$
 |$
-1329915000000|1|1|$
+1329915000000|1|5|$
 Yahoo Application State Plugin version 1.0.0.7|$
 Yahoo Application State Plugin|$
 1
 0|application/x-vnd.yahoo.applicationState|npYState|npYState|$
 C:\Program Files\Java\jre7\bin\plugin2\npjp2.dll|$
 |$
-1370962802484|1|0|$
+1370962802484|1|4|$
 Next Generation Java Plug-in 10.21.2 for Mozilla browsers|$
 Java(TM) Platform SE 7 U21|$
 36
@@ -257,35 +257,35 @@ Java(TM) Platform SE 7 U21|$
 35|application/x-java-vm-npruntime|||$
 C:\WINDOWS\system32\npdeployJava1.dll|$
 |$
-1370962798812|1|1|$
+1370962798812|1|5|$
 NPRuntime Script Plug-in Library for Java(TM) Deploy|$
 Java Deployment Toolkit 7.0.210.11|$
 1
 0|application/java-deployment-toolkit|||$
 C:\Program Files\Intel\Intel(R) Management Engine Components\IPT\npIntelWebAPIUpdater.dll|$
 |$
-946684800000|1|1|$
+946684800000|1|5|$
 Intel web components updater - Installs and updates the Intel web components|$
 IntelR Identity Protection Technology|$
 1
 0|application/x-vnd-intel-webapi-updater|npIntelWebAPIupdater-2-0|intel_webapi_updater-2-0|$
 C:\Program Files\Intel\Intel(R) Management Engine Components\IPT\npIntelWebAPIIPT.dll|$
 |$
-946684800000|1|1|$
+946684800000|1|5|$
 Intel web components for IntelR Identity Protection Technology|$
 IntelR Identity Protection Technology|$
 1
 0|application/x-vnd-intel-webapi-ipt-2.1.42|npIntelWebAPIipt-2-0||$
 C:\Program Files\beanfun!\beanfun! Plugin\npBFWebStart.dll|$
 |$
-1344248588000|1|1|$
+1344248588000|1|5|$
 beanfun! Plugin|$
 beanfun! Plugin|$
 1
 0|application/x-gamania.beanfun.webstart.mozilla.1.0.0.2|||$
 C:\PROGRAM FILES\FOXIT SOFTWARE\FOXIT READER\plugins\npFoxitReaderPlugin.dll|$
 |$
-1372835128000|1|1|$
+1372835128000|1|5|$
 Foxit Reader Plug-In For Firefox and Netscape|$
 Foxit Reader Plugin for Mozilla|$
 2
@@ -293,21 +293,21 @@ Foxit Reader Plugin for Mozilla|$
 1|application/vnd.fdf|||$
 D:\Program Files\iTunes\Mozilla Plugins\npitunes.dll|$
 |$
-1387319058000|1|1|$
+1387319058000|1|5|$
 iTunes Detector Plug-in|$
 iTunes Application Detector|$
 1
 0|application/itunes-plugin|This plug-in detects the presence of iTunes when opening iTunes Store URLs in a web page with Firefox.||$
 C:\WINDOWS\system32\Adobe\Director\np32dsw_1168638.dll|$
 |$
-1349344148000|1|1|$
+1349344148000|1|5|$
 Adobe Shockwave for Director Netscape plug-in, version 11.6.8.638|$
 Shockwave for Director|$
 1
 0|application/x-director|Shockwave Movie|dir,dxr,dcr|$
 C:\WINDOWS\system32\Macromed\Flash\NPSWF32_11_8_800_94.dll|$
 |$
-1375798030203|1|1|$
+1375798030203|1|5|$
 Shockwave Flash 11.8 r800|$
 Shockwave Flash|$
 2
@@ -315,14 +315,14 @@ Shockwave Flash|$
 1|application/futuresplash|FutureSplash movie|spl|$
 C:\Documents and Settings\lendle\Local Settings\Application Data\Unity\WebPlayer\loader\npUnity3D32.dll|$
 |$
-1370541640000|1|1|$
+1370541640000|1|5|$
 Unity Player 4.1.5f1|$
 Unity Player|$
 1
 0|application/vnd.unity|Unity Player datafile|unity3d|$
 C:\Documents and Settings\lendle\Local Settings\Application Data\Google\Update\1.3.24.7\npGoogleUpdate3.dll|$
 |$
-1399729262671|1|1|$
+1399729262671|1|5|$
 Google Update|$
 Google Update|$
 2
@@ -330,14 +330,14 @@ Google Update|$
 1|application/x-vnd.google.oneclickctrl.9|||$
 D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\jbrowser\xulrunner\xulrunner\plugins\npnul32.dll|$
 |$
-1400916333562|1|1|$
+1400916333562|1|5|$
 Default Plug-in|$
 Mozilla Default Plug-in|$
 1
 0|*|Mozilla Default Plug-in|*|$
 C:\Program Files\Adobe\Reader 11.0\Reader\browser\nppdf32.dll|$
 |$
-1348404220000|1|9|$
+1348404220000|1|13|$
 Adobe PDF Plug-In For Firefox and Netscape 11.0.0|$
 Adobe Acrobat|$
 7
@@ -350,7 +350,7 @@ Adobe Acrobat|$
 6|application/vnd.adobe.xfd+xml|Adobe FormFlow99 Data File|xfd|$
 C:\Program Files\Google\Update\1.3.24.7\npGoogleUpdate3.dll|$
 |$
-1399731488312|1|9|$
+1399731488312|1|13|$
 Google Update|$
 Google Update|$
 2

@@ -48,7 +48,7 @@ rel:nsHandlerService.js,1400916334109
 {0cd233e0-7a86-11d3-915c-006008a6edf6},,application/x-mozilla-static,,nsI18nModule
 {73bb7c12-dbab-4ae2-aecf-a0331dec916f},,application/x-mozilla-static,,nsUCvMathModule
 {cb6593e0-f9b2-11d2-bdd6-000064657374},@mozilla.org/js/xpc/XPConnect;1,application/x-mozilla-static,,xpconnect
-{9868b4ce-da08-11d3-8cda-0060b0fc14a3},@mozilla.org/network/buffered-output-stream;1,application/x-mozilla-static,nsBufferedOutputStream,necko
+{9868b4ce-da08-11d3-8cda-0060b0fc14a3},,application/x-mozilla-static,,necko
 {4bfaa9f0-1dd2-11b2-afae-a82cbaa0b606},,application/x-mozilla-static,,PKI
 {f1299dc2-1dd1-11b2-a347-ee6b7660e048},,application/x-mozilla-static,,JavaScript_Debugger
 {0de2fbfa-6b7f-11d7-bbba-0003938a9d96},,application/x-mozilla-static,,nsLayoutModule
@@ -182,7 +182,7 @@ rel:nsHandlerService.js,1400916334109
 {2d524fdd-ae74-11d3-abf7-0004aceefa51},,application/x-mozilla-static,,nsUConvModule
 {12bb8f1c-2389-11d3-b3bf-00805f8a6670},,application/x-mozilla-static,,nsUniversalCharDetModule
 {e6fd9940-899d-11d2-8eae-00805f29f370},,application/x-mozilla-static,,nsLayoutModule
-{9226888e-da08-11d3-8cda-0060b0fc14a3},,application/x-mozilla-static,,necko
+{9226888e-da08-11d3-8cda-0060b0fc14a3},@mozilla.org/network/buffered-input-stream;1,application/x-mozilla-static,nsBufferedInputStream,necko
 {093c2356-4843-4c65-8709-d7dbcbbe7dfb},,text/javascript,,rel:nsUpdateService.js
 {3b581fd4-3497-426c-8f61-3658b971cb80},,application/x-mozilla-static,,nsLayoutModule
 {36a1d3b3-d886-4317-96ff-87b0005cfef7},,application/x-mozilla-static,,NSS
@@ -643,7 +643,7 @@ rel:nsHandlerService.js,1400916334109
 {2ea2e7d0-4095-11d3-9144-006008a6edf6},,application/x-mozilla-static,,nsI18nModule
 {dd156d62-d26f-4441-9cdb-e8f09107c273},,application/x-mozilla-static,,nsSecurityManagerModule
 {6394eeb1-fc3d-11d2-b3b8-00805f8a6670},,application/x-mozilla-static,,nsUConvModule
-{c272fee0-c7e9-11d3-8cda-0060b0fc14a3},@mozilla.org/network/file-output-stream;1,application/x-mozilla-static,nsFileOutputStream,necko
+{c272fee0-c7e9-11d3-8cda-0060b0fc14a3},,application/x-mozilla-static,,necko
 {96ec4163-efc8-407a-8735-007fb26be4e8},,application/x-mozilla-static,,nsAuthModule
 {e38e53b9-5bb0-456a-b553-579370cb1567},,application/x-mozilla-static,,xpconnect
 {a6cf90e3-15b3-11d2-932e-00805f8add32},,application/x-mozilla-static,,nsLayoutModule
