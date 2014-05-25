@@ -1,0 +1,394 @@
+Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 21:51:28+0800)
+Maven home: D:\Program Files\apache-maven-3.0.5
+Java version: 1.7.0_21, vendor: Oracle Corporation
+Java home: d:\jdk\jre
+Default locale: zh_TW, platform encoding: MS950
+OS name: "windows xp", version: "5.1", arch: "x86", family: "windows"
+[INFO] Error stacktraces are turned on.
+[DEBUG] Reading global settings from D:\Program Files\apache-maven-3.0.5\conf\settings.xml
+[DEBUG] Reading user settings from C:\Documents and Settings\lendle\.m2\settings.xml
+[DEBUG] Using local repository at h:\m2
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10 for h:\m2
+[INFO] Scanning for projects...
+[DEBUG] Extension realms for project elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT: (none)
+[DEBUG] Looking up lifecyle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 86, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT
+[DEBUG] Tasks:   [compile]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building TagResearchTools 0.5-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       elaborate.util.google:TagResearchTools:0.5-SNAPSHOT
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): [compile]
+[DEBUG] Repositories (dependencies): [DJ-Maven-Project (file://D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools/dj_repository, releases+snapshots), swt-repo (https://swt-repo.googlecode.com/svn/repo/, releases+snapshots), central (http://repo.maven.apache.org/maven2, releases)]
+[DEBUG] Repositories (plugins)     : [central (http://repo.maven.apache.org/maven2, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-resources-plugin:2.5:resources (default-resources)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <buildFilters default-value="${project.build.filters}"/>
+  <encoding default-value="${project.build.sourceEncoding}">${encoding}</encoding>
+  <escapeString>${maven.resources.escapeString}</escapeString>
+  <escapeWindowsPaths default-value="true">${maven.resources.escapeWindowsPaths}</escapeWindowsPaths>
+  <includeEmptyDirs default-value="false">${maven.resources.includeEmptyDirs}</includeEmptyDirs>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <overwrite default-value="false">${maven.resources.overwrite}</overwrite>
+  <project default-value="${project}"/>
+  <resources default-value="${project.resources}"/>
+  <session default-value="${session}"/>
+  <supportMultiLineFiltering default-value="false">${maven.resources.supportMultiLineFiltering}</supportMultiLineFiltering>
+  <useBuildFilters default-value="true"/>
+  <useDefaultDelimiters default-value="true"/>
+</configuration>
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile (default-compile)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <basedir default-value="${basedir}"/>
+  <buildDirectory default-value="${project.build.directory}"/>
+  <classpathElements default-value="${project.compileClasspathElements}"/>
+  <compileSourceRoots default-value="${project.compileSourceRoots}"/>
+  <compilerId default-value="javac">${maven.compiler.compilerId}</compilerId>
+  <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
+  <debug default-value="true">${maven.compiler.debug}</debug>
+  <debuglevel>${maven.compiler.debuglevel}</debuglevel>
+  <encoding default-value="${project.build.sourceEncoding}">${encoding}</encoding>
+  <executable>${maven.compiler.executable}</executable>
+  <failOnError default-value="true">${maven.compiler.failOnError}</failOnError>
+  <fork default-value="false">${maven.compiler.fork}</fork>
+  <generatedSourcesDirectory default-value="${project.build.directory}/generated-sources/annotations"/>
+  <maxmem>${maven.compiler.maxmem}</maxmem>
+  <meminitial>${maven.compiler.meminitial}</meminitial>
+  <optimize default-value="false">${maven.compiler.optimize}</optimize>
+  <outputDirectory default-value="${project.build.outputDirectory}"/>
+  <outputFileName>${project.build.finalName}</outputFileName>
+  <projectArtifact default-value="${project.artifact}"/>
+  <session default-value="${session}"/>
+  <showDeprecation default-value="false">${maven.compiler.showDeprecation}</showDeprecation>
+  <showWarnings default-value="false">${maven.compiler.showWarnings}</showWarnings>
+  <source default-value="1.5">1.7</source>
+  <staleMillis default-value="0">${lastModGranularityMs}</staleMillis>
+  <target default-value="1.5">1.7</target>
+  <verbose default-value="false">${maven.compiler.verbose}</verbose>
+</configuration>
+[DEBUG] =======================================================================
+[DEBUG] Using connector WagonRepositoryConnector with priority 0 for file://D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools/dj_repository
+Downloading: file://D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools/dj_repository/dj/jna/jna_WindowUtils/1.0/jna_WindowUtils-1.0.pom
+[DEBUG] Writing resolution tracking file h:\m2\dj\jna\jna_WindowUtils\1.0\jna_WindowUtils-1.0.pom.lastUpdated
+[WARNING] The POM for dj.jna:jna_WindowUtils:jar:1.0 is missing, no dependency information available
+[DEBUG] Using connector WagonRepositoryConnector with priority 0 for file://D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools/dj_repository
+Downloading: file://D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools/dj_repository/dj/MozillaInterfaces/1.8.1.3/MozillaInterfaces-1.8.1.3.pom
+[DEBUG] Writing resolution tracking file h:\m2\dj\MozillaInterfaces\1.8.1.3\MozillaInterfaces-1.8.1.3.pom.lastUpdated
+[WARNING] The POM for dj:MozillaInterfaces:jar:1.8.1.3 is missing, no dependency information available
+[WARNING] The POM for dj:DJNAtiveSwing-SWTCore:jar:1.0 is invalid, transitive dependencies (if any) will not be available: 1 problem was encountered while building the effective model
+[FATAL] Non-parseable POM h:\m2\dj\DJNAtiveSwing-SWTCore\1.0\DJNAtiveSwing-SWTCore-1.0.pom: end tag name </project> must match start tag name <repositories> from line 18 (position: TEXT seen ...</dependencies>\n</project>... @147:11)  @ line 147, column 11
+
+[DEBUG] elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT
+[DEBUG]    junit:junit:jar:4.10:test
+[DEBUG]       org.hamcrest:hamcrest-core:jar:1.1:test
+[DEBUG]    net.sourceforge.htmlunit:htmlunit:jar:2.12:compile
+[DEBUG]       xalan:xalan:jar:2.7.1:compile
+[DEBUG]          xalan:serializer:jar:2.7.1:compile
+[DEBUG]       commons-collections:commons-collections:jar:3.2.1:compile
+[DEBUG]       org.apache.httpcomponents:httpclient:jar:4.2.3:compile
+[DEBUG]          org.apache.httpcomponents:httpcore:jar:4.2.2:compile
+[DEBUG]       org.apache.httpcomponents:httpmime:jar:4.2.3:compile
+[DEBUG]       commons-codec:commons-codec:jar:1.7:compile
+[DEBUG]       net.sourceforge.htmlunit:htmlunit-core-js:jar:2.12:compile
+[DEBUG]       xerces:xercesImpl:jar:2.10.0:compile
+[DEBUG]          xml-apis:xml-apis:jar:1.4.01:compile
+[DEBUG]       net.sourceforge.nekohtml:nekohtml:jar:1.9.18:compile
+[DEBUG]       net.sourceforge.cssparser:cssparser:jar:0.9.9:compile
+[DEBUG]          org.w3c.css:sac:jar:1.3:compile
+[DEBUG]       commons-io:commons-io:jar:2.4:compile
+[DEBUG]       commons-logging:commons-logging:jar:1.1.1:compile
+[DEBUG]       org.eclipse.jetty:jetty-websocket:jar:8.1.9.v20130131:compile
+[DEBUG]          org.eclipse.jetty:jetty-util:jar:8.1.9.v20130131:compile
+[DEBUG]          org.eclipse.jetty:jetty-io:jar:8.1.9.v20130131:compile
+[DEBUG]          org.eclipse.jetty:jetty-http:jar:8.1.9.v20130131:compile
+[DEBUG]    com.google.code.gson:gson:jar:2.2.4:compile
+[DEBUG]    net.sf.jwordnet:jwnl:jar:1.4_rc3:compile
+[DEBUG]    net.sf.jtidy:jtidy:jar:r938:compile
+[DEBUG]    commons-beanutils:commons-beanutils:jar:1.8.3:compile
+[DEBUG]    org.apache.commons:commons-lang3:jar:3.2.1:compile
+[DEBUG]    dj:DJNativeSwing-SWT:jar:1.0:compile
+[DEBUG]       dj:DJNativeSwing:jar:1.0:compile
+[DEBUG]          dj.jna:jna_WindowUtils:jar:1.0:compile
+[DEBUG]       dj:MozillaInterfaces:jar:1.8.1.3:compile
+[DEBUG]    dj:DJNAtiveSwing-SWTCore:jar:1.0:compile
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ TagResearchTools ---
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.transfer < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.metadata < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.collection < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.version < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.artifact < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.spi < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.graph < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.impl < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.deployment < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.installation < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.sonatype.aether.resolution < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] org.apache.maven.plugins:maven-resources-plugin:jar:2.5:
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-project:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-profile:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-artifact-manager:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-registry:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-core:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6:compile
+[DEBUG]       org.apache.maven.reporting:maven-reporting-api:jar:2.0.6:compile
+[DEBUG]          org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-error-diagnostics:jar:2.0.6:compile
+[DEBUG]       commons-cli:commons-cli:jar:1.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-descriptor:jar:2.0.6:compile
+[DEBUG]       org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4:compile
+[DEBUG]       classworlds:classworlds:jar:1.1:compile
+[DEBUG]    org.apache.maven:maven-artifact:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-settings:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-model:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-monitor:jar:2.0.6:compile
+[DEBUG]    org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1:compile
+[DEBUG]       junit:junit:jar:3.8.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:2.0.5:compile
+[DEBUG]    org.apache.maven.shared:maven-filtering:jar:1.0:compile
+[DEBUG]       org.sonatype.plexus:plexus-build-api:jar:0.0.4:compile
+[DEBUG]    org.codehaus.plexus:plexus-interpolation:jar:1.13:compile
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-resources-plugin:2.5
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-resources-plugin:2.5
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-resources-plugin:2.5
+[DEBUG]   Included: org.apache.maven.plugins:maven-resources-plugin:jar:2.5
+[DEBUG]   Included: org.apache.maven.reporting:maven-reporting-api:jar:2.0.6
+[DEBUG]   Included: org.apache.maven.doxia:doxia-sink-api:jar:1.0-alpha-7
+[DEBUG]   Included: commons-cli:commons-cli:jar:1.0
+[DEBUG]   Included: org.codehaus.plexus:plexus-interactivity-api:jar:1.0-alpha-4
+[DEBUG]   Included: junit:junit:jar:3.8.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.5
+[DEBUG]   Included: org.apache.maven.shared:maven-filtering:jar:1.0
+[DEBUG]   Included: org.sonatype.plexus:plexus-build-api:jar:0.0.4
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.13
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-core:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-error-diagnostics:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-descriptor:jar:2.0.6
+[DEBUG]   Excluded: classworlds:classworlds:jar:1.1
+[DEBUG]   Excluded: org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   Excluded: org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1
+[DEBUG] Configuring mojo org.apache.maven.plugins:maven-resources-plugin:2.5:resources from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-resources-plugin:2.5, parent: sun.misc.Launcher$AppClassLoader@64c34e]
+[debug] execute contextualize
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-resources-plugin:2.5:resources' with basic configurator -->
+[DEBUG]   (f) buildFilters = []
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) escapeWindowsPaths = true
+[DEBUG]   (s) includeEmptyDirs = false
+[DEBUG]   (s) outputDirectory = D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\classes
+[DEBUG]   (s) overwrite = false
+[DEBUG]   (f) project = MavenProject: elaborate.util.google:TagResearchTools:0.5-SNAPSHOT @ D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\pom.xml
+[DEBUG]   (s) resources = [Resource {targetPath: null, filtering: false, FileSet {directory: D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\src\main\resources, PatternSet [includes: {}, excludes: {}]}}]
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@d0c5bb
+[DEBUG]   (f) supportMultiLineFiltering = false
+[DEBUG]   (f) useBuildFilters = true
+[DEBUG]   (s) useDefaultDelimiters = true
+[DEBUG] -- end configuration --
+[DEBUG] properties used {java.vendor=Oracle Corporation, env.SYSTEMROOT=C:\WINDOWS, env.MOZ_PLUGIN_PATH=C:\PROGRAM FILES\FOXIT SOFTWARE\FOXIT READER\plugins\, sun.java.launcher=SUN_STANDARD, sun.management.compiler=HotSpot Client Compiler, env.PROMPT=$P$G, os.name=Windows XP, env.FP_NO_HOST_CHECK=NO, sun.boot.class.path=d:\jdk\jre\lib\resources.jar;d:\jdk\jre\lib\rt.jar;d:\jdk\jre\lib\sunrsasign.jar;d:\jdk\jre\lib\jsse.jar;d:\jdk\jre\lib\jce.jar;d:\jdk\jre\lib\charsets.jar;d:\jdk\jre\lib\jfr.jar;d:\jdk\jre\classes, env.COMPUTERNAME=LENDLEHOME, env.ALLUSERSPROFILE=C:\Documents and Settings\All Users, sun.desktop=windows, env.CONEMUBACKHWND=0x002905B8, java.vm.specification.vendor=Oracle Corporation, java.runtime.version=1.7.0_21-b11, env.HOMEPATH=\Documents and Settings\lendle, project.build.sourceEncoding=UTF-8, env.CONEMUPID=2708, user.name=lendle, maven.build.version=Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 21:51:28+0800), env.CONEMUDRIVE=D:, env.QTJAVA=C:\Program Files\Java\jre7\lib\ext\QTJava.zip, env.WNHOME=e:\WordNet\2.0, env.PATH=D:\Program Files\ConEmuPack.121121\ConEmu;D:\Program Files\ConEmuPack.121121;C:\Program Files\NVIDIA Corporation\PhysX\Common;d:\RailsInstaller\Git\cmd;d:\RailsInstaller\Ruby1.8.7\bin;d:\Ruby187\Git\cmd;d:\Ruby187\Ruby1.8.7\bin;"D:\Program Files\gnu";d:\Ruby187\bin;C:\Program Files\Intel\iCLS Client\;d:\jdk\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\QuickTime\QTSystem\;d:\Program Files\MiKTeX 2.9\miktex\bin\;d:\Program Files\Git\cmd;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\WINDOWS\system32\WindowsPowerShell\v1.0;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;D:\Program Files\nodejs\;D:\Program Files\Microchip\xc32\v1.31\bin;D:\Program Files\Microchip\xc16\v1.21\bin;E:\Program Files\mongodb-win32-i386-2.0.9\bin;d:\ant\bin;D:\Android\android-sdk\tools;"D:\Program Files\gnu";D:\spring-roo-1.2.3.RELEASE\bin;D:\Program Files\apache-maven-3.0.5\bin;D:\grails-2.2.2\bin;D:\play-2.1.1;E:\xampp-win32-1.7.7-VC9\xampp\php;E:\ZendFramework-1.11.12\bin;e:\AppServ\Apache2.2\bin;e:\AppServ\php5;D:\jdk\tools\gradle-1.6\bin;D:\Android\android-sdk\platform-tools;C:\Documents and Settings\lendle\Application Data\npm;D:\Ruby187\bin;D:\Program Files\sqlite;D:\工具軟體\remote_client;D:\Ruby187;d:\GNUstep\bin;d:\GNUstep\GNUstep\System\Tools, user.language=zh, env.WINDIR=C:\WINDOWS, sun.boot.library.path=d:\jdk\jre\bin, classworlds.conf=D:\Program Files\apache-maven-3.0.5\bin\m2.conf, env.CONEMUBUILD=131119, env.CONEMUCONFIG=, java.version=1.7.0_21, env.PROCESSOR_IDENTIFIER=x86 Family 6 Model 42 Stepping 7, GenuineIntel, user.timezone=Asia/Taipei, env.TEMP=C:\DOCUME~1\lendle\LOCALS~1\Temp, sun.arch.data.model=32, java.endorsed.dirs=d:\jdk\jre\lib\endorsed, sun.cpu.isalist=pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86, env.HOMEDRIVE=C:, sun.jnu.encoding=MS950, file.encoding.pkg=sun.io, env.SYSTEMDRIVE=C:, file.separator=\, java.specification.name=Java Platform API Specification, java.class.version=51.0, user.country=TW, env.CONEMUDRAWHWND=0x001A0666, java.home=d:\jdk\jre, env.CONEMUWORKDRIVE=D:, env.APPDATA=C:\Documents and Settings\lendle\Application Data, java.vm.info=mixed mode, sharing, env.OS=Windows_NT, os.version=5.1, path.separator=;, java.vm.version=23.21-b01, env.CONEMUDIR=D:\Program Files\ConEmuPack.121121, env.ASL.LOG=Destination=file, user.variant=, env.USERPROFILE=C:\Documents and Settings\lendle, env.JAVA_HOME=d:\jdk, java.awt.printerjob=sun.awt.windows.WPrinterJob, env.TMP=C:\DOCUME~1\lendle\LOCALS~1\Temp, env.PROGRAMFILES=C:\Program Files, sun.io.unicode.encoding=UnicodeLittle, awt.toolkit=sun.awt.windows.WToolkit, user.script=, user.home=C:\Documents and Settings\lendle, env.COMMONPROGRAMFILES=C:\Program Files\Common Files, env.=EXITCODE=00000000, env.SESSIONNAME=Console, java.specification.vendor=Oracle Corporation, env.CLASSPATH=.;C:\Program Files\Java\jre7\lib\ext\QTJava.zip, env.M2_HOME=D:\Program Files\apache-maven-3.0.5, java.library.path=d:\jdk\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;D:\Program Files\ConEmuPack.121121\ConEmu;D:\Program Files\ConEmuPack.121121;C:\Program Files\NVIDIA Corporation\PhysX\Common;d:\RailsInstaller\Git\cmd;d:\RailsInstaller\Ruby1.8.7\bin;d:\Ruby187\Git\cmd;d:\Ruby187\Ruby1.8.7\bin;"D:\Program Files\gnu";d:\Ruby187\bin;C:\Program Files\Intel\iCLS Client\;d:\jdk\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\QuickTime\QTSystem\;d:\Program Files\MiKTeX 2.9\miktex\bin\;d:\Program Files\Git\cmd;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\DTS\Binn\;C:\WINDOWS\system32\WindowsPowerShell\v1.0;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;D:\Program Files\nodejs\;D:\Program Files\Microchip\xc32\v1.31\bin;D:\Program Files\Microchip\xc16\v1.21\bin;E:\Program Files\mongodb-win32-i386-2.0.9\bin;d:\ant\bin;D:\Android\android-sdk\tools;"D:\Program Files\gnu";D:\spring-roo-1.2.3.RELEASE\bin;D:\Program Files\apache-maven-3.0.5\bin;D:\grails-2.2.2\bin;D:\play-2.1.1;E:\xampp-win32-1.7.7-VC9\xampp\php;E:\ZendFramework-1.11.12\bin;e:\AppServ\Apache2.2\bin;e:\AppServ\php5;D:\jdk\tools\gradle-1.6\bin;D:\Android\android-sdk\platform-tools;C:\Documents and Settings\lendle\Application Data\npm;D:\Ruby187\bin;D:\Program Files\sqlite;D:\工具軟體\remote_client;D:\Ruby187;d:\GNUstep\bin;d:\GNUstep\GNUstep\System\Tools;., env.NUMBER_OF_PROCESSORS=2, java.vendor.url=http://java.oracle.com/, env.CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher, env.CONEMUWORKDIR=D:\Program Files\ConEmuPack.121121, env.MAVEN_CMD_LINE_ARGS=-X compile, java.vm.vendor=Oracle Corporation, env.CONEMUHWND=0x001504D6, maven.home=D:\Program Files\apache-maven-3.0.5, java.runtime.name=Java(TM) SE Runtime Environment, sun.java.command=org.codehaus.plexus.classworlds.launcher.Launcher -X compile, java.class.path=D:\Program Files\apache-maven-3.0.5\boot\plexus-classworlds-2.4.jar, env.CONEMUARGS=, maven.version=3.0.5, env.MAVEN_JAVA_EXE="d:\jdk\bin\java.exe", java.vm.specification.name=Java Virtual Machine Specification, env.LOGONSERVER=\\LENDLEHOME, java.vm.specification.version=1.7, env.PROCESSOR_ARCHITECTURE=x86, sun.cpu.endian=little, sun.os.patch.level=Service Pack 3, env.HOME=C:\Documents and Settings\lendle, java.io.tmpdir=C:\DOCUME~1\lendle\LOCALS~1\Temp\, env.PROCESSOR_REVISION=2a07, env.VBOX_INSTALL_PATH=D:\Program Files\Oracle\VirtualBox\, java.vendor.url.bug=http://bugreport.sun.com/bugreport/, env.COMSPEC=C:\WINDOWS\system32\cmd.exe, os.arch=x86, java.awt.graphicsenv=sun.awt.Win32GraphicsEnvironment, java.ext.dirs=d:\jdk\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext, env.=D:=D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools, user.dir=D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools, line.separator=
+, env.CLASSWORLDS_JAR="D:\Program Files\apache-maven-3.0.5\boot\plexus-classworlds-2.4.jar", java.vm.name=Java HotSpot(TM) Client VM, env.PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.PSC1, env.CONEMUBASEDIR=D:\Program Files\ConEmuPack.121121\ConEmu, env.CONEMUHOOKS=Enabled, env.CONEMUANSI=ON, env.ERROR_CODE=0, env.USERNAME=lendle, file.encoding=MS950, env.USERDOMAIN=LENDLEHOME, java.specification.version=1.7, env.PROCESSOR_LEVEL=6}
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[DEBUG] resource with targetPath null
+directory D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\src\main\resources
+excludes []
+includes []
+[INFO] skip non existing resourceDirectory D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\src\main\resources
+[DEBUG] no use filter components
+[INFO] 
+[INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ TagResearchTools ---
+[DEBUG] org.apache.maven.plugins:maven-compiler-plugin:jar:2.3.2:
+[DEBUG]    org.apache.maven:maven-plugin-api:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-artifact:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-core:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-settings:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-profile:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-model:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-error-diagnostics:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-project:jar:2.0.6:compile
+[DEBUG]          org.apache.maven:maven-plugin-registry:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-plugin-descriptor:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-artifact-manager:jar:2.0.6:compile
+[DEBUG]       org.apache.maven:maven-monitor:jar:2.0.6:compile
+[DEBUG]    org.apache.maven:maven-toolchain:jar:1.0:compile
+[DEBUG]    org.codehaus.plexus:plexus-utils:jar:2.0.5:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-api:jar:1.8.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-manager:jar:1.8.1:compile
+[DEBUG]    org.codehaus.plexus:plexus-compiler-javac:jar:1.8.1:runtime
+[DEBUG] Created new class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:2.3.2
+[DEBUG] Importing foreign packages into class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:2.3.2
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>org.apache.maven.plugins:maven-compiler-plugin:2.3.2
+[DEBUG]   Included: org.apache.maven.plugins:maven-compiler-plugin:jar:2.3.2
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.5
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-api:jar:1.8.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-manager:jar:1.8.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-compiler-javac:jar:1.8.1
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-api:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-artifact:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-core:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-settings:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-parameter-documenter:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-profile:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-model:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-repository-metadata:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-error-diagnostics:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-project:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-registry:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-plugin-descriptor:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-artifact-manager:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-monitor:jar:2.0.6
+[DEBUG]   Excluded: org.apache.maven:maven-toolchain:jar:1.0
+[DEBUG] Configuring mojo org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile from plugin realm ClassRealm[plugin>org.apache.maven.plugins:maven-compiler-plugin:2.3.2, parent: sun.misc.Launcher$AppClassLoader@64c34e]
+[DEBUG] Configuring mojo 'org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile' with basic configurator -->
+[DEBUG]   (f) basedir = D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools
+[DEBUG]   (f) buildDirectory = D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target
+[DEBUG]   (f) classpathElements = [D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\classes, h:\m2\net\sourceforge\htmlunit\htmlunit\2.12\htmlunit-2.12.jar, h:\m2\xalan\xalan\2.7.1\xalan-2.7.1.jar, h:\m2\xalan\serializer\2.7.1\serializer-2.7.1.jar, h:\m2\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar, h:\m2\org\apache\httpcomponents\httpclient\4.2.3\httpclient-4.2.3.jar, h:\m2\org\apache\httpcomponents\httpcore\4.2.2\httpcore-4.2.2.jar, h:\m2\org\apache\httpcomponents\httpmime\4.2.3\httpmime-4.2.3.jar, h:\m2\commons-codec\commons-codec\1.7\commons-codec-1.7.jar, h:\m2\net\sourceforge\htmlunit\htmlunit-core-js\2.12\htmlunit-core-js-2.12.jar, h:\m2\xerces\xercesImpl\2.10.0\xercesImpl-2.10.0.jar, h:\m2\xml-apis\xml-apis\1.4.01\xml-apis-1.4.01.jar, h:\m2\net\sourceforge\nekohtml\nekohtml\1.9.18\nekohtml-1.9.18.jar, h:\m2\net\sourceforge\cssparser\cssparser\0.9.9\cssparser-0.9.9.jar, h:\m2\org\w3c\css\sac\1.3\sac-1.3.jar, h:\m2\commons-io\commons-io\2.4\commons-io-2.4.jar, h:\m2\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar, h:\m2\org\eclipse\jetty\jetty-websocket\8.1.9.v20130131\jetty-websocket-8.1.9.v20130131.jar, h:\m2\org\eclipse\jetty\jetty-util\8.1.9.v20130131\jetty-util-8.1.9.v20130131.jar, h:\m2\org\eclipse\jetty\jetty-io\8.1.9.v20130131\jetty-io-8.1.9.v20130131.jar, h:\m2\org\eclipse\jetty\jetty-http\8.1.9.v20130131\jetty-http-8.1.9.v20130131.jar, h:\m2\com\google\code\gson\gson\2.2.4\gson-2.2.4.jar, h:\m2\net\sf\jwordnet\jwnl\1.4_rc3\jwnl-1.4_rc3.jar, h:\m2\net\sf\jtidy\jtidy\r938\jtidy-r938.jar, h:\m2\commons-beanutils\commons-beanutils\1.8.3\commons-beanutils-1.8.3.jar, h:\m2\org\apache\commons\commons-lang3\3.2.1\commons-lang3-3.2.1.jar, h:\m2\dj\DJNativeSwing-SWT\1.0\DJNativeSwing-SWT-1.0.jar, h:\m2\dj\DJNativeSwing\1.0\DJNativeSwing-1.0.jar, h:\m2\dj\jna\jna_WindowUtils\1.0\jna_WindowUtils-1.0.jar, h:\m2\dj\MozillaInterfaces\1.8.1.3\MozillaInterfaces-1.8.1.3.jar, h:\m2\dj\DJNAtiveSwing-SWTCore\1.0\DJNAtiveSwing-SWTCore-1.0.jar]
+[DEBUG]   (f) compileSourceRoots = [D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\src\main\java]
+[DEBUG]   (f) compilerId = javac
+[DEBUG]   (f) debug = true
+[DEBUG]   (f) encoding = UTF-8
+[DEBUG]   (f) failOnError = true
+[DEBUG]   (f) fork = false
+[DEBUG]   (f) generatedSourcesDirectory = D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\generated-sources\annotations
+[DEBUG]   (f) optimize = false
+[DEBUG]   (f) outputDirectory = D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\classes
+[DEBUG]   (f) outputFileName = TagResearchTools-0.5-SNAPSHOT
+[DEBUG]   (f) projectArtifact = elaborate.util.google:TagResearchTools:jar:0.5-SNAPSHOT
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@d0c5bb
+[DEBUG]   (f) showDeprecation = false
+[DEBUG]   (f) showWarnings = false
+[DEBUG]   (f) source = 1.7
+[DEBUG]   (f) staleMillis = 0
+[DEBUG]   (f) target = 1.7
+[DEBUG]   (f) verbose = false
+[DEBUG] -- end configuration --
+[DEBUG] Using compiler 'javac'.
+[DEBUG] Source directories: [D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\src\main\java]
+[DEBUG] Classpath: [D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\classes
+ h:\m2\net\sourceforge\htmlunit\htmlunit\2.12\htmlunit-2.12.jar
+ h:\m2\xalan\xalan\2.7.1\xalan-2.7.1.jar
+ h:\m2\xalan\serializer\2.7.1\serializer-2.7.1.jar
+ h:\m2\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar
+ h:\m2\org\apache\httpcomponents\httpclient\4.2.3\httpclient-4.2.3.jar
+ h:\m2\org\apache\httpcomponents\httpcore\4.2.2\httpcore-4.2.2.jar
+ h:\m2\org\apache\httpcomponents\httpmime\4.2.3\httpmime-4.2.3.jar
+ h:\m2\commons-codec\commons-codec\1.7\commons-codec-1.7.jar
+ h:\m2\net\sourceforge\htmlunit\htmlunit-core-js\2.12\htmlunit-core-js-2.12.jar
+ h:\m2\xerces\xercesImpl\2.10.0\xercesImpl-2.10.0.jar
+ h:\m2\xml-apis\xml-apis\1.4.01\xml-apis-1.4.01.jar
+ h:\m2\net\sourceforge\nekohtml\nekohtml\1.9.18\nekohtml-1.9.18.jar
+ h:\m2\net\sourceforge\cssparser\cssparser\0.9.9\cssparser-0.9.9.jar
+ h:\m2\org\w3c\css\sac\1.3\sac-1.3.jar
+ h:\m2\commons-io\commons-io\2.4\commons-io-2.4.jar
+ h:\m2\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar
+ h:\m2\org\eclipse\jetty\jetty-websocket\8.1.9.v20130131\jetty-websocket-8.1.9.v20130131.jar
+ h:\m2\org\eclipse\jetty\jetty-util\8.1.9.v20130131\jetty-util-8.1.9.v20130131.jar
+ h:\m2\org\eclipse\jetty\jetty-io\8.1.9.v20130131\jetty-io-8.1.9.v20130131.jar
+ h:\m2\org\eclipse\jetty\jetty-http\8.1.9.v20130131\jetty-http-8.1.9.v20130131.jar
+ h:\m2\com\google\code\gson\gson\2.2.4\gson-2.2.4.jar
+ h:\m2\net\sf\jwordnet\jwnl\1.4_rc3\jwnl-1.4_rc3.jar
+ h:\m2\net\sf\jtidy\jtidy\r938\jtidy-r938.jar
+ h:\m2\commons-beanutils\commons-beanutils\1.8.3\commons-beanutils-1.8.3.jar
+ h:\m2\org\apache\commons\commons-lang3\3.2.1\commons-lang3-3.2.1.jar
+ h:\m2\dj\DJNativeSwing-SWT\1.0\DJNativeSwing-SWT-1.0.jar
+ h:\m2\dj\DJNativeSwing\1.0\DJNativeSwing-1.0.jar
+ h:\m2\dj\jna\jna_WindowUtils\1.0\jna_WindowUtils-1.0.jar
+ h:\m2\dj\MozillaInterfaces\1.8.1.3\MozillaInterfaces-1.8.1.3.jar
+ h:\m2\dj\DJNAtiveSwing-SWTCore\1.0\DJNAtiveSwing-SWTCore-1.0.jar]
+[DEBUG] Output directory: D:\Program Files\NetBeans\projects\LabUtils\tagresearchtools\target\classes
+[INFO] Nothing to compile - all classes are up to date
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.188s
+[INFO] Finished at: Sun May 25 17:51:37 CST 2014
+[INFO] Final Memory: 6M/15M
+[INFO] ------------------------------------------------------------------------
