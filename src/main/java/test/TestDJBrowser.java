@@ -16,17 +16,16 @@ import java.awt.BorderLayout;
  * @author lendle
  */
 public class TestDJBrowser extends javax.swing.JFrame {
-
+    private JWebBrowser webBrowser=null;
     /**
      * Creates new form TestDJBrowser
      */
     public TestDJBrowser() {
         initComponents();
-        JWebBrowser webBrowser = new JWebBrowser();
+        this.setSize(800, 600);
+        webBrowser = new JWebBrowser();
         webBrowser.navigate("http://www.google.com");
-        this.setLayout(new BorderLayout());
-        this.add(webBrowser);
-        System.out.println(webBrowser.executeJavascriptWithResult("function test1(){return 1+1;} return test1();"));
+        this.panelBrowser.add(webBrowser);
     }
 
     /**
@@ -38,21 +37,35 @@ public class TestDJBrowser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelBrowser = new javax.swing.JPanel();
+        panelCopntrol = new javax.swing.JPanel();
+        buttonTestJavaScript = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        panelBrowser.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(panelBrowser, java.awt.BorderLayout.CENTER);
+
+        panelCopntrol.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        buttonTestJavaScript.setText("Test JavaScript");
+        buttonTestJavaScript.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonTestJavaScriptActionPerformed(evt);
+            }
+        });
+        panelCopntrol.add(buttonTestJavaScript);
+
+        getContentPane().add(panelCopntrol, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonTestJavaScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTestJavaScriptActionPerformed
+        // TODO add your handling code here:
+        webBrowser.executeJavascript("function test1(){alert(2);return 2;}");
+        System.out.println(webBrowser.executeJavascriptWithResult("return test1();"));
+    }//GEN-LAST:event_buttonTestJavaScriptActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,5 +105,8 @@ public class TestDJBrowser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonTestJavaScript;
+    private javax.swing.JPanel panelBrowser;
+    private javax.swing.JPanel panelCopntrol;
     // End of variables declaration//GEN-END:variables
 }
