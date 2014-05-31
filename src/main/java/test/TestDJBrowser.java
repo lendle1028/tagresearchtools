@@ -9,7 +9,12 @@ package test;
 import chrriis.common.UIUtils;
 import chrriis.dj.nativeswing.swtimpl.NativeInterface;
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
-import java.awt.BorderLayout;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -72,17 +77,33 @@ public class TestDJBrowser extends javax.swing.JFrame {
 
     private void buttonTestJavaScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTestJavaScriptActionPerformed
         // TODO add your handling code here:
-        System.out.println(webBrowser.executeJavascriptWithResult("return test1();"));
-        webBrowser.executeJavascript("$(\"<style type='text/css'> .highlight{ border-color: red; border-width: 1px;border-style: solid} </style>\").appendTo(\"head\");");
-        webBrowser.executeJavascript("$(\"*\").mouseenter(function(event){if(event.target==this){$(this).addClass(\"highlight\");}});$(\"*\").mouseleave(function(){$(this).removeClass(\"highlight\");});");
+        try {
+            this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/setupMouseHover.js");
+        } catch (Exception ex) {
+            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonTestJavaScriptActionPerformed
 
     private void buttonSetupJavaScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSetupJavaScriptActionPerformed
-        // TODO add your handling code here:
-        webBrowser.executeJavascript("var s=document.createElement(\"script\");s.setAttribute('src', '//code.jquery.com/jquery-1.11.0.min.js');document.body.appendChild(s);");
-        webBrowser.executeJavascript("function test1(){alert(2);return 2;}");
+        try {
+            // TODO add your handling code here:
+            this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/setupJQuery.js");
+        } catch (Exception ex) {
+            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonSetupJavaScriptActionPerformed
 
+    private Object executeJavaScript(String resourceName) throws Exception{
+        try(Reader reader=new InputStreamReader(this.getClass().getClassLoader().getResource(resourceName).openStream(), "utf-8")){
+            //webBrowser.executeJavascript("var s=document.createElement(\"script\");s.setAttribute('src', '//code.jquery.com/jquery-1.11.0.min.js');document.body.appendChild(s);");
+            String script=IOUtils.toString(reader);
+            return webBrowser.executeJavascriptWithResult(script);
+        } catch (Exception ex) {
+            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
