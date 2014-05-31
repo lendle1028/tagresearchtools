@@ -39,6 +39,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
 
         panelBrowser = new javax.swing.JPanel();
         panelCopntrol = new javax.swing.JPanel();
+        buttonSetupJavaScript = new javax.swing.JButton();
         buttonTestJavaScript = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -47,6 +48,14 @@ public class TestDJBrowser extends javax.swing.JFrame {
         getContentPane().add(panelBrowser, java.awt.BorderLayout.CENTER);
 
         panelCopntrol.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        buttonSetupJavaScript.setText("SetupJS");
+        buttonSetupJavaScript.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSetupJavaScriptActionPerformed(evt);
+            }
+        });
+        panelCopntrol.add(buttonSetupJavaScript);
 
         buttonTestJavaScript.setText("Test JavaScript");
         buttonTestJavaScript.addActionListener(new java.awt.event.ActionListener() {
@@ -63,9 +72,16 @@ public class TestDJBrowser extends javax.swing.JFrame {
 
     private void buttonTestJavaScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTestJavaScriptActionPerformed
         // TODO add your handling code here:
-        webBrowser.executeJavascript("function test1(){alert(2);return 2;}");
         System.out.println(webBrowser.executeJavascriptWithResult("return test1();"));
+        webBrowser.executeJavascript("$(\"<style type='text/css'> .highlight{ border-color: red; border-width: 1px;border-style: solid} </style>\").appendTo(\"head\");");
+        webBrowser.executeJavascript("$(\"*\").mouseenter(function(event){if(event.target==this){$(this).addClass(\"highlight\");}});$(\"*\").mouseleave(function(){$(this).removeClass(\"highlight\");});");
     }//GEN-LAST:event_buttonTestJavaScriptActionPerformed
+
+    private void buttonSetupJavaScriptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSetupJavaScriptActionPerformed
+        // TODO add your handling code here:
+        webBrowser.executeJavascript("var s=document.createElement(\"script\");s.setAttribute('src', '//code.jquery.com/jquery-1.11.0.min.js');document.body.appendChild(s);");
+        webBrowser.executeJavascript("function test1(){alert(2);return 2;}");
+    }//GEN-LAST:event_buttonSetupJavaScriptActionPerformed
 
     /**
      * @param args the command line arguments
@@ -105,6 +121,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonSetupJavaScript;
     private javax.swing.JButton buttonTestJavaScript;
     private javax.swing.JPanel panelBrowser;
     private javax.swing.JPanel panelCopntrol;
