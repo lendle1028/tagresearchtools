@@ -71,6 +71,7 @@ public class DOMTreeUtils {
             try {
                 TransformerFactory tf=TransformerFactory.newInstance();
                 Transformer t=tf.newTransformer();
+                t.setOutputProperty("omit-xml-declaration", "yes");
                 StringWriter output=new StringWriter();
                 t.transform(new DOMSource(node), new StreamResult(output));
                 return output.toString();

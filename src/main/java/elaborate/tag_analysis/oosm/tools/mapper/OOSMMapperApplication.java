@@ -148,9 +148,10 @@ public class OOSMMapperApplication {
         html.append(obj.getRoot().getName()).append(":");
         html.append(this.exportEvaluatedBindingResult2HTML(obj));
         html.append("</body></html>");
+        System.out.println(obj.convert2JSON());
         return html.toString();
     }
-
+  
     private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception {
         EvaluatedObject obj = root;
         StringBuffer html = new StringBuffer();

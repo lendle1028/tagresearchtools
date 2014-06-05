@@ -20,4 +20,5 @@ public interface EvaluatedObject {
     public List getRootValue();
     public List<EvaluatedObject> getProperty(OOSMConstruct name);
     public List<OOSMConstruct> getPropertyNames();
+    public String convert2JSON();
 }
