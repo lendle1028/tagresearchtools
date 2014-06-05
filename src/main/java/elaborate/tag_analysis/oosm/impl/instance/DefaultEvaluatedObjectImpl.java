@@ -81,15 +81,11 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
             retRootValues.add(DOMTreeUtils.node2Text((Node)this.rootValue.get(i)));
         }
         map.put("__rootValue__", retRootValues);
-        //Map properties=new HashMap();
-        //map.put("properties", properties);
         for(OOSMConstruct construct : this.properties.keySet()){
             List objectValues=new ArrayList();
             List<EvaluatedObject> evaluatedChildObjects=this.properties.get(construct);
             for(EvaluatedObject evaluatedChildObject : evaluatedChildObjects){
-                //System.out.println(evaluatedChildObject.convert2JSON());
                 objectValues.add(evaluatedChildObject.convert2JSON());
-                //map.put(construct.getName().toString(), evaluatedChildObject.convert2JSON());
             }
            map.put(construct.getName().toString(), objectValues);
         }
