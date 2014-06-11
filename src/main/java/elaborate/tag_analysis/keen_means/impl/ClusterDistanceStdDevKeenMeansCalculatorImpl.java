@@ -6,7 +6,6 @@
 
 package elaborate.tag_analysis.keen_means.impl;
 
-import static elaborate.tag_analysis.App.getAverageDistanceAcrossClusters;
 import elaborate.tag_analysis.TagStdevRatioPair;
 import elaborate.tag_analysis.feature.DistanceCalculator;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
@@ -16,22 +15,40 @@ import elaborate.tag_analysis.kmeans.Node;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * the implementation at first calculate overall average distance, OAVG, between nodes
  * and corresponding centroid
  * and use stdev among distance for each cluster, EAVG, to capture the distance variation among clusters
- * if | EAVG[i]-OAVG | >= x * stdev, then cluster[i] is a bad cluster
- * 
+ * if | EAVG[i]-OAVG | >= threshold * stdev, then cluster[i] is a bad cluster
+ * besides, if a cluster contains less than stopCalculationWhenNodesNumberLessThan of nodes, it is always considered as a good
+ * cluster
  * @author DELL
  */
 public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCalculator{
-
+    private double threshold=1.0;
+    private int stopCalculationWhenNodesNumberLessThan=1;
+    
+    /**
+     * 
+     * @param threshold 
+     */
+    public ClusterDistanceStdDevKeenMeansCalculatorImpl(double threshold, int stopCalculationWhenNodesNumberLessThan) {
+        this.threshold=threshold;
+        this.stopCalculationWhenNodesNumberLessThan=stopCalculationWhenNodesNumberLessThan;
+    }
+    /**
+     * use default thresold=1.0 and minNodesInACluster=1
+     */
+    public ClusterDistanceStdDevKeenMeansCalculatorImpl() {
+    }
+    
     @Override
-    public List<Cluster> calculate(List<Cluster> clusters, BadClusterDetector badClusterDetector, KmeansCalculator kmeansCalculator) {
+    public List<Cluster> calculate(List<Cluster> clusters, KmeansCalculator kmeansCalculator) {
         //post processing, calculate average distances
-        double totalAvergae=getAverageDistanceAcrossClusters(clusters);
-        System.out.println("average distance across clusters="+(totalAvergae));
+        double totalAverage=getAverageDistanceAcrossClusters(clusters);
+        Logger.getLogger(this.getClass().getName()).info("average distance across clusters="+(totalAverage));
         //calculate stdev of average distance among clusters
         double clusterVariations=0;
         double clusterStdev=0;
@@ -39,42 +56,46 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             if(Double.isNaN(cluster.getAverageDistance())){
                 continue;
             }
-            clusterVariations+=Math.pow(cluster.getAverageDistance()-totalAvergae, 2);
+            clusterVariations+=Math.pow(cluster.getAverageDistance()-totalAverage, 2);
         }
         clusterStdev=Math.pow(clusterVariations, 0.5)/clusters.size();
-        System.out.println("stdev of average distance across clusters="+(clusterStdev));
+        Logger.getLogger(this.getClass().getName()).info("stdev of average distance across clusters="+(clusterStdev));
         List<Cluster> badClusters=new ArrayList<Cluster>();
         List<Cluster> goodClusters=new ArrayList<Cluster>();
         int clusterIndex=0;
         for (Cluster cluster : clusters) {
-            if((cluster.getAverageDistance()-totalAvergae)>clusterStdev){
+            if(Math.abs((cluster.getAverageDistance()-totalAverage))>threshold*clusterStdev){
                 //this is a bad cluster
-                System.out.println("bad cluster: "+clusterIndex+":"+(cluster.getAverageDistance()-totalAvergae)+":"+(+(cluster.getAverageDistance()-totalAvergae)/clusterStdev));
+                Logger.getLogger(this.getClass().getName()).info("bad cluster: "+clusterIndex+":"+(cluster.getAverageDistance()-totalAverage)+":"+(+(cluster.getAverageDistance()-totalAverage)/clusterStdev));
                 badClusters.add(cluster);
             }
             else{
+                //if there is an extraordinary far-away node, it is a bad cluster
+                /*for(Node node : cluster.getTags()){
+                    double nodeDistance=DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), feature2)
+                }*/
                 goodClusters.add(cluster);
             }
             clusterIndex++;
         }
         //recalculate bad clusters
         while(badClusters.isEmpty()==false){
-            System.out.println("# of bad clusters="+badClusters.size());
+            Logger.getLogger(this.getClass().getName()).info("# of bad clusters="+badClusters.size());
             List<Cluster> processingClusters=new ArrayList<Cluster>(badClusters);
             badClusters.clear();
             processing: for(Cluster cluster : processingClusters){
                 List<Cluster> newClusters = kmeansCalculator.calculate(2, cluster);
                 //verify
                 for(Cluster newCluster : newClusters){
-                    if(newCluster.getTags().size()<=1){
+                    if(newCluster.getTags().size()<=this.stopCalculationWhenNodesNumberLessThan){
                         goodClusters.add(cluster);
                         continue processing;
                     }
                 }
                 
                 for(Cluster newCluster : newClusters){
-                    if((newCluster.getAverageDistance()-totalAvergae)>clusterStdev && newCluster.getTags().size()>0){
-                        System.out.println("bad cluster: "+(newCluster.getAverageDistance()-totalAvergae)+":"+newCluster.getTags().size());
+                    if((newCluster.getAverageDistance()-totalAverage)>clusterStdev && newCluster.getTags().size()>0){
+                        Logger.getLogger(this.getClass().getName()).info("bad cluster: "+(newCluster.getAverageDistance()-totalAverage)+":"+newCluster.getTags().size());
                         badClusters.add(newCluster);
                     }
                     else{
@@ -83,25 +104,25 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                 }
             }
         }
-        System.out.println("final numbers of clusters="+goodClusters.size());
+        Logger.getLogger(this.getClass().getName()).info("final numbers of clusters="+goodClusters.size());
         //show result
-        for (Cluster cluster : goodClusters) {
-            System.out.println("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
-            List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
-            //calculate distance between every node and its centroid
-            for (Node node : cluster.getTags()) {
-                double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
-                double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
-                pairs.add(new TagStdevRatioPair(node, stdevRatio));
-            }
-            Collections.sort(pairs);
-            for(TagStdevRatioPair pair : pairs){
-                System.out.println(pair.getTag().getValue()+":"+pair.getStdevRatio());
-            }
-            System.out.println("==============================================");
-        }
-        totalAvergae=getAverageDistanceAcrossClusters(goodClusters);
-        System.out.println("average distance across clusters="+(totalAvergae));
+//        for (Cluster cluster : goodClusters) {
+//            Logger.getLogger(this.getClass().getName()).info("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
+//            List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
+//            //calculate distance between every node and its centroid
+//            for (Node node : cluster.getTags()) {
+//                double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
+//                double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
+//                pairs.add(new TagStdevRatioPair(node, stdevRatio));
+//            }
+//            Collections.sort(pairs);
+//            for(TagStdevRatioPair pair : pairs){
+//                Logger.getLogger(this.getClass().getName()).info(pair.getTag().getValue()+":"+pair.getStdevRatio());
+//            }
+//            Logger.getLogger(this.getClass().getName()).info("==============================================");
+//        }
+//        totalAverage=getAverageDistanceAcrossClusters(goodClusters);
+//        Logger.getLogger(this.getClass().getName()).info("average distance across clusters="+(totalAverage));
         return goodClusters;
         //report for distance between tags and all centroids
 //        System.out.println("==============================================");
@@ -128,25 +149,29 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
     protected double getAverageDistanceAcrossClusters(List<Cluster> clusters){
         double totalDistance=0;//accumulate distances between nodes and their centroids across clusters, this gives overall information
         double totalNumOfNodes=0;
-        double totalAvergae=0;
+        double totalAverage=0;
         for (Cluster cluster : clusters) {
-            System.out.println("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
+            if(cluster.getTags().isEmpty()){
+                continue;
+            }
+            Logger.getLogger(this.getClass().getName()).info("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
             List<TagStdevRatioPair> pairs=new ArrayList<TagStdevRatioPair>();
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
                 totalNumOfNodes++;
-                double distance=DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
+                double distance=Math.abs(DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation()));
                 totalDistance+=distance;
                 double stdevRatio=(distance-cluster.getAverageDistance())/cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));
             }
             Collections.sort(pairs);
             for(TagStdevRatioPair pair : pairs){
-                System.out.println(pair.getTag().getValue()+":"+pair.getStdevRatio());
+                Logger.getLogger(this.getClass().getName()).info(pair.getTag().getValue()+":"+pair.getStdevRatio());
             }
-            System.out.println("==============================================");
+            Logger.getLogger(this.getClass().getName()).info("==============================================");
         }
-        totalAvergae=totalDistance/totalNumOfNodes;
-        return totalAvergae;
+        Logger.getLogger(this.getClass().getName()).info("totalNumOfNodes="+totalNumOfNodes+", "+totalDistance+", "+totalAverage);
+        totalAverage=totalDistance/totalNumOfNodes;
+        return totalAverage;
     }
 }

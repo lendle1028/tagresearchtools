@@ -4,6 +4,8 @@
  */
 package elaborate.tag_analysis.feature;
 
+import java.util.Arrays;
+
 /**
  * calculate distance between two features
  * @author lendle

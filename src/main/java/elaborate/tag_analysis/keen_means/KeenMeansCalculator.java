@@ -19,21 +19,8 @@ public interface KeenMeansCalculator {
      * re-categorize existing clusters using the keen-means algorithm
      *
      * @param clusters
-     * @param badClusterDetector
      * @param kmeansCalculator
      * @return
      */
-    public List<Cluster> calculate(List<Cluster> clusters, BadClusterDetector badClusterDetector, KmeansCalculator kmeansCalculator);
-
-    public static interface BadClusterDetector {
-
-        /**
-         * return true if the given cluster is considered as bad
-         *
-         * @param cluster
-         * @return
-         */
-        public boolean isBadCluster(Cluster cluster);
-    }
-
+    public List<Cluster> calculate(List<Cluster> clusters, KmeansCalculator kmeansCalculator);
 }
