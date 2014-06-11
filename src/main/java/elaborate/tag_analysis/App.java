@@ -86,7 +86,7 @@ public class App {
             }
             Collections.sort(pairs);
             for (TagStdevRatioPair pair : pairs) {
-                System.out.println(pair.getTag().getValue() + ":" + pair.getStdevRatio());
+                System.out.println(pair.getTag().getValue() + ":" + pair.getStdevRatio()+":"+cluster.getDistance((Node) pair.getTag()));
             }
             System.out.println("==============================================");
         }

@@ -61,11 +61,12 @@ public class App {
         for(Cluster cluster : goodClusters){
             System.out.println(cluster.getTags().size());
         }
-        Cluster testCluster=goodClusters.get(0);
-        //System.out.println(testCluster.getTags().size());
+        Cluster testCluster=goodClusters.get(11);
+        System.out.println(testCluster.getTags().size()+":"+testCluster.getStdev()+":"+testCluster.getAverageDistance());
         for(Node node : testCluster.getTags()){
             double distance=DistanceCalculator.getDistance(testCluster.getCentroid().getLocation(), node.getFeature());
-            if(Math.abs(distance-testCluster.getAverageDistance())<0.3*testCluster.getStdev()){
+            System.out.println(Math.abs(distance-testCluster.getAverageDistance()));
+            if(Math.abs(distance-testCluster.getAverageDistance())<1.0*testCluster.getStdev()){
                 System.out.println(node.getValue());
             }
             //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());

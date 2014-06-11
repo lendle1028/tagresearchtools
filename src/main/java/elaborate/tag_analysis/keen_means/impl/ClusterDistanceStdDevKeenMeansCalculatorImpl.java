@@ -21,25 +21,27 @@ import java.util.logging.Logger;
  * the implementation at first calculate overall average distance, OAVG, between nodes
  * and corresponding centroid
  * and use stdev among distance for each cluster, EAVG, to capture the distance variation among clusters
- * if | EAVG[i]-OAVG | >= threshold * stdev, then cluster[i] is a bad cluster
+ * if (| EAVG[i]-OAVG | >= threshold * stdev), || (there exists a node in i for which distance between the node and its cluster >= singleNodeThreshold*stdev ) then cluster[i] is a bad cluster
  * besides, if a cluster contains less than stopCalculationWhenNodesNumberLessThan of nodes, it is always considered as a good
  * cluster
  * @author DELL
  */
 public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCalculator{
     private double threshold=1.0;
-    private int stopCalculationWhenNodesNumberLessThan=1;
+    private double singleNodeThreshold=2.0;
+    private int stopCalculationWhenNodesNumberLessThan=10;
     
     /**
      * 
      * @param threshold 
      */
-    public ClusterDistanceStdDevKeenMeansCalculatorImpl(double threshold, int stopCalculationWhenNodesNumberLessThan) {
+    public ClusterDistanceStdDevKeenMeansCalculatorImpl(double threshold, double singleNodeThreshold, int stopCalculationWhenNodesNumberLessThan) {
         this.threshold=threshold;
         this.stopCalculationWhenNodesNumberLessThan=stopCalculationWhenNodesNumberLessThan;
+        this.singleNodeThreshold=singleNodeThreshold;
     }
     /**
-     * use default thresold=1.0 and minNodesInACluster=1
+     * use default thresold=1.0 and minNodesInACluster=2 and singleNodeThreshold=2.0
      */
     public ClusterDistanceStdDevKeenMeansCalculatorImpl() {
     }
@@ -58,43 +60,42 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
             clusterVariations+=Math.pow(cluster.getAverageDistance()-totalAverage, 2);
         }
+        
         clusterStdev=Math.pow(clusterVariations, 0.5)/clusters.size();
         Logger.getLogger(this.getClass().getName()).info("stdev of average distance across clusters="+(clusterStdev));
         List<Cluster> badClusters=new ArrayList<Cluster>();
         List<Cluster> goodClusters=new ArrayList<Cluster>();
         int clusterIndex=0;
         for (Cluster cluster : clusters) {
-            if(Math.abs((cluster.getAverageDistance()-totalAverage))>threshold*clusterStdev){
+            if(this.isBadCluster(cluster, totalAverage, clusterStdev)){
                 //this is a bad cluster
                 Logger.getLogger(this.getClass().getName()).info("bad cluster: "+clusterIndex+":"+(cluster.getAverageDistance()-totalAverage)+":"+(+(cluster.getAverageDistance()-totalAverage)/clusterStdev));
                 badClusters.add(cluster);
             }
             else{
-                //if there is an extraordinary far-away node, it is a bad cluster
-                /*for(Node node : cluster.getTags()){
-                    double nodeDistance=DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), feature2)
-                }*/
                 goodClusters.add(cluster);
             }
             clusterIndex++;
         }
         //recalculate bad clusters
         while(badClusters.isEmpty()==false){
-            Logger.getLogger(this.getClass().getName()).info("# of bad clusters="+badClusters.size());
+            Logger.getLogger(this.getClass().getName()).info("# of bad clusters="+badClusters.size()+": # of good clusters="+goodClusters.size());
             List<Cluster> processingClusters=new ArrayList<Cluster>(badClusters);
             badClusters.clear();
             processing: for(Cluster cluster : processingClusters){
+                if(cluster.getTags().size()<=this.stopCalculationWhenNodesNumberLessThan){
+                    goodClusters.add(cluster);
+                    continue processing;
+                }
                 List<Cluster> newClusters = kmeansCalculator.calculate(2, cluster);
+                if(newClusters.size()<2){
+                    //not splittable
+                    goodClusters.add(cluster);
+                    continue processing;
+                }
                 //verify
                 for(Cluster newCluster : newClusters){
-                    if(newCluster.getTags().size()<=this.stopCalculationWhenNodesNumberLessThan){
-                        goodClusters.add(cluster);
-                        continue processing;
-                    }
-                }
-                
-                for(Cluster newCluster : newClusters){
-                    if((newCluster.getAverageDistance()-totalAverage)>clusterStdev && newCluster.getTags().size()>0){
+                    if(this.isBadCluster(cluster, totalAverage, clusterStdev)){
                         Logger.getLogger(this.getClass().getName()).info("bad cluster: "+(newCluster.getAverageDistance()-totalAverage)+":"+newCluster.getTags().size());
                         badClusters.add(newCluster);
                     }
@@ -104,7 +105,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                 }
             }
         }
-        Logger.getLogger(this.getClass().getName()).info("final numbers of clusters="+goodClusters.size());
+        Logger.getLogger(this.getClass().getName()).info("final numbers of clusters="+goodClusters.size()+", total average="+totalAverage);
         //show result
 //        for (Cluster cluster : goodClusters) {
 //            Logger.getLogger(this.getClass().getName()).info("cluster stdev="+cluster.getStdev()+", average distance="+cluster.getAverageDistance());
@@ -166,12 +167,25 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
             Collections.sort(pairs);
             for(TagStdevRatioPair pair : pairs){
-                Logger.getLogger(this.getClass().getName()).info(pair.getTag().getValue()+":"+pair.getStdevRatio());
+                Logger.getLogger(this.getClass().getName()).info(pair.getTag().getValue()+":"+pair.getStdevRatio()+":"+cluster.getDistance((Node) pair.getTag()));
             }
             Logger.getLogger(this.getClass().getName()).info("==============================================");
         }
         Logger.getLogger(this.getClass().getName()).info("totalNumOfNodes="+totalNumOfNodes+", "+totalDistance+", "+totalAverage);
         totalAverage=totalDistance/totalNumOfNodes;
         return totalAverage;
+    }
+    
+    protected boolean isBadCluster(Cluster cluster, double totalAverage, double clusterStdev){
+        if(Math.abs((cluster.getAverageDistance()-totalAverage))>=threshold*clusterStdev && cluster.getTags().size()>=stopCalculationWhenNodesNumberLessThan){
+            return true;
+        }else{
+            for(Node node : cluster.getTags()){
+                if(Math.abs(cluster.getDistance(node)-totalAverage)>=this.singleNodeThreshold*clusterStdev && cluster.getTags().size()>=stopCalculationWhenNodesNumberLessThan){
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

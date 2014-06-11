@@ -13,7 +13,9 @@ public class Centroid {
     private double[] location;
 
     public Centroid(double[] location) {
-        this.location = location;
+        double [] _location=new double[location.length];
+        System.arraycopy(location, 0, _location, 0, _location.length);
+        this.location = _location;
     }
 
     public Centroid() {
@@ -36,7 +38,9 @@ public class Centroid {
      * @param location new value of location
      */
     public void setLocation(double[] location) {
-        this.location = location;
+        double [] _location=new double[location.length];
+        System.arraycopy(location, 0, _location, 0, _location.length);
+        this.location = _location;
     }
 
 }

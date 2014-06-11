@@ -83,7 +83,7 @@ public class Cluster {
         double avg=this.getAverageDistance();
         double sum=0;
         for(Node tag : this.tags){
-            sum+=Math.pow(DistanceCalculator.getDistance(tag.getFeature(), this.centroid.getLocation()), 2);
+            sum+=Math.pow(this.getDistance(tag)-avg, 2);
         }
         sum=Math.pow(sum, 0.5);
         return sum/this.tags.size();
