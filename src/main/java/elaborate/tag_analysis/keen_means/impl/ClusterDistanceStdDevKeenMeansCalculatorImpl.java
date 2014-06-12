@@ -213,6 +213,9 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
      * @return
      */
     protected List<Cluster> mergeNodesOfSmallClusters(List<Cluster> original) {
+        if(1==1){
+            return original;
+        }
         List<Cluster> result = new ArrayList<Cluster>();
         List<Cluster> smallClusters = new ArrayList<Cluster>();
         for (Cluster cluster : original) {

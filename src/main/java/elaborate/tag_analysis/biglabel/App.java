@@ -5,30 +5,17 @@
  */
 package elaborate.tag_analysis.biglabel;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import elaborate.tag_analysis.Constant;
-import elaborate.tag_analysis.LinkData;
-import elaborate.tag_analysis.Tag;
 import elaborate.tag_analysis.feature.DistanceCalculator;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
 import elaborate.tag_analysis.kmeans.Centroid;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
-import elaborate.tag_analysis.kmeans.KmeansNodesFactory;
 import elaborate.tag_analysis.kmeans.Node;
 import elaborate.tag_analysis.kmeans.impl.DefaultKmeansCalculatorImpl;
 import elaborate.tag_analysis.utils.KmeansNodesLoader;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -64,10 +51,10 @@ public class App {
             for (Node node : cluster.getTags()) {
                 double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature());
                 //System.out.println(node.getValue()+":"+Math.abs(distance - cluster.getAverageDistance())+":"+(Math.abs(distance - cluster.getAverageDistance()) < 1.0 * cluster.getStdev())+":"+(cluster.getDistance(node)<=cluster.getAverageDistance()));
-                if(cluster.getDistance(node)<=cluster.getAverageDistance()-2*cluster.getStdev()){
+                //if(cluster.getDistance(node)<=cluster.getAverageDistance()-2*cluster.getStdev()){
                     count++;
-                    System.out.println(node.getValue()+":"+cluster.getDistance(node)+":"+cluster.getAverageDistance()+":"+cluster.getStdev()+":"+count);
-                }
+                    System.out.println(node.getValue()+","+cluster.getDistance(node)+","+cluster.getAverageDistance()+","+cluster.getStdev()+","+count);
+                //}
                 //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());
             }  
             System.out.println("=======================================================");
