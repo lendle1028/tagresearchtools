@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package elaborate.tag_analysis.biglabel;
 
 import com.google.gson.Gson;
@@ -40,13 +39,13 @@ public class App {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         //System.out.println("current profile=" + Constant.PROFILE);
         //String keyword = Constant.PROFILE;
-        String keyword="java";
+        String keyword = "facebook";
         int numOfClusters = 10;
         //get k-means nodes
-        List<Node> nodes = KmeansNodesLoader.loadNodes(keyword+".txt");
+        List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
         KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
         Centroid[] centroids = new Centroid[numOfClusters];
         for (int i = 0; i < centroids.length; i++) {
@@ -58,19 +57,29 @@ public class App {
         KeenMeansCalculator keenMeansCalculator = new ClusterDistanceStdDevKeenMeansCalculatorImpl();
         //perform keen-means to get good clusters
         List<Cluster> goodClusters = keenMeansCalculator.calculate(clusters, kmeansCalculator);
-        for(Cluster cluster : goodClusters){
-            System.out.println(cluster.getTags().size());
-        }
-        Cluster testCluster=goodClusters.get(11);
-        System.out.println(testCluster.getTags().size()+":"+testCluster.getStdev()+":"+testCluster.getAverageDistance());
-        for(Node node : testCluster.getTags()){
-            double distance=DistanceCalculator.getDistance(testCluster.getCentroid().getLocation(), node.getFeature());
-            System.out.println(Math.abs(distance-testCluster.getAverageDistance()));
-            if(Math.abs(distance-testCluster.getAverageDistance())<1.0*testCluster.getStdev()){
-                System.out.println(node.getValue());
+        System.out.println("=======================================================");
+        for (Cluster cluster : goodClusters) {
+            System.out.println(cluster.getTags().size() + ":" + cluster.getStdev() + ":" + cluster.getAverageDistance());
+            for (Node node : cluster.getTags()) {
+                double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature());
+                //System.out.println(node.getValue()+":"+Math.abs(distance - cluster.getAverageDistance())+":"+(Math.abs(distance - cluster.getAverageDistance()) < 1.0 * cluster.getStdev())+":"+(cluster.getDistance(node)<=cluster.getAverageDistance()));
+                if(cluster.getDistance(node)<=cluster.getAverageDistance()*0.8){
+                    System.out.println(node.getValue());
+                }
+                //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());
             }
-            //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());
+            System.out.println("=======================================================");
         }
+//        Cluster testCluster = goodClusters.get(3);
+//        System.out.println(testCluster.getTags().size() + ":" + testCluster.getStdev() + ":" + testCluster.getAverageDistance());
+//        for (Node node : testCluster.getTags()) {
+//            double distance = DistanceCalculator.getDistance(testCluster.getCentroid().getLocation(), node.getFeature());
+//            System.out.println(Math.abs(distance - testCluster.getAverageDistance()));
+//            if (Math.abs(distance - testCluster.getAverageDistance()) < 1.0 * testCluster.getStdev()) {
+//                System.out.println(node.getValue());
+//            }
+//            //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());
+//        }
     }
-    
+
 }

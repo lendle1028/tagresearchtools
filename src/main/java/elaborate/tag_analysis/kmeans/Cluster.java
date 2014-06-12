@@ -35,7 +35,6 @@ public class Cluster {
         this.tags = tags;
     }
 
-
     /**
      * Get the value of centroid
      *
@@ -53,39 +52,64 @@ public class Cluster {
     public void setCentroid(Centroid centroid) {
         this.centroid = centroid;
     }
+
     /**
      * return the distance between the tag to the centroid of this cluster
+     *
      * @param tag
-     * @return 
+     * @return
      */
-    public double getDistance(Node tag){
-        double [] feature1=tag.getFeature();
-        double [] feature2=this.centroid.getLocation();
+    public double getDistance(Node tag) {
+        double[] feature1 = tag.getFeature();
+        double[] feature2 = this.centroid.getLocation();
         return DistanceCalculator.getDistance(feature1, feature2);
     }
+
     /**
-     * return average distance between tags in this cluster and
-     * the centroid
-     * @return 
+     * return average distance between tags in this cluster and the centroid
+     *
+     * @return
      */
-    public double getAverageDistance(){
-        double sum=0;
-        for(Node tag : this.tags){
-            sum+=this.getDistance(tag);
+    public double getAverageDistance() {
+        double sum = 0;
+        for (Node tag : this.tags) {
+            sum += this.getDistance(tag);
         }
-        return sum/tags.size();
+        return sum / tags.size();
     }
+
     /**
      * return stdev of distance in this cluster
-     * @return 
+     *
+     * @return
      */
-    public double getStdev(){
-        double avg=this.getAverageDistance();
-        double sum=0;
-        for(Node tag : this.tags){
-            sum+=Math.pow(this.getDistance(tag)-avg, 2);
+    public double getStdev() {
+        double avg = this.getAverageDistance();
+        double sum = 0;
+        for (Node tag : this.tags) {
+            sum += Math.pow(this.getDistance(tag) - avg, 2);
         }
-        sum=Math.pow(sum, 0.5);
-        return sum/this.tags.size();
+        sum = Math.pow(sum, 0.5);
+        return sum / this.tags.size();
+    }
+
+    /**
+     * add a node to the cluster, also recalculate its centroid
+     *
+     * @param node
+     */
+    public void addTag(Node node) {
+        this.tags.add(0, node);
+        double[] newSum = new double[this.centroid.getLocation().length];
+        double[] newCentroid = new double[this.centroid.getLocation().length];
+        for (Node tag : this.tags) {
+            for (int i = 0; i < newSum.length; i++) {
+                newSum[i] += tag.getFeature()[i];
+            }
+        }
+        for (int i = 0; i < newSum.length; i++) {
+            newCentroid[i]=newSum[i]/this.tags.size();
+        }
+        this.centroid.setLocation(newCentroid);
     }
 }

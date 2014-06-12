@@ -5,9 +5,11 @@
 package elaborate.tag_analysis.kmeans.impl;
 
 import elaborate.tag_analysis.kmeans.Centroid;
+import elaborate.tag_analysis.kmeans.CentroidSelector;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
+import elaborate.tag_analysis.kmeans.SimpleCentroidSelectorImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  * @author lendle
  */
 public class DefaultKmeansCalculatorImpl implements KmeansCalculator{
-
+    private CentroidSelector centroidSelector=new SimpleCentroidSelectorImpl();
     @Override
     public List<Cluster> calculate(List<Centroid> centroids, List<Node> tags) {
         Cluster [] clusters=new Cluster[centroids.size()];
@@ -72,16 +74,21 @@ public class DefaultKmeansCalculatorImpl implements KmeansCalculator{
 
     @Override
     public List<Cluster> calculate(int numberOfCentroids, List<Node> tags) {
-        Centroid[] centroids = new Centroid[numberOfCentroids];
-        for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(tags.get(i).getFeature());
-        }
-        return this.calculate(Arrays.asList(centroids), tags);
+        return this.calculate(Arrays.asList(this.centroidSelector.selectNewCentroids(tags, numberOfCentroids)), tags);
     }
 
     @Override
     public List<Cluster> calculate(int numberOfNewCentroids, Cluster cluster) {
         return this.calculate(numberOfNewCentroids, cluster.getTags());
     }
+    
+    public CentroidSelector getCentroidSelector() {
+        return centroidSelector;
+    }
+
+    public void setCentroidSelector(CentroidSelector centroidSelector) {
+        this.centroidSelector = centroidSelector;
+    }
+    
     
 }

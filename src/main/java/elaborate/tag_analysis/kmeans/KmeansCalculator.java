@@ -26,4 +26,7 @@ public interface KmeansCalculator {
      * @return 
      */
     public List<Cluster> calculate(int numberOfNewCentroids, Cluster cluster);
+    
+    public void setCentroidSelector(CentroidSelector selector);
+    public CentroidSelector getCentroidSelector();
 }
