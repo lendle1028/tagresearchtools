@@ -11,8 +11,8 @@ import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
+import elaborate.tag_analysis.kmeans.RandomCentroidSelectorImpl;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,7 +33,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 
     private double threshold = 1.0;
     private double singleNodeThreshold = 2.0;
-    private int stopCalculationWhenNodesNumberLessThan = 5;
+    private int stopCalculationWhenNodesNumberLessThan = 3;
 
     /**
      *
@@ -54,10 +54,11 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 
     @Override
     public List<Cluster> calculate(List<Cluster> clusters, KmeansCalculator kmeansCalculator) {
+        kmeansCalculator.setCentroidSelector(new RandomCentroidSelectorImpl());
         ProblemSpace context=new ProblemSpace();
         context.setGoodClusters(clusters);
         int round=0;
-        round: while(true && round<100){
+        round: while(true && round<10){
             round++;
             this.execute(kmeansCalculator, context);
             List<Cluster> allClusters=context.getAllClusters();

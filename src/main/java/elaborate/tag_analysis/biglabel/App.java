@@ -42,7 +42,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         //System.out.println("current profile=" + Constant.PROFILE);
         //String keyword = Constant.PROFILE;
-        String keyword = "facebook";
+        String keyword = "java";
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
@@ -60,14 +60,16 @@ public class App {
         System.out.println("=======================================================");
         for (Cluster cluster : goodClusters) {
             System.out.println(cluster.getTags().size() + ":" + cluster.getStdev() + ":" + cluster.getAverageDistance());
+            int count=0;
             for (Node node : cluster.getTags()) {
                 double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature());
                 //System.out.println(node.getValue()+":"+Math.abs(distance - cluster.getAverageDistance())+":"+(Math.abs(distance - cluster.getAverageDistance()) < 1.0 * cluster.getStdev())+":"+(cluster.getDistance(node)<=cluster.getAverageDistance()));
-                if(cluster.getDistance(node)<=cluster.getAverageDistance()*0.8){
-                    System.out.println(node.getValue());
+                if(cluster.getDistance(node)<=cluster.getAverageDistance()-2*cluster.getStdev()){
+                    count++;
+                    System.out.println(node.getValue()+":"+cluster.getDistance(node)+":"+cluster.getAverageDistance()+":"+cluster.getStdev()+":"+count);
                 }
                 //System.out.println(DistanceCalculator.getDistance(goodClusters.get(0).getCentroid().getLocation(), node.getFeature())+"/"+goodClusters.get(0).getAverageDistance());
-            }
+            }  
             System.out.println("=======================================================");
         }
 //        Cluster testCluster = goodClusters.get(3);
