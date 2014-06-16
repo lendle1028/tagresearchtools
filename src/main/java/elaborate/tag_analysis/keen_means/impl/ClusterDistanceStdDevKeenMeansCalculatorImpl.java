@@ -205,6 +205,29 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
         context.setOverallAverageDistance(overallAverage);
         context.setOverallStdev2AverageDistance(overallStdev);
     }
+    /**
+     * split long tails (>3 stdev) to new clusters
+     * @param original
+     * @return 
+     */
+    public List<Cluster> splitLongTails(List<Cluster> original){
+        List<Cluster> result = new ArrayList<Cluster>();
+        for(Cluster cluster : original){
+            Cluster centralCluster=new Cluster();
+            Cluster longTail=new Cluster();
+            for(Node node : cluster.getTags()){
+                double distance=cluster.getDistance(node);
+                if(distance>3*cluster.getStdev()+cluster.getAverageDistance()){
+                    longTail.addTag(node);
+                }else{
+                    centralCluster.addTag(node);
+                }
+            }
+            if(centralCluster.getTags().isEmpty()==false){
+                //centralCluster
+            }
+        }
+    }
     
     /**
      * move nodes of small clusters to the nearest cluster
