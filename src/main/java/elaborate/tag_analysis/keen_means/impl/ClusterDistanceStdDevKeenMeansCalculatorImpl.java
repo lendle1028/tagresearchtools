@@ -13,6 +13,7 @@ import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
 import elaborate.tag_analysis.kmeans.RandomCentroidSelectorImpl;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 
     private double threshold = 1.0;
     private double singleNodeThreshold = 2.0;
-    private int stopCalculationWhenNodesNumberLessThan = 3;
+    private int stopCalculationWhenNodesNumberLessThan = 5;
 
     /**
      *
@@ -57,22 +58,30 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
         kmeansCalculator.setCentroidSelector(new RandomCentroidSelectorImpl());
         ProblemSpace context = new ProblemSpace();
         context.setGoodClusters(clusters);
-        int round = 0;
-        round:
-        while (true && round < 10) {
-            round++;
+        //@todo: the current merge algorithm has defects
+//        int round = 0;
+//        round:
+//        while (true && round < 10) {
+//            round++;
+//            this.execute(kmeansCalculator, context);
+//            List<Cluster> allClusters = context.getAllClusters();
+//            for (Cluster cluster : allClusters) {
+//                if (cluster.getTags().size() < this.stopCalculationWhenNodesNumberLessThan) {
+//                    //this is a small group
+//                    continue round;
+//                }
+//            }
+//            //there is no small group left
+//            break;
+//        }
+        List<Cluster> result = null;
+        for (int i = 0; i < 10; i++) {
             this.execute(kmeansCalculator, context);
-            List<Cluster> allClusters = context.getAllClusters();
-            for (Cluster cluster : allClusters) {
-                if (cluster.getTags().size() < this.stopCalculationWhenNodesNumberLessThan) {
-                    //this is a small group
-                    continue round;
-                }
-            }
-            //there is no small group left
-            break;
+            result = this.mergeNodesOfSmallClusters(this.splitLongTails(context.getAllClusters()));
+            context.setGoodClusters(result);
         }
-        return this.mergeNodesOfSmallClusters(context.getAllClusters());
+        return result;
+        //return this.mergeNodesOfSmallClusters(result);
     }
 
     /**
@@ -114,6 +123,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
         if (Math.abs((cluster.getAverageDistance() - context.getOverallAverageDistance())) >= threshold * context.getOverallStdev2AverageDistance() && cluster.getTags().size() >= stopCalculationWhenNodesNumberLessThan) {
             return true;
         } else {
+            //attack outliers
             for (Node node : cluster.getTags()) {
                 if (Math.abs(cluster.getDistance(node) - context.getOverallAverageDistance()) >= this.singleNodeThreshold * context.getOverallStdev2AverageDistance() && cluster.getTags().size() >= stopCalculationWhenNodesNumberLessThan) {
                     return true;
@@ -131,38 +141,39 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
     protected void execute(KmeansCalculator kmeansCalculator, ProblemSpace context) {
         //List<Cluster> clusters=this.mergeNodesOfSmallClusters(context.getAllClusters());
         List<Cluster> originalClusters = context.getAllClusters();
-        List<Cluster> clusters = new ArrayList<>();
-        for (Cluster cluster : originalClusters) {
-            if (cluster.getTags().size() > this.stopCalculationWhenNodesNumberLessThan) {
-                boolean longTailExists = false;
-                for (Node node : cluster.getTags()) {
-                    if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
-                        longTailExists = true;
-                        break;
-                    }
-                }
-                if (longTailExists) {
-                    Cluster newCluster1 = new Cluster();
-                    Cluster newCluster2 = new Cluster();
-                    for (Node node : cluster.getTags()) {
-                        if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
-                            newCluster2.getTags().add(node);
-                        }else{
-                            newCluster1.getTags().add(node);
-                        }
-                    }
-                    newCluster1.reset();
-                    newCluster2.reset();
-                    clusters.add(newCluster1);
-                    clusters.add(newCluster2);
-                    System.out.println("long tail: "+newCluster1.getTags().size()+":"+newCluster2.getTags().size());
-                }else{
-                    clusters.add(cluster);
-                }
-            } else {
-                clusters.add(cluster);
-            }
-        }
+        List<Cluster> clusters = originalClusters;
+//        List<Cluster> clusters = new ArrayList<>();
+//        for (Cluster cluster : originalClusters) {
+//            if (cluster.getTags().size() > this.stopCalculationWhenNodesNumberLessThan) {
+//                boolean longTailExists = false;
+//                for (Node node : cluster.getTags()) {
+//                    if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
+//                        longTailExists = true;
+//                        break;
+//                    }
+//                }
+//                if (longTailExists) {
+//                    Cluster newCluster1 = new Cluster();
+//                    Cluster newCluster2 = new Cluster();
+//                    for (Node node : cluster.getTags()) {
+//                        if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
+//                            newCluster2.getTags().add(node);
+//                        }else{
+//                            newCluster1.getTags().add(node);
+//                        }
+//                    }
+//                    newCluster1.reset();
+//                    newCluster2.reset();
+//                    clusters.add(newCluster1);
+//                    clusters.add(newCluster2);
+//                    System.out.println("long tail: "+newCluster1.getTags().size()+":"+newCluster2.getTags().size());
+//                }else{
+//                    clusters.add(cluster);
+//                }
+//            } else {
+//                clusters.add(cluster);
+//            }
+//        }
 
         double overallAverage = getAverageDistanceAcrossClusters(clusters);
         Logger.getLogger(this.getClass().getName()).info("average distance across clusters=" + (overallAverage));
@@ -184,7 +195,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
         for (Cluster cluster : clusters) {
             if (this.isBadCluster(cluster, context)) {
                 //this is a bad cluster
-                Logger.getLogger(this.getClass().getName()).info("bad cluster: " + clusterIndex + ":" + (cluster.getAverageDistance() - overallAverage) + ":" + (+(cluster.getAverageDistance() - overallAverage) / overallStdev));
+                //Logger.getLogger(this.getClass().getName()).info("bad cluster: " + clusterIndex + ":" + (cluster.getAverageDistance() - overallAverage) + ":" + (+(cluster.getAverageDistance() - overallAverage) / overallStdev));
                 badClusters.add(cluster);
             } else {
                 goodClusters.add(cluster);
@@ -211,7 +222,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                 //verify
                 for (Cluster newCluster : newClusters) {
                     if (this.isBadCluster(cluster, context)) {
-                        Logger.getLogger(this.getClass().getName()).info("bad cluster: " + (newCluster.getAverageDistance() - overallAverage) + ":" + newCluster.getTags().size());
+                        Logger.getLogger(this.getClass().getName()).info("bad cluster: " + (newCluster.getAverageDistance() - overallAverage) + ":" + newCluster.getTags().size() + ", " + cluster.getStdev());
                         badClusters.add(newCluster);
                     } else {
                         goodClusters.add(newCluster);
@@ -219,36 +230,47 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                 }
             }
         }
+
         Logger.getLogger(this.getClass().getName()).info("final numbers of clusters=" + goodClusters.size() + ", total average=" + overallAverage + ", badClusters=" + badClusters.size());
         context.setGoodClusters(goodClusters);
         context.setBadClusters(badClusters);
         context.setOverallAverageDistance(overallAverage);
         context.setOverallStdev2AverageDistance(overallStdev);
     }
+
     /**
      * split long tails (>3 stdev) to new clusters
+     *
      * @param original
-     * @return 
+     * @return
      */
-    public List<Cluster> splitLongTails(List<Cluster> original){
+    public List<Cluster> splitLongTails(List<Cluster> original) {
         List<Cluster> result = new ArrayList<Cluster>();
-        for(Cluster cluster : original){
-            Cluster centralCluster=new Cluster();
-            Cluster longTail=new Cluster();
-            for(Node node : cluster.getTags()){
-                double distance=cluster.getDistance(node);
-                if(distance>3*cluster.getStdev()+cluster.getAverageDistance()){
-                    longTail.addTag(node);
-                }else{
-                    centralCluster.addTag(node);
+        for (Cluster cluster : original) {
+            Cluster centralCluster = new Cluster();
+            Cluster longTail = new Cluster();
+            for (Node node : cluster.getTags()) {
+                double distance = cluster.getDistance(node);
+                if (distance > (2 * cluster.getStdev() + cluster.getAverageDistance())) {
+                    longTail.getTags().add(node);
+                } else {
+                    centralCluster.getTags().add(node);
                 }
             }
-            if(centralCluster.getTags().isEmpty()==false){
+            if (longTail.getTags().isEmpty() == false) {
+                //longTail
+                longTail.reset();
+                result.add(longTail);
+            }
+            if (centralCluster.getTags().isEmpty() == false) {
                 //centralCluster
+                centralCluster.reset();
+                result.add(centralCluster);
             }
         }
+        return result;
     }
-    
+
     /**
      * move nodes of small clusters to the nearest cluster
      *
@@ -256,9 +278,6 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
      * @return
      */
     protected List<Cluster> mergeNodesOfSmallClusters(List<Cluster> original) {
-//        if(1==1){
-//            return original;
-//        }
         List<Cluster> result = new ArrayList<Cluster>();
         List<Cluster> smallClusters = new ArrayList<Cluster>();
         for (Cluster cluster : original) {
@@ -269,6 +288,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
         }
         for (Cluster cluster : smallClusters) {
+            List<Node> leftNodes = new ArrayList<Node>();
             for (Node node : cluster.getTags()) {
                 double minDistance = Double.MAX_VALUE;
                 Cluster targetCluster = null;
@@ -279,8 +299,10 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                         targetCluster = largerCluster;
                     }
                 }
-                targetCluster.getTags().add(node);
-                targetCluster.reset();
+                if (targetCluster != null) {
+                    targetCluster.getTags().add(node);
+                    targetCluster.reset();
+                }
             }
         }
         return result;

@@ -33,7 +33,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         //System.out.println("current profile=" + Constant.PROFILE);
         //String keyword = Constant.PROFILE;
-        String keyword = "java";
+        String keyword = "test";
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
@@ -67,6 +67,7 @@ public class App {
         File reportFolder=new File("report", formater.format(new Date()));
         reportFolder.mkdirs();
         ClusterReporter.generateSingleHTMLReport(goodClusters, new File(reportFolder, "report.html"));
+        
 //        Cluster testCluster = goodClusters.get(3);
 //        System.out.println(testCluster.getTags().size() + ":" + testCluster.getStdev() + ":" + testCluster.getAverageDistance());
 //        for (Node node : testCluster.getTags()) {

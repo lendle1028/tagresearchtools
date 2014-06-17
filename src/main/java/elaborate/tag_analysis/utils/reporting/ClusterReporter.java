@@ -79,11 +79,11 @@ public class ClusterReporter {
                     if (nextTag != null) {
                         double nextTagDistance = cluster.getDistance(nextTag);
                         if (nextTagDistance >= clusterAvg + 3 * stdev && distance < clusterAvg + 3 * stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>3 stdev</td><td></td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>3 stdev</td><td>"+(clusterAvg + 3 * stdev)+"</td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg + 2 * stdev && distance < clusterAvg + 2 * stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>2 stdev</td><td></td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>2 stdev</td><td>"+(clusterAvg + 2 * stdev)+"</td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg + stdev && distance < clusterAvg + stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>1 stdev</td><td></td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>1 stdev</td><td>"+(clusterAvg + 1 * stdev)+"</td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg && distance < clusterAvg) {
                             writer.println("<tr style='background-color: blue; color: yellow'><td>AVG</td><td></td><td></td><td></td></tr>");
                         }
