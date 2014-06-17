@@ -1,0 +1,42 @@
+package elaborate.tag_analysis.keen_means;
+
+import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
+import elaborate.tag_analysis.kmeans.*;
+import elaborate.tag_analysis.kmeans.impl.DefaultKmeansCalculatorImpl;
+import elaborate.tag_analysis.utils.KmeansNodesLoader;
+import elaborate.tag_analysis.utils.reporting.ClusterReporter;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * read tag data, perform k-means calculation
+ *
+ */
+public class App {
+
+    public static void main(String[] args) throws Exception {
+        String keyword = "test";
+        int numOfClusters = 10;
+        //get k-means nodes
+        List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
+        KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
+        Centroid[] centroids = new Centroid[numOfClusters];
+        for (int i = 0; i < centroids.length; i++) {
+            centroids[i] = new Centroid(nodes.get(i).getFeature());
+        }
+        //perform k-means algorithm to get clusters
+        List<Cluster> clusters = null;
+        clusters = kmeansCalculator.calculate(Arrays.asList(centroids), nodes);
+        KeenMeansCalculator keenMeansCalculator=new ClusterDistanceStdDevKeenMeansCalculatorImpl();
+        clusters=keenMeansCalculator.calculate(clusters, kmeansCalculator);
+        SimpleDateFormat formater=new SimpleDateFormat("yyyyMMddHHmmss");
+        File reportFolder=new File("report", "keenmeans");
+        reportFolder.mkdirs();
+        File kmeansReportFile=new File(reportFolder, keyword+"_"+formater.format(new Date())+".html");
+        ClusterReporter.generateSingleHTMLReport(clusters, kmeansReportFile);
+    }
+
+}

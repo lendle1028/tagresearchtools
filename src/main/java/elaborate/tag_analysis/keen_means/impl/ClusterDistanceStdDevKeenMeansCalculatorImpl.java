@@ -55,7 +55,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 
     @Override
     public List<Cluster> calculate(List<Cluster> clusters, KmeansCalculator kmeansCalculator) {
-        kmeansCalculator.setCentroidSelector(new RandomCentroidSelectorImpl());
+        //kmeansCalculator.setCentroidSelector(new RandomCentroidSelectorImpl());
         ProblemSpace context = new ProblemSpace();
         context.setGoodClusters(clusters);
         //@todo: the current merge algorithm has defects
@@ -74,13 +74,17 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 //            //there is no small group left
 //            break;
 //        }
+        
         List<Cluster> result = null;
-        for (int i = 0; i < 10; i++) {
-            this.execute(kmeansCalculator, context);
-            result = this.mergeNodesOfSmallClusters(this.splitLongTails(context.getAllClusters()));
-            context.setGoodClusters(result);
-        }
+        this.execute(kmeansCalculator, context);
+        result=context.getGoodClusters();
+//        for (int i = 0; i < 10; i++) {
+//            this.execute(kmeansCalculator, context);
+//            result = this.mergeNodesOfSmallClusters(this.splitLongTails(context.getAllClusters()));
+//            context.setGoodClusters(result);
+//        }
         return result;
+        
         //return this.mergeNodesOfSmallClusters(result);
     }
 
