@@ -40,7 +40,7 @@ public class App {
         KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
         Centroid[] centroids = new Centroid[numOfClusters];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(nodes.get(i).getFeature());
+            centroids[i] = new Centroid(nodes.get(i).getFeature().getVector());
         }
         //perform k-means algorithm to get clusters
         List<Cluster> clusters = null;
@@ -53,7 +53,7 @@ public class App {
             System.out.println(cluster.getTags().size() + ":" + cluster.getStdev() + ":" + cluster.getAverageDistance());
             int count=0;
             for (Node node : cluster.getTags()) {
-                double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature());
+                double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature().getVector());
                 //System.out.println(node.getValue()+":"+Math.abs(distance - cluster.getAverageDistance())+":"+(Math.abs(distance - cluster.getAverageDistance()) < 1.0 * cluster.getStdev())+":"+(cluster.getDistance(node)<=cluster.getAverageDistance()));
                 //if(cluster.getDistance(node)<=cluster.getAverageDistance()-2*cluster.getStdev()){
                     count++;

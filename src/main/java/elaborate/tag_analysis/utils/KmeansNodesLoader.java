@@ -31,7 +31,7 @@ public class KmeansNodesLoader {
                 tags.put(tagValue, "");
             }
         }
-        System.out.println(tags.size() + "/" + list.size());
+        //System.out.println(tags.size() + "/" + list.size());
         //get k-means nodes
         List<Node> nodes = KmeansNodesFactory.getNodes(list);
         return nodes;

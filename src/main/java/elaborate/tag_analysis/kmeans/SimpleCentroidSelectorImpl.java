@@ -19,7 +19,7 @@ public class SimpleCentroidSelectorImpl implements CentroidSelector{
     public Centroid[] selectNewCentroids(Cluster cluster, int numberOfCentroids) {
         Centroid[] centroids = new Centroid[numberOfCentroids];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(cluster.getTags().get(i).getFeature());
+            centroids[i] = new Centroid(cluster.getTags().get(i).getFeature().getVector());
         }
         return centroids;
     }
@@ -28,7 +28,7 @@ public class SimpleCentroidSelectorImpl implements CentroidSelector{
     public Centroid[] selectNewCentroids(List<Node> tags, int numberOfCentroids) {
         Centroid[] centroids = new Centroid[numberOfCentroids];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(tags.get(i).getFeature());
+            centroids[i] = new Centroid(tags.get(i).getFeature().getVector());
         }
         return centroids;
     }

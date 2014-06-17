@@ -12,10 +12,13 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -60,22 +63,34 @@ public class ClusterReporter {
      * @throws Exception
      */
     public static void generateSingleHTMLReport(List<Cluster> clusters, File file) throws Exception {
-        int index = 1;
-
         try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"))) {
             writer.println("<html><body>");
+            writer.println("<a href='#clusters'>Clusters</a> <a href='#tags'>Tags</a> <a href='#urls'>URLs</a>");
+            List<Node> allTags=new ArrayList<Node>();//collect all tags for future processing
+            Map<URL, List<Node>> url2TagMap=new HashMap<URL, List<Node>>();//collect all urls for future processing
+            //output clusters
+            writer.println("<a name='clusters'/>");
             for (Cluster cluster : clusters) {    
                 List<Node> tags = sortTagsByDistance(cluster);
+                allTags.addAll(tags);
                 double clusterAvg = cluster.getAverageDistance();
                 double stdev = cluster.getStdev();
                 writer.println("<table border='1'>");
                 writer.println("<tr><th>Tag</th><th>Distance</th><th>Cluster Avg</th><th>Cluster Stdev</th></tr>");
                 for (int i = 0; i < tags.size(); i++) {
                     Node tag = tags.get(i);
+                    for(URL url: tag.getFeature().getUrls()){
+                        List<Node> urlTags=url2TagMap.get(url);
+                        if(urlTags==null){
+                            urlTags=new ArrayList<Node>();
+                            url2TagMap.put(url, urlTags);
+                        }
+                        urlTags.add(tag);
+                    }
                     double distance = cluster.getDistance(tag);
                     Node nextTag = ((i + 1) < tags.size()) ? tags.get(i + 1) : null;
-                    writer.println(String.format("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
-                            tag.getValue(), distance, clusterAvg, stdev));
+                    writer.println(String.format("<tr><td><a href='#%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            tag.getValue(), tag.getValue(), distance, clusterAvg, stdev));
                     if (nextTag != null) {
                         double nextTagDistance = cluster.getDistance(nextTag);
                         if (nextTagDistance >= clusterAvg + 3 * stdev && distance < clusterAvg + 3 * stdev) {
@@ -92,8 +107,31 @@ public class ClusterReporter {
                 writer.println("</table>");
                 writer.println("<hr/>");
             }
-             writer.println("</body></html>");
-            index++;
+            //output tag to urls
+            writer.println("<a name='tags'/>");
+            writer.println("<table border='1'>");
+            writer.println("<tr><th>Tag</th><th>URLs</th></tr>");
+            for(Node tag: allTags){
+                List<URL> urls=tag.getFeature().getUrls();
+                StringBuffer urlsList=new StringBuffer();
+                for(URL url : urls){
+                    urlsList.append(String.format("<li><a href='%s'>%s</a>&nbsp;&nbsp;&nbsp;<a href='#%s'>tags</a></li>", url.toString(), url.toString(), url.toString()));
+                }
+                writer.println(String.format("<tr><td><a name='%s'/>%s</td><td><ul>%s</ul></td></tr>", tag.getValue(), tag.getValue(), urlsList.toString()));
+            }
+            writer.println("</table>");
+            //output url to tags
+            writer.println("<a name='urls'/>");
+            writer.println("<table border='1'>");
+            writer.println("<tr><th>URL</th><th>Tags</th></tr>");
+            for(URL url: url2TagMap.keySet()){
+                StringBuffer tagsList=new StringBuffer();
+                for(Node tag: url2TagMap.get(url)){
+                    tagsList.append(String.format("<li>%s</li>", tag.getValue()));
+                }
+                writer.println(String.format("<tr><td><a name='%s'/>%s</td><td><ul>%s</ul></td></tr>", url, url, tagsList.toString()));
+            }
+            writer.println("</body></html>");
         }
     }
 

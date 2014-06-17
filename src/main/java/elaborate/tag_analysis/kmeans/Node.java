@@ -4,18 +4,30 @@
  */
 package elaborate.tag_analysis.kmeans;
 
+import elaborate.tag_analysis.feature.Feature;
+
 /**
  * a k-means node
  * @author lendle
  */
 public class Node extends elaborate.tag_analysis.Tag{
-    private double[] feature;
+//    private double[] feature;
+//
+//    public double[] getFeature() {
+//        return feature;
+//    }
+//
+//    public void setFeature(double[] feature) {
+//        this.feature = feature;
+//    }
+//    
+    private Feature feature=null;
 
-    public double[] getFeature() {
+    public Feature getFeature() {
         return feature;
     }
 
-    public void setFeature(double[] feature) {
+    public void setFeature(Feature feature) {
         this.feature = feature;
     }
     

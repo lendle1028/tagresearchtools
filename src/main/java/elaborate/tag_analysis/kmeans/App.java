@@ -1,17 +1,11 @@
 package elaborate.tag_analysis.kmeans;
 
-import elaborate.tag_analysis.*;
-import elaborate.tag_analysis.feature.DistanceCalculator;
-import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
-import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
 import elaborate.tag_analysis.kmeans.impl.DefaultKmeansCalculatorImpl;
 import elaborate.tag_analysis.utils.KmeansNodesLoader;
 import elaborate.tag_analysis.utils.reporting.ClusterReporter;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +23,7 @@ public class App {
         KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
         Centroid[] centroids = new Centroid[numOfClusters];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(nodes.get(i).getFeature());
+            centroids[i] = new Centroid(nodes.get(i).getFeature().getVector());
         }
         //perform k-means algorithm to get clusters
         List<Cluster> clusters = null;

@@ -63,7 +63,7 @@ public class Cluster {
      * @return
      */
     public double getDistance(Node tag) {
-        double[] feature1 = tag.getFeature();
+        double[] feature1 = tag.getFeature().getVector();
         double[] feature2 = this.centroid.getLocation();
         return DistanceCalculator.getDistance(feature1, feature2);
     }
@@ -103,11 +103,11 @@ public class Cluster {
      * invoke the method after tags are modified
      */
     public void reset(){
-        double[] newSum = new double[this.tags.get(0).getFeature().length];
-        double[] newCentroid = new double[this.tags.get(0).getFeature().length];
+        double[] newSum = new double[this.tags.get(0).getFeature().getVector().length];
+        double[] newCentroid = new double[this.tags.get(0).getFeature().getVector().length];
         for (Node tag : this.tags) {
             for (int i = 0; i < newSum.length; i++) {
-                newSum[i] += tag.getFeature()[i];
+                newSum[i] += tag.getFeature().getVector()[i];
             }
         }
         for (int i = 0; i < newSum.length; i++) {

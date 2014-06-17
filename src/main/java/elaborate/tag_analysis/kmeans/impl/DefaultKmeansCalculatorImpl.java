@@ -55,7 +55,7 @@ public class DefaultKmeansCalculatorImpl implements KmeansCalculator{
             for (Node tag : c.getTags()) {
                 //System.out.println("\t"+tag.getValue());
                 for (int i = 0; i < newSum.length; i++) {
-                    newSum[i] += tag.getFeature()[i];
+                    newSum[i] += tag.getFeature().getVector()[i];
                 }
             }
             for (int i = 0; i < newSum.length; i++) {
