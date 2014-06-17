@@ -5,8 +5,11 @@
 package elaborate.tag_analysis.kmeans;
 
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -19,6 +22,8 @@ public class Cluster {
     private double avg=-1,  stdev=-1;
     private boolean avgCalculated=false;
     private boolean stdevCalculated=false;
+    private boolean urlCalculated=false;
+    private List<URL> urls=new ArrayList<URL>();
 
     /**
      * Get the value of tags
@@ -119,8 +124,49 @@ public class Cluster {
         this.centroid.setLocation(newCentroid);
         this.avg=this.calculateAverageDistance();
         this.stdev=this.calculateStdev();
+        
+        this.urlCalculated=false;//lazy calculation of covered urls
     }
-    
+    /**
+     * return all urls covered by this cluster
+     * @return 
+     */
+    public List<URL> getCoveredURLs(){
+        if(this.urlCalculated==true){
+            return this.urls;
+        }else{
+            this.urls.clear();
+            Map<URL, String> map=new HashMap<URL, String>();
+            for(Node tag : this.tags){
+                List<URL> urls=tag.getFeature().getUrls();
+                for(URL url : urls){
+                    map.put(url, "");
+                }
+            }
+            this.urls.addAll(map.keySet());
+            this.urlCalculated=true;
+            return this.urls;
+        }
+    }
+    /**
+     * return % of urls of this cluster covered by the given tag
+     * @param tag
+     * @return 
+     */
+    public double getURLCoverage(Node tag){
+        List<URL> allURL=this.getCoveredURLs();
+        Map<URL, String> map=new HashMap<>();
+        for(URL url : allURL){
+            map.put(url, "");
+        }
+        double count=0;
+        for(URL url : tag.getFeature().getUrls()){
+            if(map.containsKey(url)){
+                count++;
+            }
+        }
+        return count/allURL.size();
+    }
     protected double calculateAverageDistance() {
         double sum = 0;
         for (Node tag : this.tags) {

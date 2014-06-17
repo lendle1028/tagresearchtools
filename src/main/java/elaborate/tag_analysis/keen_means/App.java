@@ -18,7 +18,7 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String keyword = "facebook";
+        String keyword = "java";
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");

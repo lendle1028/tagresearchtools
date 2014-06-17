@@ -76,7 +76,7 @@ public class ClusterReporter {
                 double clusterAvg = cluster.getAverageDistance();
                 double stdev = cluster.getStdev();
                 writer.println("<table border='1'>");
-                writer.println("<tr><th>Tag</th><th>Distance</th><th>Cluster Avg</th><th>Cluster Stdev</th></tr>");
+                writer.println("<tr><th>Tag</th><th>Distance</th><th>Cluster Avg</th><th>Cluster Stdev</th><th>Coverage</th></tr>");
                 for (int i = 0; i < tags.size(); i++) {
                     Node tag = tags.get(i);
                     for(URL url: tag.getFeature().getUrls()){
@@ -89,18 +89,18 @@ public class ClusterReporter {
                     }
                     double distance = cluster.getDistance(tag);
                     Node nextTag = ((i + 1) < tags.size()) ? tags.get(i + 1) : null;
-                    writer.println(String.format("<tr><td><a href='#%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>",
-                            tag.getValue(), tag.getValue(), distance, clusterAvg, stdev));
+                    writer.println(String.format("<tr><td><a href='#%s'>%s</a></td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            tag.getValue(), tag.getValue(), distance, clusterAvg, stdev, cluster.getURLCoverage(tag)));
                     if (nextTag != null) {
                         double nextTagDistance = cluster.getDistance(nextTag);
                         if (nextTagDistance >= clusterAvg + 3 * stdev && distance < clusterAvg + 3 * stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>3 stdev</td><td>"+(clusterAvg + 3 * stdev)+"</td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>3 stdev</td><td>"+(clusterAvg + 3 * stdev)+"</td><td></td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg + 2 * stdev && distance < clusterAvg + 2 * stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>2 stdev</td><td>"+(clusterAvg + 2 * stdev)+"</td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>2 stdev</td><td>"+(clusterAvg + 2 * stdev)+"</td><td></td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg + stdev && distance < clusterAvg + stdev) {
-                            writer.println("<tr style='background-color: red; color: yellow'><td>1 stdev</td><td>"+(clusterAvg + 1 * stdev)+"</td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: red; color: yellow'><td>1 stdev</td><td>"+(clusterAvg + 1 * stdev)+"</td><td></td><td></td><td></td></tr>");
                         } else if (nextTagDistance >= clusterAvg && distance < clusterAvg) {
-                            writer.println("<tr style='background-color: blue; color: yellow'><td>AVG</td><td></td><td></td><td></td></tr>");
+                            writer.println("<tr style='background-color: blue; color: yellow'><td>AVG</td><td></td><td></td><td></td><td></td></tr>");
                         }
                     }
                 }
