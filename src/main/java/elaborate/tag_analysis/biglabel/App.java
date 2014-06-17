@@ -14,7 +14,11 @@ import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
 import elaborate.tag_analysis.kmeans.impl.DefaultKmeansCalculatorImpl;
 import elaborate.tag_analysis.utils.KmeansNodesLoader;
+import elaborate.tag_analysis.utils.reporting.ClusterReporter;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,6 +63,10 @@ public class App {
             }  
             System.out.println("=======================================================");
         }
+        SimpleDateFormat formater=new SimpleDateFormat("yyyyMMddHHmmss");
+        File reportFolder=new File("report", formater.format(new Date()));
+        reportFolder.mkdirs();
+        ClusterReporter.generateSingleHTMLReport(goodClusters, new File(reportFolder, "report.html"));
 //        Cluster testCluster = goodClusters.get(3);
 //        System.out.println(testCluster.getTags().size() + ":" + testCluster.getStdev() + ":" + testCluster.getAverageDistance());
 //        for (Node node : testCluster.getTags()) {

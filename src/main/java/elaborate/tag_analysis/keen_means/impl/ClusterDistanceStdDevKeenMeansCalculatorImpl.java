@@ -55,15 +55,16 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
     @Override
     public List<Cluster> calculate(List<Cluster> clusters, KmeansCalculator kmeansCalculator) {
         kmeansCalculator.setCentroidSelector(new RandomCentroidSelectorImpl());
-        ProblemSpace context=new ProblemSpace();
+        ProblemSpace context = new ProblemSpace();
         context.setGoodClusters(clusters);
-        int round=0;
-        round: while(true && round<10){
+        int round = 0;
+        round:
+        while (true && round < 10) {
             round++;
             this.execute(kmeansCalculator, context);
-            List<Cluster> allClusters=context.getAllClusters();
-            for(Cluster cluster : allClusters){
-                if(cluster.getTags().size()<this.stopCalculationWhenNodesNumberLessThan){
+            List<Cluster> allClusters = context.getAllClusters();
+            for (Cluster cluster : allClusters) {
+                if (cluster.getTags().size() < this.stopCalculationWhenNodesNumberLessThan) {
                     //this is a small group
                     continue round;
                 }
@@ -72,23 +73,6 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             break;
         }
         return this.mergeNodesOfSmallClusters(context.getAllClusters());
-        //return context.getGoodClusters();
-        //report for distance between tags and all centroids
-//        System.out.println("==============================================");
-//        for(Node node : nodes){
-//            System.out.print(node.getValue()+",");
-//            boolean firstPrint=true;
-//            for(Cluster cluster : goodClusters){
-//                Centroid centroid=cluster.getCentroid();
-//                double distance=DistanceCalculator.getDistance(node.getFeature(), centroid.getLocation());
-//                if(!firstPrint){
-//                    System.out.print(",");
-//                }
-//                System.out.print(distance);
-//                firstPrint=false;
-//            }
-//            System.out.println("");
-//        }
     }
 
     /**
@@ -138,12 +122,48 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             return false;
         }
     }
+
     /**
      * execute for a round
-     * @param context 
+     *
+     * @param context
      */
-    protected void execute(KmeansCalculator kmeansCalculator, ProblemSpace context){
-        List<Cluster> clusters=this.mergeNodesOfSmallClusters(context.getAllClusters());
+    protected void execute(KmeansCalculator kmeansCalculator, ProblemSpace context) {
+        //List<Cluster> clusters=this.mergeNodesOfSmallClusters(context.getAllClusters());
+        List<Cluster> originalClusters = context.getAllClusters();
+        List<Cluster> clusters = new ArrayList<>();
+        for (Cluster cluster : originalClusters) {
+            if (cluster.getTags().size() > this.stopCalculationWhenNodesNumberLessThan) {
+                boolean longTailExists = false;
+                for (Node node : cluster.getTags()) {
+                    if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
+                        longTailExists = true;
+                        break;
+                    }
+                }
+                if (longTailExists) {
+                    Cluster newCluster1 = new Cluster();
+                    Cluster newCluster2 = new Cluster();
+                    for (Node node : cluster.getTags()) {
+                        if (cluster.getDistance(node) > cluster.getAverageDistance() + 3 * cluster.getStdev()) {
+                            newCluster2.getTags().add(node);
+                        }else{
+                            newCluster1.getTags().add(node);
+                        }
+                    }
+                    newCluster1.reset();
+                    newCluster2.reset();
+                    clusters.add(newCluster1);
+                    clusters.add(newCluster2);
+                    System.out.println("long tail: "+newCluster1.getTags().size()+":"+newCluster2.getTags().size());
+                }else{
+                    clusters.add(cluster);
+                }
+            } else {
+                clusters.add(cluster);
+            }
+        }
+
         double overallAverage = getAverageDistanceAcrossClusters(clusters);
         Logger.getLogger(this.getClass().getName()).info("average distance across clusters=" + (overallAverage));
         //calculate stdev of average distance among clusters
@@ -171,7 +191,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
             clusterIndex++;
         }
-        
+
         while (badClusters.isEmpty() == false) {
             Logger.getLogger(this.getClass().getName()).info("initially, # of bad clusters=" + badClusters.size() + ": # of good clusters=" + goodClusters.size());
             List<Cluster> processingClusters = new ArrayList<Cluster>(badClusters);
@@ -199,13 +219,13 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                 }
             }
         }
-        Logger.getLogger(this.getClass().getName()).info("final numbers of clusters=" + goodClusters.size() + ", total average=" + overallAverage+", badClusters="+badClusters.size());
+        Logger.getLogger(this.getClass().getName()).info("final numbers of clusters=" + goodClusters.size() + ", total average=" + overallAverage + ", badClusters=" + badClusters.size());
         context.setGoodClusters(goodClusters);
         context.setBadClusters(badClusters);
         context.setOverallAverageDistance(overallAverage);
         context.setOverallStdev2AverageDistance(overallStdev);
     }
-    
+
     /**
      * move nodes of small clusters to the nearest cluster
      *
@@ -213,9 +233,9 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
      * @return
      */
     protected List<Cluster> mergeNodesOfSmallClusters(List<Cluster> original) {
-        if(1==1){
-            return original;
-        }
+//        if(1==1){
+//            return original;
+//        }
         List<Cluster> result = new ArrayList<Cluster>();
         List<Cluster> smallClusters = new ArrayList<Cluster>();
         for (Cluster cluster : original) {
@@ -236,7 +256,8 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
                         targetCluster = largerCluster;
                     }
                 }
-                targetCluster.addTag(node);
+                targetCluster.getTags().add(node);
+                targetCluster.reset();
             }
         }
         return result;
