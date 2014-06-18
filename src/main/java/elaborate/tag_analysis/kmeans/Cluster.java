@@ -23,7 +23,8 @@ public class Cluster {
     private boolean avgCalculated=false;
     private boolean stdevCalculated=false;
     private boolean urlCalculated=false;
-    private List<URL> urls=new ArrayList<URL>();
+    //never use the variable directly
+    private Map<URL, String> _urls=new HashMap<URL, String>();
 
     /**
      * Get the value of tags
@@ -133,19 +134,17 @@ public class Cluster {
      */
     public List<URL> getCoveredURLs(){
         if(this.urlCalculated==true){
-            return this.urls;
+            return new ArrayList<URL>(this._urls.keySet());
         }else{
-            this.urls.clear();
-            Map<URL, String> map=new HashMap<URL, String>();
+            this._urls.clear();
             for(Node tag : this.tags){
                 List<URL> urls=tag.getFeature().getUrls();
                 for(URL url : urls){
-                    map.put(url, "");
+                    _urls.put(url, "");
                 }
             }
-            this.urls.addAll(map.keySet());
             this.urlCalculated=true;
-            return this.urls;
+            return new ArrayList<URL>(this._urls.keySet());
         }
     }
     /**
@@ -154,18 +153,14 @@ public class Cluster {
      * @return 
      */
     public double getURLCoverage(Node tag){
-        List<URL> allURL=this.getCoveredURLs();
-        Map<URL, String> map=new HashMap<>();
-        for(URL url : allURL){
-            map.put(url, "");
-        }
+        this.getCoveredURLs();//force calculation
         double count=0;
         for(URL url : tag.getFeature().getUrls()){
-            if(map.containsKey(url)){
+            if(this._urls.containsKey(url)){
                 count++;
             }
         }
-        return count/allURL.size();
+        return count/_urls.size();
     }
     protected double calculateAverageDistance() {
         double sum = 0;
