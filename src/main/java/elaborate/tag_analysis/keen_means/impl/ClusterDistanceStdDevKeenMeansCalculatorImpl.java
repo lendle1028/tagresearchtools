@@ -74,7 +74,14 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 //        }
         
         List<Cluster> result = null;
-        this.execute(kmeansCalculator, context);
+        int previousClusterCount=clusters.size();
+        for(int i=0; i<10; i++){
+            this.execute2(kmeansCalculator, context);
+            if(previousClusterCount==context.getGoodClusters().size()){
+                break;
+            }
+            previousClusterCount=context.getGoodClusters().size();
+        }
         result=context.getGoodClusters();
 //        for (int i = 0; i < 10; i++) {
 //            this.execute(kmeansCalculator, context);
@@ -240,6 +247,65 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
         context.setOverallStdev2AverageDistance(overallStdev);
     }
 
+    /**
+     * execute for a round
+     *
+     * @param context
+     */
+    protected void execute2(KmeansCalculator kmeansCalculator, ProblemSpace context) {
+        //List<Cluster> clusters=this.mergeNodesOfSmallClusters(context.getAllClusters());
+        List<Cluster> originalClusters = context.getAllClusters();
+        List<Cluster> clusters = originalClusters;
+
+        double overallAverage = getAverageDistanceAcrossClusters(clusters);
+        Logger.getLogger(this.getClass().getName()).info("average distance across clusters=" + (overallAverage));
+        //calculate stdev of average distance among clusters
+        double clusterVariations = 0;
+        double overallStdev = 0;
+        for (Cluster cluster : clusters) {
+            if (Double.isNaN(cluster.getAverageDistance())) {
+                continue;
+            }
+            clusterVariations += Math.pow(cluster.getAverageDistance() - overallAverage, 2);
+        }
+
+        overallStdev = Math.pow(clusterVariations, 0.5) / clusters.size();
+        Logger.getLogger(this.getClass().getName()).info("stdev of average distance across clusters=" + (overallStdev));
+        
+        List<Cluster> ret=new ArrayList<Cluster>();
+        for(Cluster cluster : clusters){
+            if(cluster.getTags().size()<this.stopCalculationWhenNodesNumberLessThan){
+                ret.add(cluster);
+                continue;
+            }
+            Cluster cluster1=new Cluster();
+            Cluster cluster2=new Cluster();
+            for(Node tag : cluster.getTags()){
+                if(cluster.getDistance(tag)>cluster.getAverageDistance()+3*cluster.getStdev()){
+                    System.out.println("split "+tag.getValue());
+                    cluster2.getTags().add(tag);
+                }else{
+                    cluster1.getTags().add(tag);
+                }
+            }
+            if(cluster1.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan && cluster2.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan){
+                System.out.println("\tcommit splitting");
+                ret.add(cluster1);
+                ret.add(cluster2);
+                cluster1.reset();
+                cluster2.reset();
+            }else{
+                ret.add(cluster);
+            }
+        }
+        
+        //Logger.getLogger(this.getClass().getName()).info("final numbers of clusters=" + goodClusters.size() + ", total average=" + overallAverage + ", badClusters=" + badClusters.size());
+        context.setGoodClusters(ret);
+        //context.setBadClusters(badClusters);
+        context.setOverallAverageDistance(overallAverage);
+        context.setOverallStdev2AverageDistance(overallStdev);
+    }
+    
     /**
      * split long tails (>3 stdev) to new clusters
      *
