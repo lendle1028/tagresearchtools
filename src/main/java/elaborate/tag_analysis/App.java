@@ -1,28 +1,18 @@
 package elaborate.tag_analysis;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import elaborate.tag_analysis.feature.DistanceCalculator;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
 import elaborate.tag_analysis.kmeans.Centroid;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
-import elaborate.tag_analysis.kmeans.KmeansNodesFactory;
 import elaborate.tag_analysis.kmeans.Node;
 import elaborate.tag_analysis.kmeans.impl.DefaultKmeansCalculatorImpl;
 import elaborate.tag_analysis.utils.KmeansNodesLoader;
-import elaborate.tag_analysis.utils.LinkDataLoader;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * read tag data, perform k-means calculation
@@ -39,7 +29,7 @@ public class App {
         KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
         Centroid[] centroids = new Centroid[numOfClusters];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(nodes.get(i).getFeature());
+            centroids[i] = new Centroid(nodes.get(i).getFeature().getVector());
         }
         //perform k-means algorithm to get clusters
         List<Cluster> clusters = null;
@@ -54,7 +44,7 @@ public class App {
             List<TagStdevRatioPair> pairs = new ArrayList<TagStdevRatioPair>();
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
-                double distance = DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation());
+                double distance = DistanceCalculator.getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation());
                 double stdevRatio = (distance - cluster.getAverageDistance()) / cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));
             }
@@ -72,7 +62,7 @@ public class App {
             boolean firstPrint = true;
             for (Cluster cluster : goodClusters) {
                 Centroid centroid = cluster.getCentroid();
-                double distance = DistanceCalculator.getDistance(node.getFeature(), centroid.getLocation());
+                double distance = DistanceCalculator.getDistance(node.getFeature().getVector(), centroid.getLocation());
                 if (!firstPrint) {
                     System.out.print(",");
                 }

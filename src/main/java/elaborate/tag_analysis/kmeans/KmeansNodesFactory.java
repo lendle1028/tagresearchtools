@@ -18,7 +18,7 @@ import java.util.Map;
 public class KmeansNodesFactory {
     public static List<elaborate.tag_analysis.kmeans.Node> getNodes(List<LinkData> links){
         List<elaborate.tag_analysis.kmeans.Node> ret=new ArrayList<elaborate.tag_analysis.kmeans.Node>();
-        List<elaborate.tag_analysis.Tag> tags=new ArrayList<elaborate.tag_analysis.Tag>();
+        List<elaborate.tag_analysis.Tag> tags=null;
         Map<elaborate.tag_analysis.Tag, String> tagMap=new HashMap<elaborate.tag_analysis.Tag, String>();
         for(LinkData link : links){
             for(elaborate.tag_analysis.Tag tag : link.getTags()){
@@ -30,6 +30,7 @@ public class KmeansNodesFactory {
             elaborate.tag_analysis.kmeans.Node kmeansTag=new elaborate.tag_analysis.kmeans.Node();
             kmeansTag.setValue(tag.getValue());
             kmeansTag.setFeature(FeatureFactory.getFeature(tag, links));
+            //kmeansTag.setFeature(FeatureFactory.getFeature(tag, links).getVector());
             ret.add(kmeansTag);
         }
         return ret;

@@ -13,9 +13,9 @@ import java.util.List;
  * @author lendle
  */
 public class LinkData {
-    
+
     private URL url;
-        private List<Tag> tags = new ArrayList<Tag>();
+    private List<Tag> tags = new ArrayList<Tag>();
 
     /**
      * Get the value of tags
@@ -34,7 +34,6 @@ public class LinkData {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
 
     /**
      * Get the value of url

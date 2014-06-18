@@ -4,6 +4,10 @@
  */
 package elaborate.tag_analysis;
 
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  *
  * @author lendle
@@ -51,6 +55,4 @@ public class Tag {
         }
         return true;
     }
-    
-    
 }

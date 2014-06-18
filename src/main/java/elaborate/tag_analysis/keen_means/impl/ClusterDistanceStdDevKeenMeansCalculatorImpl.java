@@ -11,9 +11,7 @@ import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
-import elaborate.tag_analysis.kmeans.RandomCentroidSelectorImpl;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -107,7 +105,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
                 totalNumOfNodes++;
-                double distance = Math.abs(DistanceCalculator.getDistance(node.getFeature(), cluster.getCentroid().getLocation()));
+                double distance = Math.abs(DistanceCalculator.getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation()));
                 totalDistance += distance;
                 double stdevRatio = (distance - cluster.getAverageDistance()) / cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));

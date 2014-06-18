@@ -18,14 +18,14 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String keyword = "test";
+        String keyword = "java";
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
         KmeansCalculator kmeansCalculator = new DefaultKmeansCalculatorImpl();
         Centroid[] centroids = new Centroid[numOfClusters];
         for (int i = 0; i < centroids.length; i++) {
-            centroids[i] = new Centroid(nodes.get(i).getFeature());
+            centroids[i] = new Centroid(nodes.get(i).getFeature().getVector());
         }
         //perform k-means algorithm to get clusters
         List<Cluster> clusters = null;

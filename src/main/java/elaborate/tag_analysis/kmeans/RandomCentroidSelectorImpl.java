@@ -27,7 +27,7 @@ public class RandomCentroidSelectorImpl implements CentroidSelector{
         List<Node> candidates=new ArrayList<Node>(tags);
         for (int i = 0; i < centroids.length; i++) {
             int index=(int) ((Math.random()*1000*tags.size())%candidates.size());
-            centroids[i] = new Centroid(candidates.get(index).getFeature());
+            centroids[i] = new Centroid(candidates.get(index).getFeature().getVector());
             candidates.remove(index);
         }
         return centroids;
