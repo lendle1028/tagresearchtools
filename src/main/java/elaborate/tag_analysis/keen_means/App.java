@@ -18,7 +18,12 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String keyword = "java";
+        execute("facebook");
+        execute("apple");
+        execute("java");
+    }
+    
+    private static void execute(String keyword) throws Exception{
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");

@@ -16,7 +16,12 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        String keyword = "apple";
+        execute("facebook");
+        execute("apple");
+        execute("java");
+    }
+    
+    private static void execute(String keyword) throws Exception{
         int numOfClusters = 10;
         //get k-means nodes
         List<Node> nodes = KmeansNodesLoader.loadNodes(keyword + ".txt");
@@ -34,5 +39,4 @@ public class App {
         File kmeansReportFile=new File(reportFolder, keyword+"_"+formater.format(new Date())+".html");
         ClusterReporter.generateSingleHTMLReport(clusters, kmeansReportFile);
     }
-
 }

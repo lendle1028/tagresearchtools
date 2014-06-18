@@ -7,6 +7,7 @@ package elaborate.tag_analysis.kmeans;
 import elaborate.tag_analysis.feature.DistanceCalculator;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,9 @@ public class Cluster {
      * invoke the method after tags are modified
      */
     public void reset(){
+        if(this.tags.isEmpty()){
+            return;
+        }
         double[] newSum = new double[this.tags.get(0).getFeature().getVector().length];
         double[] newCentroid = new double[this.tags.get(0).getFeature().getVector().length];
         for (Node tag : this.tags) {
@@ -119,6 +123,7 @@ public class Cluster {
         for (int i = 0; i < newSum.length; i++) {
             newCentroid[i]=newSum[i]/this.tags.size();
         }
+        //System.out.println(Arrays.toString(newSum)+":"+newCentroid[0]+":"+this.tags.size());
         if(this.centroid==null){
             this.centroid=new Centroid();
         }

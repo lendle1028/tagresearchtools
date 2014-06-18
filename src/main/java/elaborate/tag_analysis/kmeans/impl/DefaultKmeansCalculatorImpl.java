@@ -61,6 +61,7 @@ public class DefaultKmeansCalculatorImpl implements KmeansCalculator{
             for (int i = 0; i < newSum.length; i++) {
                 c.getCentroid().getLocation()[i] = newSum[i] / c.getTags().size();
             }
+            c.reset();
         }
         
         List<Cluster> retList=new ArrayList<Cluster>();
