@@ -11,9 +11,13 @@ import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
+import elaborate.tag_analysis.utils.ClusterUtil;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -83,6 +87,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             previousClusterCount=context.getGoodClusters().size();
         }
         result=context.getGoodClusters();
+        //mergeHighlyOverlappedClusters(result);
 //        for (int i = 0; i < 10; i++) {
 //            this.execute(kmeansCalculator, context);
 //            result = this.mergeNodesOfSmallClusters(this.splitLongTails(context.getAllClusters()));
@@ -282,14 +287,14 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             Cluster cluster2=new Cluster();
             for(Node tag : cluster.getTags()){
                 if(cluster.getDistance(tag)>cluster.getAverageDistance()+3*cluster.getStdev()){
-                    System.out.println("split "+tag.getValue());
+                    //System.out.println("split "+tag.getValue());
                     cluster2.getTags().add(tag);
                 }else{
                     cluster1.getTags().add(tag);
                 }
             }
             if(cluster1.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan && cluster2.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan){
-                System.out.println("\tcommit splitting");
+                //System.out.println("\tcommit splitting");
                 ret.add(cluster1);
                 ret.add(cluster2);
                 cluster1.reset();
@@ -374,5 +379,17 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
         }
         return result;
+    }
+    
+    private List<Cluster> mergeHighlyOverlappedClusters(List<Cluster> original){
+        for(int i=0; i<original.size(); i++){
+            Cluster cluster1=original.get(i);
+            for(int j=i+1; j<original.size(); j++){
+                Cluster cluster2=original.get(j);
+                double ratio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+                System.out.println(cluster1+"_"+cluster2+","+ratio);
+            }
+        }
+        return null;
     }
 }

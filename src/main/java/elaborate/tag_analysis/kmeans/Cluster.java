@@ -184,4 +184,14 @@ public class Cluster {
         sum = Math.pow(sum, 0.5);
         return sum / this.tags.size();
     }
+
+    @Override
+    public String toString() {
+        if(this.getTags()==null || this.getTags().isEmpty()){
+            return "empty";
+        }
+        return this.getTags().get(0).getValue();
+    }
+    
+    
 }
