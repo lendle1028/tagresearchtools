@@ -382,14 +382,41 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
     }
     
     private List<Cluster> mergeHighlyOverlappedClusters(List<Cluster> original){
-        for(int i=0; i<original.size(); i++){
-            Cluster cluster1=original.get(i);
-            for(int j=i+1; j<original.size(); j++){
-                Cluster cluster2=original.get(j);
-                double ratio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
-                System.out.println(cluster1+"_"+cluster2+","+ratio);
+        List<Cluster> result=new ArrayList<Cluster>();
+        while(original.isEmpty()==false){
+            double overlapRatio=0;
+            Cluster cluster1=result.remove(0);
+            Cluster targetCluster=null;
+            int targetClusterIndex=-1;
+            Cluster [] clusters=original.toArray(new Cluster[0]);
+            for(int i=0; i<clusters.length; i++){
+                Cluster cluster2=clusters[i];
+                double newOverlapRatio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+                if(newOverlapRatio>overlapRatio){
+                    targetCluster=cluster2;
+                    overlapRatio=newOverlapRatio;
+                    targetClusterIndex=i;
+                }
+            }
+            if(targetCluster!=null && overlapRatio>0.3){
+                //merge them
+                original.remove(targetClusterIndex);
+                Cluster newCluster=ClusterUtil.mergeCluster(cluster1, targetCluster);
+                result.add(newCluster);
+            }else{
+                //left as is
+                result.add(cluster1);
             }
         }
-        return null;
+        return result;
+//        for(int i=0; i<original.size(); i++){
+//            Cluster cluster1=original.get(i);
+//            for(int j=i+1; j<original.size(); j++){
+//                Cluster cluster2=original.get(j);
+//                double ratio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+//                System.out.println(cluster1+"_"+cluster2+","+ratio);
+//            }
+//        }
+//        return null;
     }
 }
