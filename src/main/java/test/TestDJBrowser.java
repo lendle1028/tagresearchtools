@@ -46,6 +46,8 @@ public class TestDJBrowser extends javax.swing.JFrame {
         panelCopntrol = new javax.swing.JPanel();
         buttonSetupJavaScript = new javax.swing.JButton();
         buttonTestJavaScript = new javax.swing.JButton();
+        buttonEnterSearch = new javax.swing.JButton();
+        buttonRunQuery = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +72,22 @@ public class TestDJBrowser extends javax.swing.JFrame {
         });
         panelCopntrol.add(buttonTestJavaScript);
 
+        buttonEnterSearch.setText("EnterSearch");
+        buttonEnterSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEnterSearchActionPerformed(evt);
+            }
+        });
+        panelCopntrol.add(buttonEnterSearch);
+
+        buttonRunQuery.setText("RunQuery");
+        buttonRunQuery.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRunQueryActionPerformed(evt);
+            }
+        });
+        panelCopntrol.add(buttonRunQuery);
+
         getContentPane().add(panelCopntrol, java.awt.BorderLayout.SOUTH);
 
         pack();
@@ -92,6 +110,26 @@ public class TestDJBrowser extends javax.swing.JFrame {
             Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buttonSetupJavaScriptActionPerformed
+
+    private void buttonEnterSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnterSearchActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/enterSearch.js");
+        } catch (Exception ex) {
+            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonEnterSearchActionPerformed
+
+    private void buttonRunQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunQueryActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/runQuery.js");
+        } catch (Exception ex) {
+            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonRunQueryActionPerformed
 
     private Object executeJavaScript(String resourceName) throws Exception{
         try(Reader reader=new InputStreamReader(this.getClass().getClassLoader().getResource(resourceName).openStream(), "utf-8")){
@@ -142,6 +180,8 @@ public class TestDJBrowser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonEnterSearch;
+    private javax.swing.JButton buttonRunQuery;
     private javax.swing.JButton buttonSetupJavaScript;
     private javax.swing.JButton buttonTestJavaScript;
     private javax.swing.JPanel panelBrowser;
