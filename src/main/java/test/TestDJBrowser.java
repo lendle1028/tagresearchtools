@@ -48,6 +48,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         buttonTestJavaScript = new javax.swing.JButton();
         buttonEnterSearch = new javax.swing.JButton();
         buttonRunQuery = new javax.swing.JButton();
+        buttonGetSelectedPath = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,7 +65,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         });
         panelCopntrol.add(buttonSetupJavaScript);
 
-        buttonTestJavaScript.setText("Test JavaScript");
+        buttonTestJavaScript.setText("Setup Mouse");
         buttonTestJavaScript.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonTestJavaScriptActionPerformed(evt);
@@ -87,6 +88,14 @@ public class TestDJBrowser extends javax.swing.JFrame {
             }
         });
         panelCopntrol.add(buttonRunQuery);
+
+        buttonGetSelectedPath.setText("GetPath");
+        buttonGetSelectedPath.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonGetSelectedPathActionPerformed(evt);
+            }
+        });
+        panelCopntrol.add(buttonGetSelectedPath);
 
         getContentPane().add(panelCopntrol, java.awt.BorderLayout.SOUTH);
 
@@ -130,6 +139,11 @@ public class TestDJBrowser extends javax.swing.JFrame {
             Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_buttonRunQueryActionPerformed
+
+    private void buttonGetSelectedPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonGetSelectedPathActionPerformed
+        // TODO add your handling code here:
+        System.out.println(webBrowser.executeJavascriptWithResult("return $('#xpath').val();"));
+    }//GEN-LAST:event_buttonGetSelectedPathActionPerformed
 
     private Object executeJavaScript(String resourceName) throws Exception{
         try(Reader reader=new InputStreamReader(this.getClass().getClassLoader().getResource(resourceName).openStream(), "utf-8")){
@@ -181,6 +195,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonEnterSearch;
+    private javax.swing.JButton buttonGetSelectedPath;
     private javax.swing.JButton buttonRunQuery;
     private javax.swing.JButton buttonSetupJavaScript;
     private javax.swing.JButton buttonTestJavaScript;

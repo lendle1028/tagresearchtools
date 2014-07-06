@@ -53,7 +53,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="buttonTestJavaScript">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Test JavaScript"/>
+            <Property name="text" type="java.lang.String" value="Setup Mouse"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonTestJavaScriptActionPerformed"/>
@@ -73,6 +73,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRunQueryActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="buttonGetSelectedPath">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="GetPath"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonGetSelectedPathActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
