@@ -2,6 +2,27 @@ $("<style type='text/css'> .highlight{ border-color: red; border-width: 1px;bord
 $("<input type='hidden' id='xpath' style='width: 100%'></input>").appendTo("body");
 
 function getXPath(node) {
+    var index=1;
+    var parentNode=node.parentNode;
+    if(parentNode.nodeType==9){
+        return "/"+node.nodeName.toLowerCase()+"["+index+"]";
+    }else{
+        var childNodes = parentNode.childNodes;
+        for (var i = 0; i < childNodes.length; i++) {
+            var childNode = childNodes.item(i);
+            if (childNode.nodeName.toLowerCase() == node.nodeName.toLowerCase()) {
+                if (childNodes.item(i) == node) {
+                    break;
+                } else {
+                    index++;
+                }
+            }
+        }
+        return getXPath(parentNode)+"/"+node.nodeName.toLowerCase()+"["+index+"]";
+    }
+}
+
+/*function getXPath(node) {
     var path = "";
     var currentNode = node;
     while (currentNode != null) {
@@ -27,7 +48,7 @@ function getXPath(node) {
         currentNode = parentNode;
     }
     $("#xpath").val(path);
-}
+}*/
 
 
 var lastTarget = null;
@@ -38,7 +59,7 @@ $("*").mousedown(function(event) {
         }
         $(this).addClass("highlight");
         lastTarget = this;
-        getXPath(this);
+        $("#xpath").val(getXPath(this));
     }
 });
 
