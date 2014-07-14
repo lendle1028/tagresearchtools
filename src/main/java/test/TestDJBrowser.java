@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -66,6 +67,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         panelCopntrol.add(buttonSetupJavaScript);
 
         buttonTestJavaScript.setText("Setup Mouse");
+        buttonTestJavaScript.setEnabled(false);
         buttonTestJavaScript.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonTestJavaScriptActionPerformed(evt);
@@ -74,6 +76,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         panelCopntrol.add(buttonTestJavaScript);
 
         buttonEnterSearch.setText("EnterSearch");
+        buttonEnterSearch.setEnabled(false);
         buttonEnterSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonEnterSearchActionPerformed(evt);
@@ -82,6 +85,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         panelCopntrol.add(buttonEnterSearch);
 
         buttonRunQuery.setText("RunQuery");
+        buttonRunQuery.setEnabled(false);
         buttonRunQuery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRunQueryActionPerformed(evt);
@@ -90,6 +94,7 @@ public class TestDJBrowser extends javax.swing.JFrame {
         panelCopntrol.add(buttonRunQuery);
 
         buttonGetSelectedPath.setText("GetPath");
+        buttonGetSelectedPath.setEnabled(false);
         buttonGetSelectedPath.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonGetSelectedPathActionPerformed(evt);
@@ -115,6 +120,35 @@ public class TestDJBrowser extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/setupJQuery.js");
+            final boolean [] continueLoop=new boolean[]{true};
+            Thread t=new Thread(){
+                public void run(){
+                    while(continueLoop[0]){
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        SwingUtilities.invokeLater(new Runnable(){
+
+                            @Override
+                            public void run() {
+                                Boolean test=Boolean.valueOf(""+webBrowser.executeJavascriptWithResult("return typeof($)!=\"undefined\";"));
+                                if(test){
+                                    //enable all buttons, and break
+                                    TestDJBrowser.this.buttonTestJavaScript.setEnabled(true);
+                                    TestDJBrowser.this.buttonEnterSearch.setEnabled(true);
+                                    TestDJBrowser.this.buttonRunQuery.setEnabled(true);
+                                    TestDJBrowser.this.buttonGetSelectedPath.setEnabled(true);
+                                    continueLoop[0]=false;
+                                }
+                            }
+                        });
+                        
+                    }
+                }
+            };
+            t.start();
         } catch (Exception ex) {
             Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
         }

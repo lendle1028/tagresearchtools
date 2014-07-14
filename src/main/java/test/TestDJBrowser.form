@@ -54,6 +54,7 @@
         <Component class="javax.swing.JButton" name="buttonTestJavaScript">
           <Properties>
             <Property name="text" type="java.lang.String" value="Setup Mouse"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonTestJavaScriptActionPerformed"/>
@@ -62,6 +63,7 @@
         <Component class="javax.swing.JButton" name="buttonEnterSearch">
           <Properties>
             <Property name="text" type="java.lang.String" value="EnterSearch"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonEnterSearchActionPerformed"/>
@@ -70,6 +72,7 @@
         <Component class="javax.swing.JButton" name="buttonRunQuery">
           <Properties>
             <Property name="text" type="java.lang.String" value="RunQuery"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRunQueryActionPerformed"/>
@@ -78,6 +81,7 @@
         <Component class="javax.swing.JButton" name="buttonGetSelectedPath">
           <Properties>
             <Property name="text" type="java.lang.String" value="GetPath"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonGetSelectedPathActionPerformed"/>
