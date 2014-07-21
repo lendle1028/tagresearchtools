@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package test;
 
 import chrriis.common.UIUtils;
@@ -22,7 +21,9 @@ import org.apache.commons.io.IOUtils;
  * @author lendle
  */
 public class TestDJBrowser extends javax.swing.JFrame {
-    private JWebBrowser webBrowser=null;
+
+    private JWebBrowser webBrowser = null;
+
     /**
      * Creates new form TestDJBrowser
      */
@@ -120,31 +121,31 @@ public class TestDJBrowser extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             this.executeJavaScript("elaborate/tag_analysis/oosm/tools/mapper/resources/setupJQuery.js");
-            final boolean [] continueLoop=new boolean[]{true};
-            Thread t=new Thread(){
-                public void run(){
-                    while(continueLoop[0]){
+            final boolean[] continueLoop = new boolean[]{true};
+            Thread t = new Thread() {
+                public void run() {
+                    while (continueLoop[0]) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        SwingUtilities.invokeLater(new Runnable(){
+                        SwingUtilities.invokeLater(new Runnable() {
 
                             @Override
                             public void run() {
-                                Boolean test=Boolean.valueOf(""+webBrowser.executeJavascriptWithResult("return typeof($)!=\"undefined\";"));
-                                if(test){
+                                Boolean test = Boolean.valueOf("" + webBrowser.executeJavascriptWithResult("return typeof($)!=\"undefined\";"));
+                                if (test) {
                                     //enable all buttons, and break
                                     TestDJBrowser.this.buttonTestJavaScript.setEnabled(true);
                                     TestDJBrowser.this.buttonEnterSearch.setEnabled(true);
                                     TestDJBrowser.this.buttonRunQuery.setEnabled(true);
                                     TestDJBrowser.this.buttonGetSelectedPath.setEnabled(true);
-                                    continueLoop[0]=false;
+                                    continueLoop[0] = false;
                                 }
                             }
                         });
-                        
+
                     }
                 }
             };
@@ -179,17 +180,17 @@ public class TestDJBrowser extends javax.swing.JFrame {
         System.out.println(webBrowser.executeJavascriptWithResult("return $('#xpath').val();"));
     }//GEN-LAST:event_buttonGetSelectedPathActionPerformed
 
-    private Object executeJavaScript(String resourceName) throws Exception{
-        try(Reader reader=new InputStreamReader(this.getClass().getClassLoader().getResource(resourceName).openStream(), "utf-8")){
+    private Object executeJavaScript(String resourceName) throws Exception {
+        try (Reader reader = new InputStreamReader(this.getClass().getClassLoader().getResource(resourceName).openStream(), "utf-8")) {
             //webBrowser.executeJavascript("var s=document.createElement(\"script\");s.setAttribute('src', '//code.jquery.com/jquery-1.11.0.min.js');document.body.appendChild(s);");
-            String script=IOUtils.toString(reader);
+            String script = IOUtils.toString(reader);
             return webBrowser.executeJavascriptWithResult(script);
         } catch (Exception ex) {
             Logger.getLogger(TestDJBrowser.class.getName()).log(Level.SEVERE, null, ex);
             throw ex;
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
