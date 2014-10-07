@@ -30,7 +30,10 @@ public class KmeansNodesFactory {
             elaborate.tag_analysis.kmeans.Node kmeansTag=new elaborate.tag_analysis.kmeans.Node();
             kmeansTag.setValue(tag.getValue());
             kmeansTag.setFeature(FeatureFactory.getFeature(tag, links));
-            //kmeansTag.setFeature(FeatureFactory.getFeature(tag, links).getVector());
+            /*
+            if(kmeansTag.getFeature().getUrls().size()<=5){
+                continue;//skip urban tags
+            }*/
             ret.add(kmeansTag);
         }
         return ret;

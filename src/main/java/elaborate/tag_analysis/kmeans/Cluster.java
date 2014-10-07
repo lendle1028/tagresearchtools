@@ -5,8 +5,11 @@
 package elaborate.tag_analysis.kmeans;
 
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import elaborate.tag_analysis.feature.DistanceCalculatorFactory;
+import elaborate.tag_analysis.utils.ClusterUtil;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +26,9 @@ public class Cluster {
     private boolean avgCalculated=false;
     private boolean stdevCalculated=false;
     private boolean urlCalculated=false;
-    private List<URL> urls=new ArrayList<URL>();
+    //never use the variable directly
+    private Map<URL, String> _urls=new HashMap<URL, String>();
+    private List<Node> sortedTagList=null;
 
     /**
      * Get the value of tags
@@ -70,7 +75,7 @@ public class Cluster {
     public double getDistance(Node tag) {
         double[] feature1 = tag.getFeature().getVector();
         double[] feature2 = this.centroid.getLocation();
-        return DistanceCalculator.getDistance(feature1, feature2);
+        return DistanceCalculatorFactory.getDistanceCalculator().getDistance(feature1, feature2);
     }
 
     /**
@@ -108,6 +113,10 @@ public class Cluster {
      * invoke the method after tags are modified
      */
     public void reset(){
+        sortedTagList=null;
+        if(this.tags.isEmpty()){
+            return;
+        }
         double[] newSum = new double[this.tags.get(0).getFeature().getVector().length];
         double[] newCentroid = new double[this.tags.get(0).getFeature().getVector().length];
         for (Node tag : this.tags) {
@@ -118,6 +127,7 @@ public class Cluster {
         for (int i = 0; i < newSum.length; i++) {
             newCentroid[i]=newSum[i]/this.tags.size();
         }
+        //System.out.println(Arrays.toString(newSum)+":"+newCentroid[0]+":"+this.tags.size());
         if(this.centroid==null){
             this.centroid=new Centroid();
         }
@@ -133,19 +143,17 @@ public class Cluster {
      */
     public List<URL> getCoveredURLs(){
         if(this.urlCalculated==true){
-            return this.urls;
+            return new ArrayList<URL>(this._urls.keySet());
         }else{
-            this.urls.clear();
-            Map<URL, String> map=new HashMap<URL, String>();
+            this._urls.clear();
             for(Node tag : this.tags){
                 List<URL> urls=tag.getFeature().getUrls();
                 for(URL url : urls){
-                    map.put(url, "");
+                    _urls.put(url, "");
                 }
             }
-            this.urls.addAll(map.keySet());
             this.urlCalculated=true;
-            return this.urls;
+            return new ArrayList<URL>(this._urls.keySet());
         }
     }
     /**
@@ -154,18 +162,14 @@ public class Cluster {
      * @return 
      */
     public double getURLCoverage(Node tag){
-        List<URL> allURL=this.getCoveredURLs();
-        Map<URL, String> map=new HashMap<>();
-        for(URL url : allURL){
-            map.put(url, "");
-        }
+        this.getCoveredURLs();//force calculation
         double count=0;
         for(URL url : tag.getFeature().getUrls()){
-            if(map.containsKey(url)){
+            if(this._urls.containsKey(url)){
                 count++;
             }
         }
-        return count/allURL.size();
+        return count/_urls.size();
     }
     protected double calculateAverageDistance() {
         double sum = 0;
@@ -184,4 +188,21 @@ public class Cluster {
         sum = Math.pow(sum, 0.5);
         return sum / this.tags.size();
     }
+
+    @Override
+    public String toString() {
+        if(this.getTags()==null || this.getTags().isEmpty()){
+            return "empty";
+        }
+        return getSortedTagsAccording2Distance().get(0).getValue();
+        //return this.tags.get(0).getValue();
+    }
+    
+    public List<Node> getSortedTagsAccording2Distance(){
+        if(sortedTagList==null){
+            sortedTagList=ClusterUtil.sortTagsByDistance(this);
+        }
+        return sortedTagList;
+    }
+    
 }

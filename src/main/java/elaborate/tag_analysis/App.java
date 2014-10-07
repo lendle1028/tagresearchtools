@@ -1,6 +1,7 @@
 package elaborate.tag_analysis;
 
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import elaborate.tag_analysis.feature.DistanceCalculatorFactory;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
 import elaborate.tag_analysis.kmeans.Centroid;
@@ -44,7 +45,7 @@ public class App {
             List<TagStdevRatioPair> pairs = new ArrayList<TagStdevRatioPair>();
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
-                double distance = DistanceCalculator.getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation());
+                double distance = DistanceCalculatorFactory.getDistanceCalculator().getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation());
                 double stdevRatio = (distance - cluster.getAverageDistance()) / cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));
             }
@@ -62,7 +63,7 @@ public class App {
             boolean firstPrint = true;
             for (Cluster cluster : goodClusters) {
                 Centroid centroid = cluster.getCentroid();
-                double distance = DistanceCalculator.getDistance(node.getFeature().getVector(), centroid.getLocation());
+                double distance = DistanceCalculatorFactory.getDistanceCalculator().getDistance(node.getFeature().getVector(), centroid.getLocation());
                 if (!firstPrint) {
                     System.out.print(",");
                 }

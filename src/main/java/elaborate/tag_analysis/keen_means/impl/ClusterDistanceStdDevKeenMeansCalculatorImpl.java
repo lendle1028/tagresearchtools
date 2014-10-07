@@ -7,13 +7,18 @@ package elaborate.tag_analysis.keen_means.impl;
 
 import elaborate.tag_analysis.TagStdevRatioPair;
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import elaborate.tag_analysis.feature.DistanceCalculatorFactory;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.KmeansCalculator;
 import elaborate.tag_analysis.kmeans.Node;
+import elaborate.tag_analysis.utils.ClusterUtil;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -74,8 +79,16 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
 //        }
         
         List<Cluster> result = null;
-        this.execute(kmeansCalculator, context);
+        int previousClusterCount=clusters.size();
+        for(int i=0; i<10; i++){
+            this.execute2(kmeansCalculator, context);
+            if(previousClusterCount==context.getGoodClusters().size()){
+                break;
+            }
+            previousClusterCount=context.getGoodClusters().size();
+        }
         result=context.getGoodClusters();
+        //mergeHighlyOverlappedClusters(result);
 //        for (int i = 0; i < 10; i++) {
 //            this.execute(kmeansCalculator, context);
 //            result = this.mergeNodesOfSmallClusters(this.splitLongTails(context.getAllClusters()));
@@ -105,7 +118,7 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             //calculate distance between every node and its centroid
             for (Node node : cluster.getTags()) {
                 totalNumOfNodes++;
-                double distance = Math.abs(DistanceCalculator.getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation()));
+                double distance = Math.abs(DistanceCalculatorFactory.getDistanceCalculator().getDistance(node.getFeature().getVector(), cluster.getCentroid().getLocation()));
                 totalDistance += distance;
                 double stdevRatio = (distance - cluster.getAverageDistance()) / cluster.getStdev();
                 pairs.add(new TagStdevRatioPair(node, stdevRatio));
@@ -241,6 +254,65 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
     }
 
     /**
+     * execute for a round
+     *
+     * @param context
+     */
+    protected void execute2(KmeansCalculator kmeansCalculator, ProblemSpace context) {
+        //List<Cluster> clusters=this.mergeNodesOfSmallClusters(context.getAllClusters());
+        List<Cluster> originalClusters = context.getAllClusters();
+        List<Cluster> clusters = originalClusters;
+
+        double overallAverage = getAverageDistanceAcrossClusters(clusters);
+        Logger.getLogger(this.getClass().getName()).info("average distance across clusters=" + (overallAverage));
+        //calculate stdev of average distance among clusters
+        double clusterVariations = 0;
+        double overallStdev = 0;
+        for (Cluster cluster : clusters) {
+            if (Double.isNaN(cluster.getAverageDistance())) {
+                continue;
+            }
+            clusterVariations += Math.pow(cluster.getAverageDistance() - overallAverage, 2);
+        }
+
+        overallStdev = Math.pow(clusterVariations, 0.5) / clusters.size();
+        Logger.getLogger(this.getClass().getName()).info("stdev of average distance across clusters=" + (overallStdev));
+        
+        List<Cluster> ret=new ArrayList<Cluster>();
+        for(Cluster cluster : clusters){
+            if(cluster.getTags().size()<this.stopCalculationWhenNodesNumberLessThan){
+                ret.add(cluster);
+                continue;
+            }
+            Cluster cluster1=new Cluster();
+            Cluster cluster2=new Cluster();
+            for(Node tag : cluster.getTags()){
+                if(cluster.getDistance(tag)>cluster.getAverageDistance()+3*cluster.getStdev()){
+                    //System.out.println("split "+tag.getValue());
+                    cluster2.getTags().add(tag);
+                }else{
+                    cluster1.getTags().add(tag);
+                }
+            }
+            if(cluster1.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan && cluster2.getTags().size()>=this.stopCalculationWhenNodesNumberLessThan){
+                //System.out.println("\tcommit splitting");
+                ret.add(cluster1);
+                ret.add(cluster2);
+                cluster1.reset();
+                cluster2.reset();
+            }else{
+                ret.add(cluster);
+            }
+        }
+        
+        //Logger.getLogger(this.getClass().getName()).info("final numbers of clusters=" + goodClusters.size() + ", total average=" + overallAverage + ", badClusters=" + badClusters.size());
+        context.setGoodClusters(ret);
+        //context.setBadClusters(badClusters);
+        context.setOverallAverageDistance(overallAverage);
+        context.setOverallStdev2AverageDistance(overallStdev);
+    }
+    
+    /**
      * split long tails (>3 stdev) to new clusters
      *
      * @param original
@@ -308,5 +380,44 @@ public class ClusterDistanceStdDevKeenMeansCalculatorImpl implements KeenMeansCa
             }
         }
         return result;
+    }
+    
+    private List<Cluster> mergeHighlyOverlappedClusters(List<Cluster> original){
+        List<Cluster> result=new ArrayList<Cluster>();
+        while(original.isEmpty()==false){
+            double overlapRatio=0;
+            Cluster cluster1=result.remove(0);
+            Cluster targetCluster=null;
+            int targetClusterIndex=-1;
+            Cluster [] clusters=original.toArray(new Cluster[0]);
+            for(int i=0; i<clusters.length; i++){
+                Cluster cluster2=clusters[i];
+                double newOverlapRatio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+                if(newOverlapRatio>overlapRatio){
+                    targetCluster=cluster2;
+                    overlapRatio=newOverlapRatio;
+                    targetClusterIndex=i;
+                }
+            }
+            if(targetCluster!=null && overlapRatio>0.3){
+                //merge them
+                original.remove(targetClusterIndex);
+                Cluster newCluster=ClusterUtil.mergeCluster(cluster1, targetCluster);
+                result.add(newCluster);
+            }else{
+                //left as is
+                result.add(cluster1);
+            }
+        }
+        return result;
+//        for(int i=0; i<original.size(); i++){
+//            Cluster cluster1=original.get(i);
+//            for(int j=i+1; j<original.size(); j++){
+//                Cluster cluster2=original.get(j);
+//                double ratio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+//                System.out.println(cluster1+"_"+cluster2+","+ratio);
+//            }
+//        }
+//        return null;
     }
 }
