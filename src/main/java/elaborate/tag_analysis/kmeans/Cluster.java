@@ -5,6 +5,8 @@
 package elaborate.tag_analysis.kmeans;
 
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import elaborate.tag_analysis.feature.DistanceCalculatorFactory;
+import elaborate.tag_analysis.utils.ClusterUtil;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ public class Cluster {
     private boolean urlCalculated=false;
     //never use the variable directly
     private Map<URL, String> _urls=new HashMap<URL, String>();
+    private List<Node> sortedTagList=null;
 
     /**
      * Get the value of tags
@@ -72,7 +75,7 @@ public class Cluster {
     public double getDistance(Node tag) {
         double[] feature1 = tag.getFeature().getVector();
         double[] feature2 = this.centroid.getLocation();
-        return DistanceCalculator.getDistance(feature1, feature2);
+        return DistanceCalculatorFactory.getDistanceCalculator().getDistance(feature1, feature2);
     }
 
     /**
@@ -110,6 +113,7 @@ public class Cluster {
      * invoke the method after tags are modified
      */
     public void reset(){
+        sortedTagList=null;
         if(this.tags.isEmpty()){
             return;
         }
@@ -190,8 +194,15 @@ public class Cluster {
         if(this.getTags()==null || this.getTags().isEmpty()){
             return "empty";
         }
-        return this.getTags().get(0).getValue();
+        return getSortedTagsAccording2Distance().get(0).getValue();
+        //return this.tags.get(0).getValue();
     }
     
+    public List<Node> getSortedTagsAccording2Distance(){
+        if(sortedTagList==null){
+            sortedTagList=ClusterUtil.sortTagsByDistance(this);
+        }
+        return sortedTagList;
+    }
     
 }

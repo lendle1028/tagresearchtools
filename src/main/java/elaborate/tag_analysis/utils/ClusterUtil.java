@@ -8,7 +8,11 @@ package elaborate.tag_analysis.utils;
 import elaborate.tag_analysis.kmeans.Cluster;
 import elaborate.tag_analysis.kmeans.Node;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,5 +53,25 @@ public class ClusterUtil {
         }
         newCluster.reset();
         return newCluster;
+    }
+    
+    public static List<Node> sortTagsByDistance(final Cluster cluster){
+        List<Node> tags = new ArrayList<Node>(cluster.getTags());
+        Collections.sort(tags, new Comparator<Node>() {
+
+            @Override
+            public int compare(Node o1, Node o2) {
+                double distance1 = cluster.getDistance(o1);
+                double distance2 = cluster.getDistance(o2);
+                if (distance1 == distance2) {
+                    return 0;
+                } else if (distance1 > distance2) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        return tags;
     }
 }

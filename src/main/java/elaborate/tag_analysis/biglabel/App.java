@@ -6,6 +6,7 @@
 package elaborate.tag_analysis.biglabel;
 
 import elaborate.tag_analysis.feature.DistanceCalculator;
+import elaborate.tag_analysis.feature.DistanceCalculatorFactory;
 import elaborate.tag_analysis.keen_means.KeenMeansCalculator;
 import elaborate.tag_analysis.keen_means.impl.ClusterDistanceStdDevKeenMeansCalculatorImpl;
 import elaborate.tag_analysis.kmeans.Centroid;
@@ -53,7 +54,7 @@ public class App {
             System.out.println(cluster.getTags().size() + ":" + cluster.getStdev() + ":" + cluster.getAverageDistance());
             int count=0;
             for (Node node : cluster.getTags()) {
-                double distance = DistanceCalculator.getDistance(cluster.getCentroid().getLocation(), node.getFeature().getVector());
+                double distance = DistanceCalculatorFactory.getDistanceCalculator().getDistance(cluster.getCentroid().getLocation(), node.getFeature().getVector());
                 //System.out.println(node.getValue()+":"+Math.abs(distance - cluster.getAverageDistance())+":"+(Math.abs(distance - cluster.getAverageDistance()) < 1.0 * cluster.getStdev())+":"+(cluster.getDistance(node)<=cluster.getAverageDistance()));
                 //if(cluster.getDistance(node)<=cluster.getAverageDistance()-2*cluster.getStdev()){
                     count++;

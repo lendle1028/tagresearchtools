@@ -32,7 +32,7 @@ public class ClusterReporter {
     public static void generateCSVReport(Cluster cluster, Writer writer) throws Exception {
         PrintWriter output = new PrintWriter(writer);
         output.println("Tag,Distance,Cluster Avg, Cluster Stdev");
-        List<Node> tags = sortTagsByDistance(cluster);
+        List<Node> tags = cluster.getSortedTagsAccording2Distance();
         for (Node node : tags) {
             output.println(String.format("%s,%s,%s,%s", node.getValue(), cluster.getDistance(node), cluster.getAverageDistance(), cluster.getStdev()));
         }
@@ -75,7 +75,7 @@ public class ClusterReporter {
             writer.println("<a name='clusters'/>");
             for (Cluster cluster : clusters) {
                 //sort tags according to their distance to centroid
-                List<Node> tags = sortTagsByDistance(cluster);
+                List<Node> tags = cluster.getSortedTagsAccording2Distance();
                 allTags.addAll(tags);
                 double clusterAvg = cluster.getAverageDistance();
                 double stdev = cluster.getStdev();
@@ -164,26 +164,6 @@ public class ClusterReporter {
            
             writer.println("</body></html>");
         }
-    }
-
-    private static List<Node> sortTagsByDistance(final Cluster cluster) {
-        List<Node> tags = new ArrayList<Node>(cluster.getTags());
-        Collections.sort(tags, new Comparator<Node>() {
-
-            @Override
-            public int compare(Node o1, Node o2) {
-                double distance1 = cluster.getDistance(o1);
-                double distance2 = cluster.getDistance(o2);
-                if (distance1 == distance2) {
-                    return 0;
-                } else if (distance1 > distance2) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
-        return tags;
     }
 
     /**
