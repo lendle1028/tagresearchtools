@@ -49,14 +49,16 @@
                   "namespaceURI":"oosmtest",
                   "localPart":"depth",
                   "prefix":""
-               }
+               },
+               "type":1
             },
 			{
                "name":{
                   "namespaceURI":"oosmtest",
                   "localPart":"height",
                   "prefix":""
-               }
+               },
+               "type":1
             },
 			{
                "name":{
@@ -84,14 +86,16 @@
                   "namespaceURI":"oosmtest",
                   "localPart":"weight",
                   "prefix":""
-               }
+               },
+               "type":1
             },
 			{
                "name":{
                   "namespaceURI":"oosmtest",
                   "localPart":"width",
                   "prefix":""
-               }
+               },
+               "type":1
             },
 			{
                "elements":[

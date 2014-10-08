@@ -156,6 +156,7 @@ public class OOSMMapperApplication {
         String jsonOutput=gson.toJson(jsonMap);
         html.append("<pre>");
         html.append(jsonOutput);
+        System.out.println(jsonOutput);
         html.append("</pre>");
         
         html.append("</body></html>");

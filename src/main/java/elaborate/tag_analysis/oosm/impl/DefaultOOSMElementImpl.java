@@ -12,7 +12,7 @@ import javax.xml.namespace.QName;
  * @author LENDLE
  */
 public class DefaultOOSMElementImpl extends DefaultOOSMConstructImpl implements OOSMElement{
-
+    protected int type=OOSMElement.TYPE_STRING;
     public DefaultOOSMElementImpl() {
     }
     
@@ -32,6 +32,14 @@ public class DefaultOOSMElementImpl extends DefaultOOSMConstructImpl implements 
     @Override
     public int hashCode() {
         return this.getName().hashCode();
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     

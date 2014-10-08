@@ -11,6 +11,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import elaborate.tag_analysis.oosm.OOSMElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -76,6 +77,9 @@ public class BaseInterfaceDeserializer<T> implements JsonDeserializer<T> {
                     } else {
                         Object normalValue = this.processNormalElement(entry.getKey(), jsonElement, field, jdc);
                         PropertyUtils.setProperty(object, entry.getKey(), normalValue);
+//                        if(field.getName().equals("type")){
+//                            System.out.println(( (OOSMElement)object ).getType());
+//                        }
                     }
                 } catch (Exception ex) {
                     //System.out.println(object.getClass());

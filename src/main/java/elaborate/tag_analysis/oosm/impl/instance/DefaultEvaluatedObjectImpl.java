@@ -8,6 +8,7 @@ package elaborate.tag_analysis.oosm.impl.instance;
 
 import com.google.gson.Gson;
 import elaborate.tag_analysis.oosm.OOSMConstruct;
+import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.impl.gson.GsonFactory;
 import elaborate.tag_analysis.oosm.instance.binding.EvaluatedObject;
 import elaborate.tag_analysis.oosm.tools.utils.DOMTreeUtils;
@@ -88,7 +89,14 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
         map.put("__construct__", this.root.getName().toString());
         List retRootValues=new ArrayList();
         for(int i=0; this.rootValue!=null && i<this.rootValue.size(); i++){
-            retRootValues.add( (this.rootValue.get(i) instanceof Node)? DOMTreeUtils.node2Text((Node)this.rootValue.get(i)): this.rootValue.get(i));
+            Object value= (String) ((this.rootValue.get(i) instanceof Node)? DOMTreeUtils.node2Text((Node)this.rootValue.get(i)): this.rootValue.get(i));
+            if(this.root instanceof OOSMElement){
+                //System.out.println(((OOSMElement)root).getType());
+                if(((OOSMElement)root).getType()==OOSMElement.TYPE_NUMERIC){
+                    value=Double.valueOf(""+value);
+                }
+            }
+            retRootValues.add(value);
         }
         map.put("__rootValue__", retRootValues);
         for(OOSMConstruct construct : this.properties.keySet()){
