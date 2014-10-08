@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_11" class="java.beans.XMLDecoder">
+ <object class="elaborate.tag_analysis.oosm.tools.mapper.ProjectConfiguration">
+  <void property="documentURL">
+   <object class="java.net.URL">
+    <string>http://en.wikipedia.org/wiki/IPhone_4S</string>
+   </object>
+  </void>
+  <void property="oosmFile">
+   <object class="java.io.File">
+    <string>/home/lendle/programs/dev/NetBeansProjects/NSCTeam/tagresearchtools/smartphone_sample2/smartphone.oosm</string>
+   </object>
+  </void>
+  <void property="projectLocation">
+   <object class="java.io.File">
+    <string>/home/lendle/programs/dev/NetBeansProjects/NSCTeam/tagresearchtools/smartphone_sample2</string>
+   </object>
+  </void>
+  <void property="projectName">
+   <string>smartphone_sample2</string>
+  </void>
+ </object>
+</java>
