@@ -31,7 +31,7 @@ public class ProjectConfigurationResolver {
             if(newConf.getDocumentURL().getProtocol().startsWith("file")){
                 newConf.setDocumentURL(new File(rootDirectory, conf.getDocumentURL().getFile().substring(conf.getDocumentURL().getFile().lastIndexOf("/")+1)).toURI().toURL());
             }
-            newConf.save(new File(rootDirectory, ".project"));
+            newConf.save(new File(rootDirectory, "oosm.project"));
             return newConf;
         }
     }

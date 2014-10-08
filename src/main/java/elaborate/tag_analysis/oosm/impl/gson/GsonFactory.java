@@ -28,6 +28,8 @@ public class GsonFactory {
         builder.registerTypeAdapter(OOSMRule.class, new OOSMRuleInterfaceDeserializer());
         builder.registerTypeAdapter(OOSMElement.class, new OOSMElementInterfaceDeserializer());
         builder.registerTypeAdapter(OOSMElementList.class, new OOSMElementListInterfaceDeserializer());
+        builder.disableHtmlEscaping();
+
         return builder.create();
     }
 }

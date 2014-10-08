@@ -5,9 +5,10 @@
  */
 package elaborate.tag_analysis.oosm.tools.mapper;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import elaborate.tag_analysis.oosm.OOSM;
 import elaborate.tag_analysis.oosm.OOSMConstruct;
-import elaborate.tag_analysis.oosm.OOSMElement;
 import elaborate.tag_analysis.oosm.OOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.DefaultOOSMSerializer;
 import elaborate.tag_analysis.oosm.impl.instance.DefaultOOSMInstanceModelSerializer;
@@ -26,6 +27,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -72,7 +74,7 @@ public class OOSMMapperApplication {
         try (FileReader input = new FileReader(conf.getOosmFile())) {
             schema = serializer.createOOSM(input);
             OOSMInstanceModelSerializer ooSMInstanceModelSerializer = new DefaultOOSMInstanceModelSerializer();
-            File modelFile = new File(conf.getProjectLocation(), ".model");
+            File modelFile = new File(conf.getProjectLocation(), "oosm.model");
             if (modelFile.exists()) {
                 //load existing model
                 try (FileInputStream modelInput = new FileInputStream(modelFile)) {
@@ -92,7 +94,7 @@ public class OOSMMapperApplication {
 
     public void save() throws Exception {
         OOSMInstanceModelSerializer ooSMInstanceModelSerializer = new DefaultOOSMInstanceModelSerializer();
-        File modelFile = new File(this.projectConfiguration.getProjectLocation(), ".model");
+        File modelFile = new File(this.projectConfiguration.getProjectLocation(), "oosm.model");
         try (FileOutputStream output = new FileOutputStream(modelFile)) {
             ooSMInstanceModelSerializer.save(instance, output);
         }
@@ -147,10 +149,26 @@ public class OOSMMapperApplication {
         html.append("<html><body>");
         html.append(obj.getRoot().getName()).append(":");
         html.append(this.exportEvaluatedBindingResult2HTML(obj));
+        html.append("<hr>");
+        String json=obj.convert2JSON();
+        Gson gson=new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        Map jsonMap=gson.fromJson(json, Map.class);
+        String jsonOutput=gson.toJson(jsonMap);
+        html.append("<pre>");
+        html.append(jsonOutput);
+        html.append("</pre>");
+        
         html.append("</body></html>");
         return html.toString();
     }
   
+    public String exportEvaluatedBindingResult2JSON() throws Exception {
+        EvaluatedObject obj = this.instance.evaluateAllBindings(doc);
+        String json=obj.convert2JSON();
+        //System.out.println(json);
+        return json;
+    }
+    
     private String exportEvaluatedBindingResult2HTML(EvaluatedObject root) throws Exception {
         EvaluatedObject obj = root;
         StringBuffer html = new StringBuffer();

@@ -31,7 +31,7 @@ public class FileChooser extends JFileChooser {
 
             @Override
             public Icon getIcon(File f) {
-                if(new File(f, ".project").exists()){
+                if(new File(f, "oosm.project").exists()){
                     try {
                         return icon;
                     } catch (Exception ex) {
@@ -54,7 +54,7 @@ public class FileChooser extends JFileChooser {
     //a customized file chooser that only displays project folders
     @Override
     public void approveSelection() {
-        if (new File(getSelectedFile(), ".project").exists() == false) {
+        if (new File(getSelectedFile(), "oosm.project").exists() == false) {
             // beep
             return;
         } else {

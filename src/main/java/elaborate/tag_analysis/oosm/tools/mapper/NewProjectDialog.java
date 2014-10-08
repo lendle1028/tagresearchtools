@@ -271,7 +271,7 @@ public class NewProjectDialog extends javax.swing.JDialog {
             }
 
             //save project configuration
-            conf.save(new File(projectFolder, ".project"));
+            conf.save(new File(projectFolder, "oosm.project"));
             this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(NewProjectDialog.class.getName()).log(Level.SEVERE, null, ex);

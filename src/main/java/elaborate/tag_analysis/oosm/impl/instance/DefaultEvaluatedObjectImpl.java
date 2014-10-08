@@ -74,22 +74,33 @@ public class DefaultEvaluatedObjectImpl implements EvaluatedObject{
     @Override
     public String convert2JSON() {
         Gson gson=GsonFactory.createGson();
+        Map map=this.prepareJson();
+        
+        return gson.toJson(map);
+    }
+    /**
+     * convert properties in an EvaluatedObject into Map
+     * to be processed by json
+     * @return 
+     */
+    protected Map prepareJson(){
         Map map=new HashMap();
         map.put("__construct__", this.root.getName().toString());
         List retRootValues=new ArrayList();
         for(int i=0; this.rootValue!=null && i<this.rootValue.size(); i++){
-            retRootValues.add(DOMTreeUtils.node2Text((Node)this.rootValue.get(i)));
+            retRootValues.add( (this.rootValue.get(i) instanceof Node)? DOMTreeUtils.node2Text((Node)this.rootValue.get(i)): this.rootValue.get(i));
         }
         map.put("__rootValue__", retRootValues);
         for(OOSMConstruct construct : this.properties.keySet()){
             List objectValues=new ArrayList();
             List<EvaluatedObject> evaluatedChildObjects=this.properties.get(construct);
             for(EvaluatedObject evaluatedChildObject : evaluatedChildObjects){
-                objectValues.add(evaluatedChildObject.convert2JSON());
+                Map child=((DefaultEvaluatedObjectImpl)evaluatedChildObject).prepareJson();
+                objectValues.add(child);
             }
            map.put(construct.getName().toString(), objectValues);
         }
         
-        return gson.toJson(map);
+        return map;
     }
 }

@@ -335,7 +335,7 @@ public class OOSMMapper extends javax.swing.JFrame implements OOSMMapperPopupMen
         if (projectFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 File projectFolder = projectFileChooser.getSelectedFile();
-                File projectFile = new File(projectFolder, ".project");
+                File projectFile = new File(projectFolder, "oosm.project");
                 ProjectConfiguration conf = ProjectConfiguration.load(projectFile);
                 openProject(ProjectConfigurationResolver.resolveAgainstRootDirectory(conf, projectFolder));
             } catch (Exception ex) {
