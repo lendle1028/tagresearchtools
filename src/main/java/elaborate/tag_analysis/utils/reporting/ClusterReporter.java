@@ -153,15 +153,23 @@ public class ClusterReporter {
                 writer.println("<td>" + cluster + "</td>");
             }
              writer.println("</tr>");
+             int count=0;
+             double sumOverlapRatio=0;
             for (Cluster cluster1 : clusters) {
                 writer.println("<tr><td>"+cluster1+"</td>");
                 for (Cluster cluster2 : clusters) {
-                    writer.println("<td>" + ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2) + "</td>");
+                    double ratio=ClusterUtil.calculateURLOverlapRatio(cluster1, cluster2);
+                    count++;
+                    sumOverlapRatio+=ratio;
+                    writer.println("<td>" + ratio + "</td>");
                 }
                 writer.println("</tr>");
             }
             writer.println("</table>");
-           
+           writer.println("<hr/>");
+           writer.println("<ul>");
+           writer.println("<li>average overlap ratio: "+(sumOverlapRatio/count)+"</li>");
+           writer.println("</ul>");
             writer.println("</body></html>");
         }
     }
