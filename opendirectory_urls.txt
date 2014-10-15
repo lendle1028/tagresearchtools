@@ -1,0 +1,47 @@
+http://www.dmoz.org/Computers/Internet/On_the_Web/Web_Applications/
+	http://www.adaptive.net/
+	http://www.grooveshark.com/
+	http://www.howstuffworks.com/asp.htm
+	http://rss2pdf.com/
+	http://soundcloud.com/
+	http://www.xcommentpro.com/
+	http://www.zoho.com/
+
+http://www.dmoz.org/Computers/Internet/On_the_Web/Web_Applications/Photo_Sharing/
+	http://www.aminus3.com/
+	http://www.busythumbs.com/
+	http://www.care2.com/c2c/photos/
+	http://www.dphoto.com/
+	http://www.dropshots.com/
+	http://www.ezpics.com/
+	http://www.flickr.com/
+	http://www.fotohub.com/
+	http://fotopic.net/
+	http://www.fototime.com/
+	http://www.happygreetings.net/
+	http://www.hdpixel.com/
+	http://www.image4u.org/
+	http://imageevent.com/
+	
+http://www.dmoz.org/Health/Public_Health_and_Safety/
+	http://www.bettycjung.net/index.htm
+	http://www.hamilton.ca/HealthandSocialServices/Research/EPHPP/
+	http://www.eurohealthnet.eu/
+	http://www.thegeorgeinstitute.org/
+	http://www.injuryprevention.org/
+	http://www.medscape.com/publichealth
+	https://www.safetysource.com/
+	
+http://www.dmoz.org/Health/Public_Health_and_Safety/Emergency_Services/Medical/
+	http://bcn.boulder.co.us/emergency/
+	http://www.cchealth.org/
+	http://www.erbook.net/
+	http://www.empressems.com/
+	http://www.emsindex.com/
+	http://health.groups.yahoo.com/group/EMS_of_Las_Vegas/
+	http://www.fitchassoc.com/
+	http://www.knightlite.com/
+	http://www.nhtsa.gov/people/injury/ems/leaderguide/index.html
+	http://www.nemsis.org/
+	http://www.paramedicine.com/
+	http://www.mdchoice.com/cyberpt/pals/pals.asp
