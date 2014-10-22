@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package elaborate.tag_analysis.tag_extractor;
+package elaborate.tag_analysis.opendirectory;
 
 import com.google.gson.Gson;
 import elaborate.tag_analysis.LinkData;
 import elaborate.tag_analysis.Tag;
+import elaborate.tag_analysis.tag_extractor.URLTagExtractor;
 import elaborate.tag_analysis.tag_extractor.delicious.DeliciousTagExtractor;
-import elaborate.util.google.GoogleSearchResult;
-import elaborate.util.google.googlesearchtool.TagStemmer;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -18,41 +17,61 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
  *
  * @author lendle
  */
-public class OpenDirectoryTesterApp {
+public class OpenDirectoryTagExtractorApp {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
+        List<List<URL>> urlGroups=URLGroupsLoader.loadURLGroups();
+        
         List<URL> urls = new ArrayList<URL>();
+        List<List<String>> tagGroups = new ArrayList<>();
+        List<String> currentTagGroup = null;
+
+        Map<URL, List<String>> url2TagGroupMap = new HashMap<>();
         try (InputStream input = new FileInputStream("opendirectory_urls.txt")) {
             Scanner scanner = new Scanner(input);
             String line = scanner.nextLine();
             while (line != null) {
-                if (line.startsWith("\t")) {
-                    try{
-                        urls.add(new URL(line));
-                    }catch(Exception e){System.out.println("skip: "+line);}
+                if (line.trim().length() > 0) {
+                    if (line.startsWith("\t")) {
+                        try {
+                            URL url = new URL(line);
+                            urls.add(new URL(line));
+                            url2TagGroupMap.put(url, currentTagGroup);
+                        } catch (Exception e) {
+                            System.out.println("skip: " + line);
+                        }
+                    } else {
+                        currentTagGroup = new ArrayList<>();
+                        tagGroups.add(currentTagGroup);
+                    }
                 }
-                if(scanner.hasNextLine()){
+                if (scanner.hasNextLine()) {
                     line = scanner.nextLine();
-                }else{
+                } else {
                     break;
                 }
             }
         }
+
+        //System.out.println("num groups: " + tagGroups.size());
         List<LinkData> linkDataList = new ArrayList<LinkData>();
         //TagStemmer stemmer = new TagStemmer();
         //stemmer.init();
         for (URL url : urls) {
+            List<String> tagGroup = url2TagGroupMap.get(url);
             try {
                 LinkData linkData = new LinkData();
                 URLTagExtractor extractor = new DeliciousTagExtractor();
@@ -68,6 +87,9 @@ public class OpenDirectoryTesterApp {
                     Tag tag = new Tag();
                     tag.setValue(tagString);
                     linkData.getTags().add(tag);
+                    if (tagGroup.contains(tagString) == false) {
+                        tagGroup.add(tagString);
+                    }
                 }
                 if (linkData.getTags().isEmpty() == false) {
                     linkDataList.add(linkData);
@@ -82,6 +104,8 @@ public class OpenDirectoryTesterApp {
         PrintWriter output = new PrintWriter(new OutputStreamWriter(new FileOutputStream("opendirectory_tags.txt"), "utf-8"));
         output.print(json);
         output.close();
+//        System.out.println("=================================");
+//        System.out.println(gson.toJson(tagGroups));
     }
 
 }
