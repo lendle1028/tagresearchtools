@@ -10,9 +10,7 @@ import elaborate.tag_analysis.LinkData;
 import elaborate.tag_analysis.Tag;
 import elaborate.tag_analysis.tag_extractor.URLTagExtractor;
 import elaborate.tag_analysis.tag_extractor.delicious.DeliciousTagExtractor;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  *
@@ -33,69 +30,69 @@ public class OpenDirectoryTagExtractorApp {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        List<List<URL>> urlGroups=URLGroupsLoader.loadURLGroups();
-        
-        List<URL> urls = new ArrayList<URL>();
-        List<List<String>> tagGroups = new ArrayList<>();
-        List<String> currentTagGroup = null;
-
-        Map<URL, List<String>> url2TagGroupMap = new HashMap<>();
-        try (InputStream input = new FileInputStream("opendirectory_urls.txt")) {
-            Scanner scanner = new Scanner(input);
-            String line = scanner.nextLine();
-            while (line != null) {
-                if (line.trim().length() > 0) {
-                    if (line.startsWith("\t")) {
-                        try {
-                            URL url = new URL(line);
-                            urls.add(new URL(line));
-                            url2TagGroupMap.put(url, currentTagGroup);
-                        } catch (Exception e) {
-                            System.out.println("skip: " + line);
-                        }
-                    } else {
-                        currentTagGroup = new ArrayList<>();
-                        tagGroups.add(currentTagGroup);
-                    }
-                }
-                if (scanner.hasNextLine()) {
-                    line = scanner.nextLine();
-                } else {
-                    break;
-                }
-            }
-        }
+        List<URLGroup> urlGroups=URLGroupsLoader.loadURLGroups();
+//        
+//        List<URL> urls = new ArrayList<URL>();
+//        List<List<String>> tagGroups = new ArrayList<>();
+//        List<String> currentTagGroup = null;
+//
+//        Map<URL, List<String>> url2TagGroupMap = new HashMap<>();
+//        try (InputStream input = new FileInputStream("opendirectory_urls.txt")) {
+//            Scanner scanner = new Scanner(input);
+//            String line = scanner.nextLine();
+//            while (line != null) {
+//                if (line.trim().length() > 0) {
+//                    if (line.startsWith("\t")) {
+//                        try {
+//                            URL url = new URL(line);
+//                            urls.add(new URL(line));
+//                            url2TagGroupMap.put(url, currentTagGroup);
+//                        } catch (Exception e) {
+//                            System.out.println("skip: " + line);
+//                        }
+//                    } else {
+//                        currentTagGroup = new ArrayList<>();
+//                        tagGroups.add(currentTagGroup);
+//                    }
+//                }
+//                if (scanner.hasNextLine()) {
+//                    line = scanner.nextLine();
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
 
         //System.out.println("num groups: " + tagGroups.size());
         List<LinkData> linkDataList = new ArrayList<LinkData>();
         //TagStemmer stemmer = new TagStemmer();
         //stemmer.init();
-        for (URL url : urls) {
-            List<String> tagGroup = url2TagGroupMap.get(url);
-            try {
-                LinkData linkData = new LinkData();
-                URLTagExtractor extractor = new DeliciousTagExtractor();
-                System.out.println(url);
-                linkData.setUrl(new URL(url.getProtocol(), url.getHost(), "/"));
-                List<String> tags = extractor.extractTags(url, "utf-8");
-                for (String tagString : tags) {
-                    //tagString = stemmer.getRootForm(tagString);
-                    System.out.println("\t" + tagString);
-                    if (tagString == null) {
-                        continue;
+        
+        Map<URL, List<String>> url2TagGroupMap = new HashMap<>();
+        for (URLGroup group : urlGroups) {
+            for (URL url : group.toArray(new URL[0])) {
+                try {
+                    LinkData linkData = new LinkData();
+                    URLTagExtractor extractor = new DeliciousTagExtractor();
+                    System.out.println(url);
+                    linkData.setUrl(new URL(url.getProtocol(), url.getHost(), "/"));
+                    List<String> tags = extractor.extractTags(url, "utf-8");
+                    for (String tagString : tags) {
+                        //tagString = stemmer.getRootForm(tagString);
+                        System.out.println("\t" + tagString);
+                        if (tagString == null) {
+                            continue;
+                        }
+                        Tag tag = new Tag();
+                        tag.setValue(tagString);
+                        linkData.getTags().add(tag);
                     }
-                    Tag tag = new Tag();
-                    tag.setValue(tagString);
-                    linkData.getTags().add(tag);
-                    if (tagGroup.contains(tagString) == false) {
-                        tagGroup.add(tagString);
+                    if (linkData.getTags().isEmpty() == false) {
+                        linkDataList.add(linkData);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if (linkData.getTags().isEmpty() == false) {
-                    linkDataList.add(linkData);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         Gson gson = new Gson();

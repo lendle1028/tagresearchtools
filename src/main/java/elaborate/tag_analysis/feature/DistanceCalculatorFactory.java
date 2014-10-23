@@ -16,6 +16,8 @@ public class DistanceCalculatorFactory {
         if(instance==null){
             //instance=new EuclidanDistanceCalculatorImpl();
             instance=new PearsonCorrelationDistanceCalculatorImpl();
+            //instance=new KendallsCorrelationDistanceCalculatorImpl();
+            //instance=new CosineSimilarityCorrelationDistanceCalculatorImpl();
         }
         return instance;
     }
