@@ -6,6 +6,7 @@ http://www.dmoz.org/Computers/Internet/On_the_Web/Web_Applications/
 	http://soundcloud.com/
 	http://www.xcommentpro.com/
 	http://www.zoho.com/
+	http://slashdot.org/articles/99/11/08/080201.shtml
 
 http://www.dmoz.org/Computers/Internet/On_the_Web/Web_Applications/Photo_Sharing/
 	http://www.aminus3.com/
@@ -22,6 +23,37 @@ http://www.dmoz.org/Computers/Internet/On_the_Web/Web_Applications/Photo_Sharing
 	http://www.hdpixel.com/
 	http://www.image4u.org/
 	http://imageevent.com/
+	http://www.ipernity.com/
+	http://iwebphoto.com/
+	http://www.kodakgallery.com/
+	http://www.mejuba.com/
+	http://www.monkeyview.net/
+	http://www.myimagehosting.com/
+	http://www.myphotosonline.biz/
+	http://www.orderpicture.com/
+	http://www.ourphotos.net.au/
+	http://www.pbase.com/
+	http://www.photocollection.com/
+	http://www.photoreflect.com/
+	http://photothru.com/
+	http://www.photoape.com/
+	http://photobucket.com/
+	http://www.photogra.com/
+	http://www.photojunction.com/
+	http://www.photopreviews.com/
+	http://www.picturetrail.com/
+	http://www.picvault.info/
+	http://www.pix8.net/
+	http://www.pixmor.com/
+	http://www.savedmemories.com/
+	http://www.smugmug.com/
+	http://www.tabblo.com/studio/
+	http://www.ukexpert.co.uk/photopost/
+	http://www.uploadsystem.com/
+	http://www.webshots.com/
+	http://www.winkflash.com/
+	http://www.momentoffame.com/
+	http://www.zaplife.com/
 	
 http://www.dmoz.org/Health/Public_Health_and_Safety/
 	http://www.bettycjung.net/index.htm
